@@ -1,4 +1,5 @@
 import ArticleSlider from "@/components/article-slider";
+import { ArrowRight, BookOpen } from "lucide-react";
 
 export default function Home() {
   return (
@@ -7,8 +8,57 @@ export default function Home() {
 
       <div className="flex items-start gap-4">
         <div className="flex-1">
+          <div className="flex gap-8">
+            <div className="flex-1 bg-[#F9FAFB] py-16 px-8 rounded-4xl">
+              <div>
+                <p className="text-[#F06FAA]">E-BOOK</p>
+                <div className="flex justify-between items-end mb-4">
+                  <h2 className="text-[#101828] text-4xl font-bold">
+                    SSRU Around
+                  </h2>
 
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati incidunt aliquid accusamus eveniet. Corrupti debitis dolorem, repellat commodi dolorum cumque amet dignissimos id dolore fugiat voluptates quos voluptatem laudantium eaque ad veniam voluptatum delectus a iusto vero mollitia quia unde? Adipisci repudiandae aperiam ut nam quo laboriosam. Rem quas quia officia pariatur ea. Eum quas doloribus eos, at nulla molestias. Temporibus dolore magnam, ex iste accusantium commodi iusto autem, eveniet tenetur dolores atque illo possimus quam quasi at earum minima ipsam impedit quia perferendis consequatur laboriosam quis dolor? Sunt necessitatibus nobis eveniet expedita nulla modi ad fugit incidunt blanditiis itaque laboriosam suscipit consequatur veritatis saepe placeat eaque repellendus, magnam doloremque corporis dolorum! Molestiae libero quae amet consequuntur magni laborum corporis laudantium distinctio molestias officia saepe blanditiis placeat nemo, enim debitis, voluptatem modi corrupti iusto est illum dignissimos dolores! Similique, laboriosam distinctio? Molestiae totam accusantium veniam natus nemo nesciunt iste, facilis voluptatum ea blanditiis deleniti illum vel ex quas repudiandae eveniet perferendis, accusamus odio? Ex velit esse aliquam officia suscipit ratione optio fugit id natus praesentium ab asperiores, rerum ducimus nihil reiciendis ad voluptas perferendis accusamus illo error a alias voluptate laboriosam? Maiores velit inventore numquam debitis itaque, ea optio, placeat et non dolorem laboriosam. Voluptate eos atque earum aut alias expedita a eaque, minima similique amet perferendis est laborum. Odit et similique laudantium repudiandae error repellendus, amet necessitatibus voluptatem harum soluta animi quibusdam possimus corrupti consequuntur ipsum. Perferendis assumenda tempora laborum distinctio earum sit illum officiis voluptas corporis libero, dolorem quam nisi vel quia dignissimos architecto unde! Odio aliquid excepturi voluptate cum corporis eligendi soluta fugiat fuga quibusdam vel ad inventore commodi, quis tenetur sunt nisi, ut modi vero quaerat sint? Culpa fuga voluptatibus officia sed temporibus. Laborum vitae iure labore quidem nihil quis veritatis consectetur quaerat aperiam mollitia aspernatur, odit quod corrupti nostrum quae ratione accusamus sequi voluptatum quas eum dolorum dolores eaque saepe. Repudiandae obcaecati illo nemo totam aut doloremque deleniti, magni suscipit laborum, temporibus eius inventore, praesentium vero iusto. Maiores labore corrupti facere unde iste qui perferendis quidem architecto nostrum delectus aliquid beatae quas corporis ipsum dolorem ipsam omnis quod exercitationem nulla eos consequuntur voluptatibus, molestiae porro! Non excepturi ipsa omnis corporis vitae fuga repudiandae placeat distinctio tenetur assumenda, voluptate impedit ab voluptatem nemo fugit maiores laudantium explicabo ducimus eaque accusantium autem enim. Soluta reprehenderit eum quo quos itaque nam necessitatibus dolorum culpa ducimus suscipit doloremque iusto, praesentium dicta minima et consequuntur! Odit tempore non delectus aspernatur voluptatibus fugiat dolorum laboriosam laborum consequuntur minima saepe ut itaque cumque nulla quam nemo qui veniam molestiae, dolorem commodi. Tempore blanditiis dignissimos quidem consectetur ab eveniet perferendis nisi sit, ipsam possimus doloribus unde dicta totam placeat, aut est quaerat voluptatum quas et eos quod eaque voluptate? Ex a quam eveniet laborum ratione possimus assumenda molestias velit rerum! Nam laborum, maxime fugiat, pariatur cum sequi iste dignissimos quasi sit quibusdam fugit omnis perferendis deleniti beatae tenetur porro ipsa rem veritatis id animi? Vero doloremque autem reprehenderit illo perspiciatis animi molestiae repellendus rem. Eveniet dicta, quae dolore cumque similique eligendi sint sed quos nam, impedit reiciendis laborum id nulla voluptatum architecto amet animi accusamus tempore eum nisi tenetur perspiciatis sapiente aliquam. Quis sequi asperiores eos praesentium! Soluta ut cupiditate, adipisci dolore necessitatibus id eos qui delectus rem, veniam illo veritatis dolores deserunt, deleniti quos accusamus nihil nam magni labore dignissimos porro modi nemo quisquam. Repudiandae dolorum dignissimos quibusdam. Cum, quas maiores voluptates commodi quam officia, amet minus, eum a voluptatum perspiciatis! Commodi iste quibusdam, omnis consequuntur expedita a cupiditate autem quis vel error quaerat voluptatem id at saepe fuga incidunt nisi, voluptatibus dolor odio necessitatibus! Voluptate asperiores temporibus aliquid accusamus quas nobis vero possimus, minima impedit sint expedita alias ex, porro, ipsam corporis nesciunt. Explicabo optio iste culpa voluptatem saepe beatae rem asperiores earum, velit iusto maxime fuga illo nihil porro, reprehenderit vitae quos perferendis mollitia ea obcaecati itaque nobis deleniti expedita. Dicta molestias aliquid quisquam perferendis id aperiam dolorem officiis tenetur ullam non, minima odit consectetur voluptatum, ab fuga veniam quia quod error exercitationem, recusandae est! Quas veritatis, odit, incidunt culpa consequatur, modi quidem similique dolores minus tenetur commodi? Pariatur assumenda expedita, nobis, in accusamus nesciunt deleniti repellat quae blanditiis quos provident at placeat illo doloribus officiis minima? Odio, tempore velit? Vero, similique doloribus aliquid minima harum ex. Quaerat facilis iusto accusamus numquam iste voluptates doloremque labore corporis, sed aperiam tempora tenetur ullam assumenda illo ratione. Dolorum soluta illum modi aliquid reprehenderit dolores unde numquam eveniet facere? Pariatur esse harum natus, aperiam vitae quasi! Suscipit, assumenda consectetur quos, sint minus esse itaque qui impedit fugiat illo exercitationem libero, dolorum eligendi pariatur magnam quae. Voluptatibus laboriosam et, perferendis incidunt impedit id numquam autem nulla eos exercitationem aut deserunt corrupti repudiandae illo voluptatum commodi saepe a nobis sunt porro quibusdam quidem. Necessitatibus, nihil explicabo ut quam nobis eligendi consequuntur possimus numquam reprehenderit tempore saepe asperiores! Consequuntur nam sint reiciendis totam labore quae voluptates ut officia odit sed quas tempore beatae corrupti vero voluptate hic natus facere suscipit, dolor porro dignissimos enim! Dolores ipsa obcaecati commodi qui asperiores et, voluptas omnis exercitationem repellat doloribus alias! Beatae ex sequi perspiciatis neque qui asperiores laboriosam corporis, fugit soluta, numquam ducimus nemo amet dolor nam laborum. Ad maxime repellat amet aliquid dolor quibusdam placeat odio commodi corrupti eligendi quo, qui animi vel veniam quos quas. Accusantium temporibus earum, minus nihil eaque iusto consequatur maiores optio fuga facere est, corporis aut esse modi vel ab. Asperiores officiis eaque, saepe provident culpa, cupiditate consequatur magni laborum dignissimos ut sequi dolore at odio? Perspiciatis, reiciendis non? Nobis, at cum? Dolore esse aliquam incidunt magnam maxime adipisci fugit similique odio consequuntur porro quae laudantium hic amet deleniti provident officia quam quas, eveniet voluptates dolores placeat a possimus excepturi? Hic ipsa optio dicta. Sunt, omnis sint? Cupiditate, error? Autem molestiae modi recusandae molestias, exercitationem corrupti veniam amet temporibus cupiditate labore? Ex recusandae unde error incidunt atque. Natus reprehenderit est minima alias, modi beatae vel aperiam unde nulla fugiat id doloremque saepe at.
+                  <a href="" className="hover:underline">
+                    <div className="text-[#6A7282] flex text-xs items-center">
+                      <span>ดูทั้งหมด</span> <ArrowRight className="h-3" />
+                    </div>
+                  </a>
+                </div>
+
+                <div className="carousel carousel-center rounded-box max-w-lg space-x-4">
+
+                  {[1, 2, 3, 4, 5].map((item) => (
+                    <div
+                      key={item}
+                      className="carousel-item card bg-white shadow rounded-xl shrink-0"
+                    >
+                      <figure>
+                        <img
+                          src="/assets/images/ssru-around.jpg"
+                          alt=""
+                          className=" w-[311px] h-[433px] object-cover"
+                        />
+                      </figure>
+                      <div className="card-body">
+                        <div className="flex justify-between items-start">
+                          <div className="bg-[#3F458D0D] text-[#3F458D] font-bold text-xs p-1 rounded-md">
+                            Issue 12
+                          </div>
+
+                          <div className="font-xs text-[#99A1AF]">2025</div>
+                        </div>
+                        <h2 className="card-title">ฉบับเดือนพฤศจิกายน 2568</h2>
+                        <div className="flex gap-1 items-center text-[#99A1AF]">
+                          <BookOpen className="h-4" />{" "}
+                          <p>Digital Version Available</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="flex-1 bg-[#F9FAFB] py-16 px-8 rounded-4xl"></div>
+          </div>
         </div>
 
         <div className="sticky top-20 pt-2 w-[362px]">

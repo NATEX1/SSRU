@@ -12,7 +12,7 @@ const articles = [
     excerpt:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione suscipit eius et corrupti pariatur tenetur quia, molestias similique iure sint optio voluptate corporis qui labore dignissimos ducimus non, expedita ipsam voluptas nemo! Et unde, maxime ea necessitatibus eaque doloribus enim, adipisci illo quam nostrum pariatur, incidunt explicabo harum suscipit impedit inventore voluptatum asperiores expedita dicta. Iste ipsam impedit officiis voluptatem quas asperiores harum consequatur praesentium in at magnam, officia dolore, non nesciunt aut quasi ad deserunt? Sequi inventore atque, officia voluptatibus fuga modi at eaque provident, est asperiores unde rem odit itaque rerum, facilis veniam laboriosam quibusdam assumenda? Ea, numquam!",
     image:
-      "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop",
+      "/assets/images/thumbnail.jpg",
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const articles = [
     excerpt:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione suscipit eius et corrupti pariatur tenetur quia, molestias similique iure sint optio voluptate corporis qui labore dignissimos ducimus non, expedita ipsam voluptas nemo! Et unde, maxime ea necessitatibus eaque doloribus enim, adipisci illo quam nostrum pariatur, incidunt explicabo harum suscipit impedit inventore voluptatum asperiores expedita dicta. Iste ipsam impedit officiis voluptatem quas asperiores harum consequatur praesentium in at magnam, officia dolore, non nesciunt aut quasi ad deserunt? Sequi inventore atque, officia voluptatibus fuga modi at eaque provident, est asperiores unde rem odit itaque rerum, facilis veniam laboriosam quibusdam assumenda? Ea, numquam!",
     image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+      "/assets/images/thumbnail.jpg",
   },
   {
     id: 3,
@@ -30,7 +30,7 @@ const articles = [
     excerpt:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione suscipit eius et corrupti pariatur tenetur quia, molestias similique iure sint optio voluptate corporis qui labore dignissimos ducimus non, expedita ipsam voluptas nemo! Et unde, maxime ea necessitatibus eaque doloribus enim, adipisci illo quam nostrum pariatur, incidunt explicabo harum suscipit impedit inventore voluptatum asperiores expedita dicta. Iste ipsam impedit officiis voluptatem quas asperiores harum consequatur praesentium in at magnam, officia dolore, non nesciunt aut quasi ad deserunt? Sequi inventore atque, officia voluptatibus fuga modi at eaque provident, est asperiores unde rem odit itaque rerum, facilis veniam laboriosam quibusdam assumenda? Ea, numquam!",
     image:
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop",
+      "/assets/images/thumbnail.jpg",
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ const articles = [
     excerpt:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione suscipit eius et corrupti pariatur tenetur quia, molestias similique iure sint optio voluptate corporis qui labore dignissimos ducimus non, expedita ipsam voluptas nemo! Et unde, maxime ea necessitatibus eaque doloribus enim, adipisci illo quam nostrum pariatur, incidunt explicabo harum suscipit impedit inventore voluptatum asperiores expedita dicta. Iste ipsam impedit officiis voluptatem quas asperiores harum consequatur praesentium in at magnam, officia dolore, non nesciunt aut quasi ad deserunt? Sequi inventore atque, officia voluptatibus fuga modi at eaque provident, est asperiores unde rem odit itaque rerum, facilis veniam laboriosam quibusdam assumenda? Ea, numquam!",
     image:
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop",
+      "/assets/images/thumbnail.jpg",
   },
   {
     id: 5,
@@ -48,7 +48,7 @@ const articles = [
     excerpt:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione suscipit eius et corrupti pariatur tenetur quia, molestias similique iure sint optio voluptate corporis qui labore dignissimos ducimus non, expedita ipsam voluptas nemo! Et unde, maxime ea necessitatibus eaque doloribus enim, adipisci illo quam nostrum pariatur, incidunt explicabo harum suscipit impedit inventore voluptatum asperiores expedita dicta. Iste ipsam impedit officiis voluptatem quas asperiores harum consequatur praesentium in at magnam, officia dolore, non nesciunt aut quasi ad deserunt? Sequi inventore atque, officia voluptatibus fuga modi at eaque provident, est asperiores unde rem odit itaque rerum, facilis veniam laboriosam quibusdam assumenda? Ea, numquam!",
     image:
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=600&fit=crop",
+      "/assets/images/thumbnail.jpg",
   },
 ];
 
