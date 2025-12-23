@@ -32,7 +32,7 @@ export default function AppFooter() {
             >
               <img
                 src="/assets/images/call.png"
-                className="h-3 w-3 shrink-0"
+                className="h-3 w-3 "
                 alt="call"
               /> 02 160 1023
             </a>
@@ -43,7 +43,7 @@ export default function AppFooter() {
             >
               <img
                 src="/assets/images/mail.png"
-                className="h-4 w-4 shrink-0"
+                className="h-4 w-4 "
                 alt="mail"
               /> pr@ssru.ac.th
             </a>
