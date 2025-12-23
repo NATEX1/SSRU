@@ -102,9 +102,10 @@ export function getCategoryName(slug) {
     "executive-thoughts": "เปิดมุมคิดผู้บริหาร",
     "career-path-conversations": "สนทนาบนเส้นทางงาน",
     "featured-research": "งานวิจัยแนะนำ",
-    research: "งานวิจัย",
-    technology: "เทคโนโลยี",
-    innovation: "นวัตกรรม",
+    "hall-of-fame": "Hall of fame",
+    "thoughts-today": "มุมคิดวันนี้",
+    "documentary-knowledge": "สารคดีความรู้",
+    "ssru-muea-wan": "สวนสุนันทาเมื่อวันวาน",
   };
 
   return categoryMap[slug] || slug;

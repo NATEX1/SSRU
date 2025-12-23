@@ -1,6 +1,6 @@
 ---
 slug: "the-most-beautiful-song-is-song"
-category: "6"
+category: "documentary-knowledge"
 title: "เพลงที่เพราะที่สุดคือเพลง"
 thumbnail: "contents/the-most-beautiful-song-is-song.jpg"
 excerpt: "หากมีคนถามเราว่า เพลงที่เพราะ ไพเราะ หรือเพลงที่เราชอบมากที่สุดคือเพลงอะไร? คงเป็นคำถามที่ตอบได้ยากมากคำถามหนึ่งในชีวิตเลยทีเดียว"
@@ -30,7 +30,7 @@ keywords: ["การศึกษา", "นวัตกรรม", "เทคโ
 </p>
 
 <div style="text-align: center; margin: 24px 0;">
-  <img src="content/the-most-beautiful-song-is-song.jpg"
+  <img src="contents/the-most-beautiful-song-is-song.jpg"
        alt="วง Labanoon"
        style="width: 420px; max-width: 100%; height: auto;">
 </div>
@@ -40,7 +40,7 @@ keywords: ["การศึกษา", "นวัตกรรม", "เทคโ
 </p>
 
 <div style="text-align: center; margin: 24px 0;">
-  <img src="content/the-most-beautiful-song-is-song2.png"
+  <img src="contents/the-most-beautiful-song-is-song2.png"
        alt="วง Labanoon"
        style="width: 420px; max-width: 100%; height: auto;">
 </div>

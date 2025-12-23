@@ -2,8 +2,10 @@ import { ArrowLeft, Calendar, Eye, LinkIcon, Share2, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/markdown";
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from "react-markdown";
 import ShareButtons from "./ShareButtons";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 export const dynamic = "force-static";
 
@@ -12,13 +14,13 @@ export async function generateStaticParams() {
   return slugs;
 }
 
-export async function generateMetadata({params}) {
+export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug)
+  const post = getPostBySlug(slug);
   return {
     title: post.title,
-    description: post.excerpt
-  }
+    description: post.excerpt,
+  };
 }
 
 export default async function Page({ params }) {
@@ -42,8 +44,7 @@ export default async function Page({ params }) {
       <div className="space-y-4">
         <div className="flex gap-2 items-center">
           <div className="flex gap-1 text-sm items-center text-[#F06FAA]">
-            <User className="h-3" />{" "}
-            <span>{article.author}</span>
+            <User className="h-3" /> <span>{article.author}</span>
           </div>
           <div className="flex text-sm items-center text-[#D1D5DC]">|</div>
           <div className="flex gap-1 text-sm items-center text-[#F06FAA]">
@@ -74,9 +75,11 @@ export default async function Page({ params }) {
       )}
 
       <article className="prose prose-lg max-w-none">
-        <ReactMarkdown >
-          {article.content}
-        </ReactMarkdown>
+        <ReactMarkdown
+          children={article.content}
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw]}
+        />
       </article>
 
       <div className="flex gap-4 bg-[#F9FAFB] rounded-2xl border border-[#F3F4F6] p-6 my-8">
@@ -89,9 +92,7 @@ export default async function Page({ params }) {
         </div>
         <div>
           <p className="text-xs text-[#6A7282]">ผู้เขียนบทความ</p>
-          <p className="text-[#3F458D] text-lg font-bold">
-            {article.author}
-          </p>
+          <p className="text-[#3F458D] text-lg font-bold">{article.author}</p>
           <p className="text-[#4A5565] text-sm">
             คณบดีวิทยาลัยการเมืองและการปกครอง มหาวิทยาลัยราชภัฏสวนสุนันทา
           </p>
@@ -110,9 +111,8 @@ export default async function Page({ params }) {
             ))}
           </p>
         </div>
-        
-        <ShareButtons title={article.title} />
 
+        <ShareButtons title={article.title} />
       </div>
     </div>
   );

@@ -1,10 +1,12 @@
 ---
 slug: "history-of-suan-sunandha-origin"
-category: "4"
+category: "ssru-muea-wan"
 title: "ปฐมบทแห่งสวนสุนันทา"
-thumbnail: "contents/banner_2.jpg"
+thumbnail: "contents/banner-2.jpg"
 excerpt: "สวนสุนันทา” นามแห่งนี้เป็นสถานที่ที่มีเสน่ห์เฉพาะตัว เสน่ห์ที่มิได้เกิดจากเพียงความสงบร่มรื่น อาคารตำหนักอันสวยงามหรือกำแพงสีแดงโบราณที่ตั้งตระหง่านอยู่โดยรอบ คอยต้อนรับผู้มาเยือน หากแต่เกิดจากร่องรอยของเวลาและลมหายใจของผู้คนที่เคยใช้ชีวิตอยู่ในพื้นที่แห่งนี้มาอย่างยาวนาน "
 author: "ผู้ช่วยศาสตราจารย์ วีระ โชติธรรมาภรณ์"
+authorImage: ""
+authotPosition: ""
 date: "2023-11-28"
 readCount: 1250
 shareCount: 125
@@ -20,7 +22,7 @@ keywords: ["การศึกษา", "นวัตกรรม", "เทคโ
 </P>
 
 <div style="text-align: center; margin: 24px 0;">
-  <img src="content/history-of-suan-sunandha-origin.png"
+  <img src="contents/history-of-suan-sunandha-origin.png"
        alt="วง Labanoon"
        style=" max-width: 100%; height: auto;">
 </div>
@@ -30,7 +32,7 @@ keywords: ["การศึกษา", "นวัตกรรม", "เทคโ
 </P>
 
 <div style="text-align: center; margin: 24px 0;">
-  <img src="content/history-of-suan-sunandha-origin2.png"
+  <img src="contents/history-of-suan-sunandha-origin2.png"
        alt="วง Labanoon"
        style=" max-width: 100%; height: auto;">
 </div>
@@ -43,7 +45,7 @@ keywords: ["การศึกษา", "นวัตกรรม", "เทคโ
 </p>
 
 <div style="text-align: center; margin: 24px 0;">
-  <img src="content/history-of-suan-sunandha-origin3.png"
+  <img src="contents/history-of-suan-sunandha-origin3.png"
        alt="วง Labanoon"
        style=" max-width: 100%; height: auto;">
 </div>

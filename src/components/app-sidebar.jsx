@@ -21,13 +21,13 @@ export default function AppSidebar() {
 
   const menus = [
     { icon: Home, label: "หน้าแรก", href: "/" },
-    { icon: Briefcase, label: "เปิดมุมคิดผู้บริหาร", href: "/" },
-    { icon: Users, label: "สนทนาบนเส้นทางงาน", href: "/" },
-    { icon: BookOpen, label: "งานวิจัยแนะนำ", href: "/" },
-    { icon: Clock, label: "สวนสุนันทาเมื่อวันวาน", href: "/" },
-    { icon: Lightbulb, label: "มุมคิดวันนี้", href: "/" },
-    { icon: FileText, label: "สารคดีความรู้", href: "/" },
-    { icon: Star, label: "Hall of fame", href: "/" },
+    { icon: Briefcase, label: "เปิดมุมคิดผู้บริหาร", href: "/categories/executive-thoughts" },
+    { icon: Users, label: "สนทนาบนเส้นทางงาน", href: "/categories/career-path-conversations" },
+    { icon: BookOpen, label: "งานวิจัยแนะนำ", href: "/categories/featured-research" },
+    { icon: Clock, label: "สวนสุนันทาเมื่อวันวาน", href: "/categories/ssru-muea-wan" },
+    { icon: Lightbulb, label: "มุมคิดวันนี้", href: "/categories/thoughts-today" },
+    { icon: FileText, label: "สารคดีความรู้", href: "/categories/documentary-knowledge" },
+    { icon: Star, label: "Hall of fame", href: "/categories/hall-of-fame" },
     { icon: Phone, label: "ติดต่อเรา", href: "/contact-us" },
   ];
 

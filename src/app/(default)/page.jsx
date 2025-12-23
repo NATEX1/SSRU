@@ -179,7 +179,7 @@ export default function Home() {
                         />
                       </figure>
                       <div className="card-body p-1">
-                        <h2 className="card-title line-clamp-2">
+                        <h2 className="card-title line-clamp-1">
                           {post.title}
                         </h2>
                         <p className="line-clamp-2">{post.excerpt}</p>
