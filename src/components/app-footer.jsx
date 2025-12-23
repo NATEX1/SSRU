@@ -7,8 +7,8 @@ export default function AppFooter() {
         <div className="flex gap-8 items-center">
           <img
             src="assets/images/logo_new.png"
-            className="w-[125px] h-[125px]"
-            alt="logo"
+            className="h-[125px]"
+            alt="logo" style="width:100%"
           />
           <div>
             <p className=" text-lg font-semibold text-[#101828]">
@@ -35,11 +35,6 @@ export default function AppFooter() {
               ช่องทางส่งบทความ
             </a>
           </li>
-          <li>
-            <a href="" className="text-[#6A7282] hover:underline">
-              นโยบายความเป็นส่วนตัว
-            </a>
-          </li>
         </ul>
 
         <ul className="flex gap-8">
@@ -48,7 +43,7 @@ export default function AppFooter() {
               <img
                 src="/assets/images/YouTube.webp"
                 className="rounded-full h-8 w-8"
-                alt=""
+                alt="" style="width:80px;hight:80px;"
               />
             </a>
           </li>
@@ -57,7 +52,7 @@ export default function AppFooter() {
               <img
                 src="/assets/images/facebook.png"
                 className="rounded-full h-8 w-8"
-                alt=""
+                alt="" style="width:80px;hight:80px;"
               />
             </a>
           </li>
@@ -66,7 +61,7 @@ export default function AppFooter() {
               <img
                 src="/assets/images/Instagram.webp"
                 className="rounded-full h-8 w-8"
-                alt=""
+                alt="" style="width:80px;hight:80px;"
               />
             </a>
           </li>
@@ -75,7 +70,7 @@ export default function AppFooter() {
               <img
                 src="/assets/images/x.png"
                 className="rounded-full h-8 w-8"
-                alt=""
+                alt="" style="width:80px;hight:80px;"
               />
             </a>
           </li>
@@ -84,16 +79,16 @@ export default function AppFooter() {
               <img
                 src="/assets/images/line.png"
                 className="rounded-full h-8 w-8"
-                alt=""
+                alt="" style="width:80px;hight:80px;"
               />
             </a>
           </li>
           <li>
             <a href="https://www.tiktok.com/@ssru_official?_r=1&_t=ZS-927UzisFNKq" className="text-[#6A7282]">
               <img
-                src="/assets/images/tiktok.png"
+                src="/assets/images/tiktok.webp"
                 className="rounded-full h-8 w-8"
-                alt=""
+                alt="" style="width:80px;hight:80px;"
               />
             </a>
           </li>
