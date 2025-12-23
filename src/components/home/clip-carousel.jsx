@@ -18,7 +18,7 @@ const shortClips = [
   },
   {
     id: "AuLCDUoX0YY",
-    title: "30 กันยายน 2568 <br />",
+    title: "30 กันยายน 2568 #ssru #สวนสุนันทา #ลูกพระนาง",
     views: "150",
     url: "https://youtube.com/shorts/AuLCDUoX0YY?si=8kRF_5SWLoD1A5yt",
   },
