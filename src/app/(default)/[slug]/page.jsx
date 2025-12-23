@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/markdown";
 import ReactMarkdown from 'react-markdown';
-import ShareButtons from "@/app/components/ShareButtons";
+import ShareButtons from "./ShareButtons";
 
 export const dynamic = "force-static";
 
@@ -112,6 +112,7 @@ export default async function Page({ params }) {
         </div>
         
         <ShareButtons title={article.title} />
+
       </div>
     </div>
   );

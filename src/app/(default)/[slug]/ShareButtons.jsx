@@ -8,8 +8,7 @@ export default function ShareButtons({ title }) {
   const pathname = usePathname();
   const [copied, setCopied] = useState(false);
 
-  const siteUrl =
-    process.env.APP_URL?.replace(/\/$/, "") || "";
+  const siteUrl = (process.env.APP_URL || "").replace(/\/$/, "");
 
   const url = useMemo(() => {
     return siteUrl ? `${siteUrl}${pathname}` : pathname || "";
@@ -19,7 +18,7 @@ export default function ShareButtons({ title }) {
   const encodedText = encodeURIComponent(title || "");
 
   const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodedUrl}`;
-  const xShareUrl = `https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`;
+  const xShareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`;
   const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
 
   async function copyLink() {
@@ -27,7 +26,7 @@ export default function ShareButtons({ title }) {
       await navigator.clipboard.writeText(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
-    } catch (e) {
+    } catch {
       const el = document.createElement("textarea");
       el.value = url;
       document.body.appendChild(el);
@@ -68,7 +67,6 @@ export default function ShareButtons({ title }) {
             />
           </a>
         </li>
-
         <li>
           <a
             href={xShareUrl}
@@ -84,7 +82,6 @@ export default function ShareButtons({ title }) {
             />
           </a>
         </li>
-
         <li>
           <a
             href={fbShareUrl}
@@ -100,7 +97,6 @@ export default function ShareButtons({ title }) {
             />
           </a>
         </li>
-
         <li>
           <button
             type="button"
@@ -118,9 +114,7 @@ export default function ShareButtons({ title }) {
         </li>
       </ul>
 
-      {copied && (
-        <span className="text-xs text-[#6A7282]">คัดลอกลิงก์แล้ว</span>
-      )}
+      {copied && <span className="text-xs text-[#6A7282]">คัดลอกลิงก์แล้ว</span>}
     </div>
   );
 }
