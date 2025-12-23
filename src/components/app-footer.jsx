@@ -86,7 +86,7 @@ export default function AppFooter() {
           <li>
             <a href="https://www.tiktok.com/@ssru_official?_r=1&_t=ZS-927UzisFNKq" className="text-[#6A7282]">
               <img
-                src="/assets/images/tiktok.png"
+                src="/assets/images/tiktok.webp"
                 className="rounded-full h-8 w-8"
                 alt="" style="width:80px;hight:80px;"
               />
