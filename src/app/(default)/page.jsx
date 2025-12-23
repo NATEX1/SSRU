@@ -1,4 +1,5 @@
 import ArticleSlider from "@/components/article-slider";
+import ClipCarousel from "@/components/home/clip-carousel";
 import MagazineCarousel from "@/components/home/magazine-carousel";
 import { getOnePostEachOtherCategory, getCategoryName } from "@/lib/markdown";
 import { Calendar, Eye, Share2 } from "lucide-react";
@@ -48,6 +49,40 @@ const magazines = [
   },
 ];
 
+const clips= [
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+ 
+]
+
 export default function Home() {
   const catPost = getOnePostEachOtherCategory();
 
@@ -62,8 +97,8 @@ export default function Home() {
               <MagazineCarousel data={magazines} />
             </div>
 
-            <div className="flex-1 min-w-0 bg-[#F9FAFB] rounded-4xl">
-              some block
+            <div className="max-w-[563px] min-w-0">
+              <ClipCarousel data={clips} />
             </div>
           </div>
 
