@@ -23,16 +23,31 @@ export default function AppFooter() {
         </div>
 
         <ul className="flex gap-8">
-          <li className="w-[150px]">
-            <p className="text-[#6A7282]">
-              ติดต่อโฆษณา<br />
-              <a href="tel:021601023" className="hover:underline"><img src="/assets/images/call.png" className="h-4 w-4"/> 02 160 1023 </a><br />
-              <a href="mailto:pr@ssru.ac.th" className="hover:underline"><img src="/assets/images/mail.png" className="h-4 w-4"/> pr@ssru.ac.th </a><br />
-            </p>
-          </li>
-          <li>
-            <a href="" className="text-[#6A7282] hover:underline">
-              ช่องทางส่งบทความ
+          <li className="min-w-[220px]">
+            <p className="text-[#6A7282] mb-1">ติดต่อโฆษณา</p>
+
+            <a
+              href="tel:021601023"
+              className="flex items-center gap-2 text-[#6A7282] hover:underline"
+            >
+              <img
+                src="/assets/images/call.png"
+                className="h-4 w-4 shrink-0"
+                alt="call"
+              />
+              <span className="whitespace-nowrap">02 160 1023</span>
+            </a>
+
+            <a
+              href="mailto:pr@ssru.ac.th"
+              className="flex items-center gap-2 text-[#6A7282] hover:underline mt-1"
+            >
+              <img
+                src="/assets/images/mail.png"
+                className="h-4 w-4 shrink-0"
+                alt="mail"
+              />
+              <span className="whitespace-nowrap">pr@ssru.ac.th</span>
             </a>
           </li>
         </ul>
