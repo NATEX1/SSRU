@@ -1,6 +1,9 @@
-import { drizzle } from 'drizzle-orm/mysql2';
-import mysql from 'mysql2/promise';
+import { drizzle } from 'drizzle-orm/planetscale-serverless';
+import { connect } from '@planetscale/database';
 
-const pool = mysql.createPool(process.env.DATABASE_URL);
+// Use the PlanetScale connection string
+const connection = connect({
+  url: process.env.DATABASE_URL,
+});
 
-export const db = drizzle(pool);
+export const db = drizzle(connection);
