@@ -27,8 +27,7 @@ export default function AppSidebar() {
     { icon: Clock, label: "สวนสุนันทาเมื่อวันวาน", href: "/" },
     { icon: Lightbulb, label: "มุมคิดวันนี้", href: "/" },
     { icon: FileText, label: "สารคดีความรู้", href: "/" },
-    { icon: Star, label: "โปรไฟล์ดาวเด่น", href: "/" },
-    { icon: Building, label: "รอบรั้วสวนสุนันทา", href: "/" },
+    { icon: Star, label: "Hall of fame", href: "/" },
     { icon: Phone, label: "ติดต่อเรา", href: "/contact-us" },
   ];
 
