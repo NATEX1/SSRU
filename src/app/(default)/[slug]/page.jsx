@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/markdown";
 import ReactMarkdown from 'react-markdown';
+import ShareButtons from "@/app/components/ShareButtons";
 
 export const dynamic = "force-static";
 
@@ -109,48 +110,8 @@ export default async function Page({ params }) {
             ))}
           </p>
         </div>
-        <div className="flex items-center gap-4">
-          <strong>แชร์เรื่องนี้:</strong>
-          <ul className="flex gap-4">
-            <li>
-              <a href="#" className="text-[#6A7282]">
-                <img
-                  src="/assets/images/line.png"
-                  className="rounded-full h-8 w-8"
-                  alt="แชร์ผ่าน Line"
-                />
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-[#6A7282]">
-                <img
-                  src="/assets/images/x.png"
-                  className="rounded-full h-8 w-8"
-                  alt="แชร์ผ่าน X"
-                />
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-[#6A7282]">
-                <img
-                  src="/assets/images/facebook.png"
-                  className="rounded-full h-8 w-8"
-                  alt="แชร์ผ่าน Facebook"
-                />
-              </a>
-            </li>
-            <li>
-              <button
-                // onClick={() => navigator.clipboard.writeText(window.location.href)}
-                className="text-[#6A7282]"
-              >
-                <div className="size-8 border border-[#E5E7EB] flex items-center justify-center rounded-full">
-                  <LinkIcon className="h-3" />
-                </div>
-              </button>
-            </li>
-          </ul>
-        </div>
+        
+        <ShareButtons title={article.title} />
       </div>
     </div>
   );
