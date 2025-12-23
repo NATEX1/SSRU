@@ -20,9 +20,8 @@ export default function ShareButtons({ title }) {
   }, [origin, pathname]);
 
   const encodedUrl = encodeURIComponent(url);
-  const encodedText = encodeURIComponent(title || "");
 
-  const xShareUrl = `https://twitter.com/intent/tweet?text=${encodedUrl}%0A%0A${encodedUrl}`;
+  const xShareUrl = `https://twitter.com/intent/tweet?text=${encodedUrl}`;
 
   const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodedUrl}`;
   const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
