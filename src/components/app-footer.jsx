@@ -3,7 +3,7 @@ import React from "react";
 export default function AppFooter() {
   return (
     <footer className="bg-[#F9FAFB] border border-[#F3F4F6] mt-8">
-      <div className="container flex items-center justify-between">
+      <div className="container mx-auto flex items-center justify-between">
         <div className="flex gap-8 items-center">
           <img
             src="assets/images/logo_new.png"
