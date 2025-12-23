@@ -7,7 +7,7 @@ export default function AppFooter() {
         <div className="flex gap-8 items-center">
           <img
             src="assets/images/logo_new.png"
-            className="w-full"
+            className="h-[125px]"
             alt="logo" 
           />
           <div>
@@ -22,12 +22,12 @@ export default function AppFooter() {
           </div>
         </div>
 
-        <ul className="flex gap-8 w-150">
-          <li>
+        <ul className="flex gap-8">
+          <li className="w-[150px]">
             <p className="text-[#6A7282]">
               ติดต่อโฆษณา<br />
-              <a href="tel:021601023" className="hover:underline"><img src="/assets/images/call.png" className="h-3 w-3"/> 02 160 1023 </a><br />
-              <a href="mailto:pr@ssru.ac.th" className="hover:underline"><img src="/assets/images/mail.png" className="h-3 w-3"/> pr@ssru.ac.th </a><br />
+              <a href="tel:021601023" className="hover:underline"><img src="/assets/images/call.png" className="h-4 w-4"/> 02 160 1023 </a><br />
+              <a href="mailto:pr@ssru.ac.th" className="hover:underline"><img src="/assets/images/mail.png" className="h-4 w-4"/> pr@ssru.ac.th </a><br />
             </p>
           </li>
           <li>
@@ -42,7 +42,7 @@ export default function AppFooter() {
             <a href="https://www.youtube.com/@ssrutube/shorts" className="text-[#6A7282]">
               <img
                 src="/assets/images/YouTube.webp"
-                className="rounded-full size-[50px]"
+                className="rounded-full h-8 w-8"
                 alt="" 
               />
             </a>
@@ -51,7 +51,7 @@ export default function AppFooter() {
             <a href="https://www.facebook.com/kaewchaochomonline" className="text-[#6A7282]">
               <img
                 src="/assets/images/facebook.png"
-                className="rounded-full size-[50px]"
+                className="rounded-full h-8 w-8 "
                 alt="" 
               />
             </a>
@@ -60,7 +60,7 @@ export default function AppFooter() {
             <a href="https://www.instagram.com/ssru_official?igsh=cjQ1dW5jM3E3cmM1&utm_source=qr" className="text-[#6A7282]">
               <img
                 src="/assets/images/Instagram.webp"
-                className="rounded-full size-[50px]"
+                className="rounded-full h-8 w-8 "
                 alt="" 
               />
             </a>
@@ -69,7 +69,7 @@ export default function AppFooter() {
             <a href="https://x.com/official_ssru?s=21&t=JiEIQMw3IlVQkEh6kGiHaA" className="text-[#6A7282]">
               <img
                 src="/assets/images/x.png"
-                className="rounded-full size-[50px]"
+                className="rounded-full h-8 w-8 "
                 alt="" 
               />
             </a>
@@ -78,7 +78,7 @@ export default function AppFooter() {
             <a href="https://lin.ee/1WNbkCe" className="text-[#6A7282]">
               <img
                 src="/assets/images/line.png"
-                className="rounded-full size-[50px]"
+                className="rounded-full h-8 w-8 "
                 alt="" 
               />
             </a>
@@ -87,7 +87,7 @@ export default function AppFooter() {
             <a href="https://www.tiktok.com/@ssru_official?_r=1&_t=ZS-927UzisFNKq" className="text-[#6A7282]">
               <img
                 src="/assets/images/tiktok.webp"
-                className="rounded-full size-[50px]"
+                className="rounded-full h-8 w-8 "
                 alt="" 
               />
             </a>
