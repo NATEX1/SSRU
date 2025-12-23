@@ -1,10 +1,43 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 export default function CommentForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("กำลังส่ง...");
+
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      if (res.ok) {
+        setStatus("ส่งข้อความเรียบร้อย!");
+        setName("");
+        setEmail("");
+        setMessage("");
+      } else {
+        const data = await res.json();
+        setStatus("เกิดข้อผิดพลาด: " + data.error);
+      }
+    } catch (err) {
+      setStatus("เกิดข้อผิดพลาดในการเชื่อมต่อ");
+    }
+  };
+
   return (
-    <form className="bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-xl">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-xl"
+    >
       <div className="flex items-center gap-2 mb-4">
         <div className="w-1.5 h-6 bg-[#F06FAA] rounded" />
         <h4 className="text-2xl font-bold">กล่องรับความคิดเห็น</h4>
@@ -16,31 +49,40 @@ export default function CommentForm() {
         </label>
         <input
           type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           className="border border-gray-200 w-full outline-none bg-white rounded-lg px-4 py-2 focus-within:border-[#F06FAA]"
         />
       </div>
 
       <div className="mb-4">
-        <label>อีเมลที่ติดต่อกลับ</label>
+        <label>อีเมล</label>
         <input
           type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="border border-gray-200 w-full outline-none bg-white rounded-lg px-4 py-2 focus-within:border-[#F06FAA]"
         />
       </div>
 
       <div className="mb-4">
         <label>
-          ความคิดเห็นของท่าน<span className="text-red-500">*</span>
+          ความคิดเห็น<span className="text-red-500">*</span>
         </label>
         <textarea
-          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           className="border border-gray-200 w-full outline-none bg-white rounded-lg px-4 py-2 focus-within:border-[#F06FAA]"
-        ></textarea>
+        />
       </div>
 
-      <div className="text-center">
-        <button className="btn bg-[#F06FAA] text-white rounded-lg">ส่งข้อความ</button>
+      <div className="text-center mb-2">
+        <button className="btn bg-[#F06FAA] text-white rounded-lg">
+          ส่งข้อความ
+        </button>
       </div>
+
+      {status && <p className="text-center text-sm">{status}</p>}
     </form>
   );
 }
