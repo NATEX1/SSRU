@@ -35,7 +35,7 @@ export default function AppFooter() {
                 className="h-4 w-4 shrink-0"
                 alt="call"
               />
-              <span className="whitespace-nowrap">02 160 1023</span>
+              <span className="whitespace-nowrap size-12">02 160 1023</span>
             </a>
 
             <a
@@ -47,7 +47,7 @@ export default function AppFooter() {
                 className="h-4 w-4 shrink-0"
                 alt="mail"
               />
-              <span className="whitespace-nowrap">pr@ssru.ac.th</span>
+              <span className="whitespace-nowrap size-12">pr@ssru.ac.th</span>
             </a>
           </li>
         </ul>
