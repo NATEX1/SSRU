@@ -8,7 +8,7 @@ export default function AppFooter() {
           <img
             src="assets/images/logo_new.png"
             className="h-[125px]"
-            alt="logo"
+            alt="logo" style="width:100%"
           />
           <div>
             <p className=" text-lg font-semibold text-[#101828]">
