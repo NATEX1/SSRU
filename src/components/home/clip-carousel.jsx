@@ -45,7 +45,7 @@ export default function ClipCarousel() {
         <h2 className="text-[#101828] text-4xl font-bold">Short Clips</h2>
 
         <a
-          href="https://www.youtube.com/@yourchannel/shorts"
+          href="https://www.youtube.com/@ssrutube/shorts"
           target="_blank"
           rel="noreferrer"
           className="hover:underline"
