@@ -38,7 +38,7 @@ const shortClips = [
 
 export default function ClipCarousel() {
   return (
-    <div className="flex-1 bg-[#F9FAFB] py-16 px-8 rounded-4xl w-full">
+    <div className="flex-1">
       <p className="text-[#F06FAA]">SSRU CHANNEL</p>
 
       <div className="flex justify-between items-end mb-4">
