@@ -6,7 +6,7 @@ export default function AppFooter() {
       <div className="container flex items-center justify-between">
         <div className="flex gap-8 items-center">
           <img
-            src="{{ asset('assets/images/logo.png') }}"
+            src="assets/images/logo.png"
             className="w-[125px] h-[125px]"
             alt="logo"
           />

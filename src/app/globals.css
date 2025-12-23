@@ -1,6 +1,6 @@
-
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @plugin "daisyui";
 @custom-variant dark (&:is(.dark *));
@@ -82,6 +82,7 @@ body {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: #F3F4F6;
   --sidebar-ring: oklch(0.708 0 0);
+
 }
 
 .dark {
@@ -122,6 +123,7 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
