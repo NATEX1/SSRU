@@ -6,7 +6,7 @@ export default function AppFooter() {
       <div className="container flex items-center justify-between">
         <div className="flex gap-8 items-center">
           <img
-            src="assets/images/logo.png"
+            src="assets/images/logo_new.png"
             className="w-[125px] h-[125px]"
             alt="logo"
           />
@@ -15,22 +15,24 @@ export default function AppFooter() {
               เว็บไซต์วารสารแก้วเจ้าจอมออนไลน์
             </p>
             <p className="text-[#6A7282]">
-              ฝ่ายประชาสัมพันธ์และโสตทัศนูปกรณ์ มหาวิทยาลัยราชภัฎ สวนสุนันทา{" "}
-              <br />
-              โทร 094 498 5317, 02 160 1000
+              คณะกรรมการกำหนดทิศทางยุทธศาสตร์ในการสื่อสารองค์กร {" "} <br />
+              มหาวิทยาลัยราชภัฏสวนสุนันทา <br />
+              ที่อยู่ เลขที่ 1 ถนนอู่ทองนอก เขตดุสิต กรุงเทพมหานคร 10300
             </p>
           </div>
         </div>
 
         <ul className="flex gap-8">
           <li>
-            <a href="" className="text-[#6A7282] hover:underline">
-              เกี่ยวกับเรา
-            </a>
+            <p className="text-[#6A7282]">
+              ติดต่อโฆษณา<br />
+              <a href="tel:021601023" className="hover:underline"><img src="/assets/images/call.png" className="h-4 w-4"/> 02 160 1023 </a><br />
+              <a href="mailto:pr@ssru.ac.th" className="hover:underline"><img src="/assets/images/mail.png" className="h-4 w-4"/> pr@ssru.ac.th </a><br />
+            </p>
           </li>
           <li>
             <a href="" className="text-[#6A7282] hover:underline">
-              ติดต่อโฆษณา
+              ช่องทางส่งบทความ
             </a>
           </li>
           <li>
@@ -42,16 +44,34 @@ export default function AppFooter() {
 
         <ul className="flex gap-8">
           <li>
-            <a href="" className="text-[#6A7282]">
+            <a href="https://www.youtube.com/@ssrutube/shorts" className="text-[#6A7282]">
               <img
-                src="/assets/images/line.png"
+                src="/assets/images/YouTube.webp"
                 className="rounded-full h-8 w-8"
                 alt=""
               />
             </a>
           </li>
           <li>
-            <a href="" className="text-[#6A7282]">
+            <a href="https://www.facebook.com/kaewchaochomonline" className="text-[#6A7282]">
+              <img
+                src="/assets/images/facebook.png"
+                className="rounded-full h-8 w-8"
+                alt=""
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://www.instagram.com/ssru_official?igsh=cjQ1dW5jM3E3cmM1&utm_source=qr" className="text-[#6A7282]">
+              <img
+                src="/assets/images/Instagram.webp"
+                className="rounded-full h-8 w-8"
+                alt=""
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://x.com/official_ssru?s=21&t=JiEIQMw3IlVQkEh6kGiHaA" className="text-[#6A7282]">
               <img
                 src="/assets/images/x.png"
                 className="rounded-full h-8 w-8"
@@ -60,14 +80,24 @@ export default function AppFooter() {
             </a>
           </li>
           <li>
-            <a href="" className="text-[#6A7282]">
+            <a href="https://lin.ee/1WNbkCe" className="text-[#6A7282]">
               <img
-                src="/assets/images/facebook.png"
+                src="/assets/images/line.png"
                 className="rounded-full h-8 w-8"
                 alt=""
               />
             </a>
           </li>
+          <li>
+            <a href="https://www.tiktok.com/@ssru_official?_r=1&_t=ZS-927UzisFNKq" className="text-[#6A7282]">
+              <img
+                src="/assets/images/tiktok.png"
+                className="rounded-full h-8 w-8"
+                alt=""
+              />
+            </a>
+          </li>
+          
         </ul>
       </div>
     </footer>
