@@ -8,7 +8,7 @@ export default function AppFooter() {
           <img
             src="assets/images/logo_new.png"
             className="h-[125px]"
-            alt="logo" style="width:100%"
+            alt="logo" 
           />
           <div>
             <p className=" text-lg font-semibold text-[#101828]">
@@ -42,8 +42,8 @@ export default function AppFooter() {
             <a href="https://www.youtube.com/@ssrutube/shorts" className="text-[#6A7282]">
               <img
                 src="/assets/images/YouTube.webp"
-                className="rounded-full h-8 w-8"
-                alt="" style="width:80px;hight:80px;"
+                className="rounded-full size-[80px]"
+                alt="" 
               />
             </a>
           </li>
@@ -51,8 +51,8 @@ export default function AppFooter() {
             <a href="https://www.facebook.com/kaewchaochomonline" className="text-[#6A7282]">
               <img
                 src="/assets/images/facebook.png"
-                className="rounded-full h-8 w-8"
-                alt="" style="width:80px;hight:80px;"
+                className="rounded-full h-8 w-8 "
+                alt="" 
               />
             </a>
           </li>
@@ -60,8 +60,8 @@ export default function AppFooter() {
             <a href="https://www.instagram.com/ssru_official?igsh=cjQ1dW5jM3E3cmM1&utm_source=qr" className="text-[#6A7282]">
               <img
                 src="/assets/images/Instagram.webp"
-                className="rounded-full h-8 w-8"
-                alt="" style="width:80px;hight:80px;"
+                className="rounded-full h-8 w-8 "
+                alt="" 
               />
             </a>
           </li>
@@ -69,8 +69,8 @@ export default function AppFooter() {
             <a href="https://x.com/official_ssru?s=21&t=JiEIQMw3IlVQkEh6kGiHaA" className="text-[#6A7282]">
               <img
                 src="/assets/images/x.png"
-                className="rounded-full h-8 w-8"
-                alt="" style="width:80px;hight:80px;"
+                className="rounded-full h-8 w-8 "
+                alt="" 
               />
             </a>
           </li>
@@ -78,8 +78,8 @@ export default function AppFooter() {
             <a href="https://lin.ee/1WNbkCe" className="text-[#6A7282]">
               <img
                 src="/assets/images/line.png"
-                className="rounded-full h-8 w-8"
-                alt="" style="width:80px;hight:80px;"
+                className="rounded-full h-8 w-8 "
+                alt="" 
               />
             </a>
           </li>
@@ -87,8 +87,8 @@ export default function AppFooter() {
             <a href="https://www.tiktok.com/@ssru_official?_r=1&_t=ZS-927UzisFNKq" className="text-[#6A7282]">
               <img
                 src="/assets/images/tiktok.webp"
-                className="rounded-full h-8 w-8"
-                alt="" style="width:80px;hight:80px;"
+                className="rounded-full h-8 w-8 "
+                alt="" 
               />
             </a>
           </li>

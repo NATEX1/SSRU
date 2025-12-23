@@ -9,9 +9,7 @@ export default function layout({ children }) {
       <AppHeader />
       <main>
         <AppSidebar />
-        <div className="container mx-auto mt-20">
-            {children}
-        </div>
+        <div className="container mx-auto mt-20">{children}</div>
       </main>
 
       <AppFooter />

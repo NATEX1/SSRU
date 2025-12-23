@@ -14,8 +14,12 @@ export default function AppHeader() {
           />
         </div>
 
-        <div className=" absolute left-1/2 top-1/2 -translate-1/2">
-          <img src="/assets/images/logo_new.png" alt="logo" className="size-20" style="width:100%"/>
+        <div className="absolute left-1/2 top-1/2 -translate-1/2">
+          <img
+            src="/assets/images/logo_new.png"
+            alt="logo"
+            className="size-20 w-full"
+          />
         </div>
 
         <div className="border border-[#E5E7EB] rounded-full ml-auto z-10 flex p-0.5">
