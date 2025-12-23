@@ -32,10 +32,9 @@ export default function AppFooter() {
             >
               <img
                 src="/assets/images/call.png"
-                className="h-4 w-4 shrink-0"
+                className="h-3 w-3 shrink-0"
                 alt="call"
-              />
-              <span className="whitespace-nowrap size-12">02 160 1023</span>
+              /> 02 160 1023
             </a>
 
             <a
@@ -46,8 +45,7 @@ export default function AppFooter() {
                 src="/assets/images/mail.png"
                 className="h-4 w-4 shrink-0"
                 alt="mail"
-              />
-              <span className="whitespace-nowrap size-12">pr@ssru.ac.th</span>
+              /> pr@ssru.ac.th
             </a>
           </li>
         </ul>
