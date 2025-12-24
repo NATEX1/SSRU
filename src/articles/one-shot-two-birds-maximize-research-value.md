@@ -1,11 +1,11 @@
 ---
-slug: "executive-summary-research-publication-innovation-strategy"
+slug: "one-shot-two-birds-maximize-research-value"
 category: "3"
 title: "ยิงปืนนัดเดียว ได้นก 2 ตัวงานหนึ่งชิ้น ไม่ควรถูกใช้แค่ครั้งเดียวแต่ควรสร้างคุณค่าให้ได้มากที่สุด"
-thumbnail: "content/banner3.1.jpg"
+thumbnail: "contents/banner3.1.jpg"
 excerpt: "เอกสารฉบับนี้เป็นการสังเคราะห์แก่นความคิด กลยุทธ์ และผลลัพธ์จากการทำงานวิจัยของ ผู้ช่วยศาสตราจารย์ ดร.วนิดา วอนสวัสดิ์ สาขาวิชาเคมี คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยราชภัฏสวนสุนันทา โดยได้สะท้อนให้เห็นประเด็นสำคัญที่สามารถนำไปประยุกต์ใช้ในการกำหนดเชิงนโยบาย ควบคู่กับการส่งเสริมและพัฒนาวัฒนธรรมการวิจัยของมหาวิทยาลัยในระยะยาว ดังต่อไปนี้ โดยมีประเด็นสำคัญที่สามารถนำไปประยุกต์ใช้ในเชิงนโยบาย ตลอดจนการส่งเสริมและพัฒนาวัฒนธรรมการวิจัยของมหาวิทยาลัย ดังต่อไปนี้"
 author: "ผู้ช่วยศาสตราจารย์ ดร.วนิดา วอนสวัสดิ์"
-authorImage: "content/profile3.3.jpg"
+authorImage: "contents/one-shot-two-birds-maximize-research-value-three.jpg"
 authotPosition: ""
 date: "2023-11-28"
 readCount: 1250
@@ -18,7 +18,7 @@ keywords: ["การศึกษา", "นวัตกรรม", "เทคโ
 แต่ควรสร้างคุณค่าให้ได้มากที่สุด”***
 
 <div style="text-align: center; margin: 24px 0;">
-  <img src="content/content3.1.png"
+  <img src="contents/one-shot-two-birds-maximize-research-value-one.png"
        alt=""
        style="width: 420px; max-width: 100%; height: auto;">
 </div>
@@ -33,7 +33,7 @@ keywords: ["การศึกษา", "นวัตกรรม", "เทคโ
 เมื่อเวลาผ่านไป งานวิจัยไม่ได้เป็นเพียงพื้นที่แห่งการทดลอง แต่กลายเป็นรากฐานสำคัญของความก้าวหน้าในวิชาชีพ เส้นทางจากผู้ช่วยศาสตราจารย์สู่รองศาสตราจารย์จึงไม่ใช่เรื่องของโชค หากเป็นผลจากการวางแผน การเลือกเป้าหมาย และการทำงานอย่างเป็นระบบ
 </p>
 <div style="text-align: center; margin: 24px 0;">
-  <img src="content/contant3.2.jpg"
+  <img src="contents/one-shot-two-birds-maximize-research-value-two.jpg"
        alt=""
        style="width: 420px; max-width: 100%; height: auto;">
 </div>
