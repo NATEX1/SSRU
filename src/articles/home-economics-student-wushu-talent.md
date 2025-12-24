@@ -1,6 +1,6 @@
 ---
 slug: "home-economics-student-wushu-talent"
-category: "7"
+category: "hall-of-fame"
 title: "สาวคหกรรมศาสตร์ที่มีพรสวรรค์กีฬาวูซู"
 thumbnail: "/contents/pro-contents7.JPG"
 excerpt: "นักศึกษาสาวจากคณะวิทยาศาสตร์และเทคโนโลยีมาจากแม่แจ่ม จังหวัดเชียงใหม่ เรียนด้านคหกรรมศาสตร์ แต่ความสามารถของเธอโดดเด่นยิ่งในด้านกีฬา"
