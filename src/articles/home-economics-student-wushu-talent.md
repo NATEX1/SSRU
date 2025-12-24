@@ -2,7 +2,7 @@
 slug: "home-economics-student-wushu-talent"
 category: "hall-of-fame"
 title: "สาวคหกรรมศาสตร์ที่มีพรสวรรค์กีฬาวูซู"
-thumbnail: "/contents/banner-7.png"
+thumbnail: "/contents/banner-7.jpg"
 excerpt: "นักศึกษาสาวจากคณะวิทยาศาสตร์และเทคโนโลยีมาจากแม่แจ่ม จังหวัดเชียงใหม่ เรียนด้านคหกรรมศาสตร์ แต่ความสามารถของเธอโดดเด่นยิ่งในด้านกีฬา"
 author: "น.ส.เนาวรัตน์ แซ่ย่าง (ไป๋)"
 authorImage: "contents7.JPG"
