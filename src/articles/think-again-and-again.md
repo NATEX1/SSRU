@@ -1,6 +1,6 @@
 ---
 slug: "think-again-and-again"
-category: "executive-thoughts"
+category: "thoughts-today"
 title: "คิดแล้ว คิดอีก"
 thumbnail: "/contents/banner-5.jpg"
 excerpt: "ผมเป็นคนที่ได้ชื่อว่าทําข้อสอบแบบเลือกคําตอบ ประเภท ก. ข. ค. ง. หรือที่เราเรียกกันว่าข้อสอบปรนัยได้รวดเร็วมาก ในเวลา 2 ชั่วโมงที่กําหนดไว้ ผมไม่เคยใช้เวลาเกิน 45 นาทีเลยสักครั้ง"
