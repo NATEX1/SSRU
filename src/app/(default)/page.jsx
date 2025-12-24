@@ -189,7 +189,6 @@ export default function Home() {
             
           </div>
         </div>
-
         <div className="sticky top-20 pt-2 w-[362px] max-[1024px]:hidden space-y-8">
           <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-xl">
             <div className="flex items-center gap-2 mb-4">
@@ -257,7 +256,17 @@ export default function Home() {
           <CommentForm />
         </div>
       </div>
-      <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-6 rounded-2xl shadow mb-8"></div>
+      <br /><br />
+      <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-6 rounded-2xl shadow mb-8">
+        <div className="overflow-hidden">
+          <div className="grid md:grid-cols-2">
+            <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
+              <h4 className="text-2xl font-bold">
+                สารจากกองบรรณาธิการ
+              </h4>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
