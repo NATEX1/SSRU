@@ -5,6 +5,83 @@ import MagazineCarousel from "@/components/home/magazine-carousel";
 import { getOnePostEachOtherCategory, getCategoryName } from "@/lib/markdown";
 import { ArrowRight, Calendar, Eye, Share2 } from "lucide-react";
 
+const magazines = [
+  {
+    image: "/assets/images/ssru-around.jpg",
+    issue: "Issue 12",
+    year: "2025",
+    title: "ฉบับเดือนพฤศจิกายน 2568",
+    type: "Digital Version Available",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    issue: "Issue 12",
+    year: "2025",
+    title: "ฉบับเดือนพฤศจิกายน 2568",
+    type: "Digital Version Available",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    issue: "Issue 12",
+    year: "2025",
+    title: "ฉบับเดือนพฤศจิกายน 2568",
+    type: "Digital Version Available",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    issue: "Issue 12",
+    year: "2025",
+    title: "ฉบับเดือนพฤศจิกายน 2568",
+    type: "Digital Version Available",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    issue: "Issue 12",
+    year: "2025",
+    title: "ฉบับเดือนพฤศจิกายน 2568",
+    type: "Digital Version Available",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    issue: "Issue 12",
+    year: "2025",
+    title: "ฉบับเดือนพฤศจิกายน 2568",
+    type: "Digital Version Available",
+  },
+];
+
+const clips = [
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+];
 
 export default function Home() {
   const catPost = getOnePostEachOtherCategory();
@@ -15,16 +92,6 @@ export default function Home() {
 
       <div className="flex items-start gap-4">
         <div className="flex-1">
-          <div className="flex gap-8 flex-1 mb-8">
-            <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-16 px-8 rounded-4xl w-full">
-              <MagazineCarousel data={magazines} />
-            </div>
-
-            <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-16 px-8 rounded-4xl w-full">
-              <ClipCarousel data={clips} />
-            </div>
-          </div>
-
           <div>
             <div className="grid grid-cols-4 gap-4">
               {catPost.map((post, i) => {
@@ -134,6 +201,15 @@ export default function Home() {
               })}
             </div>
           </div>
+          <div className="flex gap-8 flex-1 mb-8">
+            <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-16 px-8 rounded-4xl w-full">
+              <MagazineCarousel data={magazines} />
+            </div>
+
+            <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-16 px-8 rounded-4xl w-full">
+              <ClipCarousel data={clips} />
+            </div>
+          </div>
         </div>
 
         <div className="sticky top-20 pt-2 w-[362px] max-[1024px]:hidden space-y-8">
@@ -169,7 +245,7 @@ export default function Home() {
               <ul className="space-y-4">
                 <li>
                   <div>
-                    <h6>ความล้มเหลวคือบทเรียน</h6>
+                    <h6>วิทยาลัยการเมืองและการปกครองวิทยาลัยยอดนิยมอันดับ 1 สวนสุนันทาใต้ร่มเงา “สัณฐาน ชยนนท์”</h6>
                     <div className="flex gap-2 items-center text-[#99A1AF]">
                       <div className="flex items-center text-xs">
                         <Eye className="h-3"/> 1,250
@@ -182,7 +258,7 @@ export default function Home() {
                 </li>
                 <li>
                   <div>
-                    <h6>ความสุขสร้างได้เอง</h6>
+                    <h6>ผู้นำการสร้างมืออาชีพ: วิสัยทัศน์ที่สะท้อนหัวใจของการพัฒนาคน</h6>
                     <div className="flex gap-2 items-center text-[#99A1AF]">
                       <div className="flex items-center text-xs">
                         <Eye className="h-3"/> 1,250
@@ -206,81 +282,3 @@ export default function Home() {
     </div>
   );
 }
-
-const magazines = [
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-];
-
-const clips = [
-  {
-    image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-];
