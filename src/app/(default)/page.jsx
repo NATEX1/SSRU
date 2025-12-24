@@ -80,11 +80,16 @@ export default function Home() {
                         </div>
 
                         <div className="relative overflow-hidden rounded-2xl ">
-                          <img
-                            src={post.thumbnail}
-                            alt=""
-                            className="opacity-80"
-                          />
+                          <a
+                            href={`/${post.slug}`}
+                            className="col-span-2 block"
+                          >
+                            <img
+                              src={post.thumbnail}
+                              alt=""
+                              className="opacity-80"
+                            />
+                          </a>
 
                           <div className=" absolute bottom-0 left-0 right-0 p-4 z-20">
                             <h6 className="text-white">{post.title}</h6>
@@ -136,11 +141,16 @@ export default function Home() {
 
                     <div className="card shadow-sm">
                       <figure>
-                        <img
-                          src={post.thumbnail}
-                          alt=""
-                          className="h-40 w-full object-cover"
-                        />
+                        <a
+                          href={`/${post.slug}`}
+                          className="col-span-2 block"
+                        >
+                            <img
+                              src={post.thumbnail}
+                              alt=""
+                              className="h-40 w-full object-cover"
+                            />
+                        </a>
                       </figure>
                       <div className="card-body p-1">
                         <h2 className="card-title line-clamp-1">
