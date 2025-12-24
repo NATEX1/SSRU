@@ -79,7 +79,7 @@ export default function ClipCarousel() {
                 <img
                   src={`https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`}
                   alt={item.title}
-                  className="h-[153px] w-full object-cover"
+                  className="h-[100px] w-full object-cover"
                 />
 
                 <div className="p-4 flex flex-col gap-2">
