@@ -269,7 +269,7 @@ export default function Home() {
       <br /><br />
       <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-6 rounded-2xl shadow mb-8">
         <div className="overflow-hidden">
-          <div className="grid md:grid-cols-2">
+          <div className="grid md:grid-cols-2 text-left">
             <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
               <h4 className="text-2xl font-bold">
                 สารจากกองบรรณาธิการ
