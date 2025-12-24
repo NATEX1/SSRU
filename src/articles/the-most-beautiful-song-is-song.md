@@ -2,7 +2,7 @@
 slug: "the-most-beautiful-song-is-song"
 category: "documentary-knowledge"
 title: "เพลงที่เพราะที่สุดคือเพลง"
-thumbnail: "contents/the-most-beautiful-song-is-song.jpg"
+thumbnail: "/contents/the-most-beautiful-song-is-song.jpg"
 excerpt: "หากมีคนถามเราว่า เพลงที่เพราะ ไพเราะ หรือเพลงที่เราชอบมากที่สุดคือเพลงอะไร? คงเป็นคำถามที่ตอบได้ยากมากคำถามหนึ่งในชีวิตเลยทีเดียว"
 author: "ผู้ช่วยศาสตราจารย์ วิโรจน์ ศรีหิรัญ"
 authorImage: ""
