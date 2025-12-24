@@ -173,7 +173,7 @@ export default function ArticleSlider() {
                 </p>
 
                 <a
-                  href={`/${articles.slug}`}
+                  href={`/${current.slug}`}
                   className="col-span-2 block"
                 >
                   <h2 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">

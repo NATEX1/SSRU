@@ -140,18 +140,19 @@ export default function Home() {
                     </div>
 
                     <div className="card shadow-sm">
-                      <figure>
-                        <a
-                          href={`/${post.slug}`}
-                          className="col-span-2 block"
-                        >
-                            <img
-                              src={post.thumbnail}
-                              alt=""
-                              className="h-40 w-full object-cover"
-                            />
-                        </a>
-                      </figure>
+                      <a
+                        href={`/${post.slug}`}
+                        className="col-span-2 block"
+                      >
+                        <figure>
+                      
+                          <img
+                            src={post.thumbnail}
+                            alt={post.slug}
+                            className="h-40 w-full object-cover"
+                          />
+                      </figure> 
+                      </a>
                       <div className="card-body p-1">
                         <h2 className="card-title line-clamp-1">
                           {post.title}
