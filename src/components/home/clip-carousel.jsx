@@ -17,10 +17,10 @@ const shortClips = [
     url: "https://youtube.com/shorts/jUbjexT277U?si=F7FL0Wage-eN0RGV",
   },
   {
-    id: "AuLCDUoX0YY",
-    title: "30 กันยายน 2568 #ssru #สวนสุนันทา #ลูกพระนาง",
-    views: "150",
-    url: "https://youtube.com/shorts/AuLCDUoX0YY?si=8kRF_5SWLoD1A5yt",
+    id: "qqBm0GBcTgs",
+    title: "“ เป็นผู้นำต้องมีความพราว สง่างาม” รศ.พล.ต.ท.ดร.สัณฐาน ชยนนท์ #ssru",
+    views: "405",
+    url: "https://youtube.com/shorts/qqBm0GBcTgs?si=Mf5tpNuescDAAYUE",
   },
   {
     id: "mqeRpF0eHJo",

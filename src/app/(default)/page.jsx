@@ -283,6 +283,7 @@ export default function Home() {
           <CommentForm />
         </div>
       </div>
+      <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-6 rounded-2xl shadow mb-8"></div>
     </div>
   );
 }
