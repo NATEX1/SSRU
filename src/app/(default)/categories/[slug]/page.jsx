@@ -34,6 +34,9 @@ export default async function CategoryPage({ params }) {
 
   const category = categories.find((cat) => cat.slug === slug);
 
+  console.log(posts);
+  
+
   // ถ้าไม่พบหมวดหมู่
   if (!category) {
     return (
@@ -91,18 +94,18 @@ export default async function CategoryPage({ params }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto px-4 mt-8">
             {posts.map((post, i) => (
               <div className="card shadow-sm group" key={i}>
-                <figure>
+                <figure className="h-40">
                   <a href={`/${post.slug}`}>
                     <img
                       src={post.thumbnail}
                       alt={post.title}
-                      className="group-hover:scale-105 transition duration-150"
+                      className="group-hover:scale-105 transition duration-150 h-full w-full object-cover"
                     />
                   </a>
                 </figure>
                 <div className="card-body">
                   <p className="text-xs text-[#99A1AF] flex gap-1">
-                    <span className="text-[#F06FAA]">ดร. สมชาย ใจดี</span>
+                    <span className="text-[#F06FAA]">{post.author}</span>
                     <span>|</span>
                     <span>{post.date}</span>
                   </p>

@@ -139,7 +139,7 @@ export default function ArticleSlider() {
         <div className="grid md:grid-cols-2">
           <div className="relative aspect-video bg-gray-100 overflow-hidden rounded-lg">
             <a
-              href={`/${articles.slug}`}
+              href={`/${current.slug}`}
               className="col-span-2 block"
             >
               <AnimatePresence custom={direction} mode="popLayout" initial={false}>
