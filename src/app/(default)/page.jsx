@@ -7,46 +7,20 @@ import { ArrowRight, Calendar, Eye, Share2 } from "lucide-react";
 
 const magazines = [
   {
-    image: "/assets/images/ssru-around.jpg",
+    image: "/contents/magazin1.jpg",
     issue: "Issue 12",
     year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
+    title: "รอบรั้วแก้วเจ้าจอมฉบับที่ 1",
     type: "Digital Version Available",
+    link: "https://online.fliphtml5.com/eakkq/ftzw/",
   },
   {
-    image: "/assets/images/ssru-around.jpg",
+    image: "/contents/magazin2.jpg",
     issue: "Issue 12",
     year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
+    title: "รอบรั้วแก้วเจ้าจอมฉบับที่ 2",
     type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
+    link: "https://online.fliphtml5.com/eakkq/lodv/",
   },
 ];
 

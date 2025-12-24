@@ -36,7 +36,7 @@ export default function MagazineCarousel({ data }) {
             {data?.map((item, index) => (
               <SwiperSlide key={index} className="px-2">
                 <a
-                  href="https://blog-gray-zeta.vercel.app/"
+                  href={item.link}
                   target="_blank"
                   rel="noreferrer"
                   className="block"
