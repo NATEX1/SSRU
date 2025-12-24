@@ -13,6 +13,7 @@ const articles = [
     image: "/contents/banner-1.jpg",
     author: "รศ.ดร.ชุติกาญจน์ ศรีวิบูลย์",
     dateText: "28 พ.ย. 2025",
+    slug: "vision-for-human-development",
   },
   {
     id: 2,
@@ -23,6 +24,7 @@ const articles = [
     image: "/contents/banner-2.jpg",
     author: "ผศ. พล.ต.ท.ดร. สัณฐาน ชยนนท์",
     dateText: "12 ม.ค. 2025",
+    slug: "top-college-suan-sunandha",
   },
   {
     id: 3,
@@ -33,6 +35,7 @@ const articles = [
     image: "/contents/banner-3.jpg",
     author: "ผศ. ดร.วนิดา วอนสวัสดิ์",
     dateText: "03 มี.ค. 2025",
+    slug: "one-shot-two-birds-maximize-research-value",
   },
   {
     id: 4,
@@ -43,6 +46,7 @@ const articles = [
     image: "/contents/banner-4.jpg",
     author: "ผศ. วีระ โชติธรรมาภรณ์",
     dateText: "18 เม.ย. 2025",
+    slug: "history-of-suan-sunandha-origin",
   },
   {
     id: 5,
@@ -53,6 +57,7 @@ const articles = [
     image: "/contents/banner-5.jpg",
     author: "รศ.ฤๅเดช เกิดวิชัย",
     dateText: "09 พ.ค. 2025",
+    slug: "think-again-and-again",
   },
   {
     id: 6,
@@ -63,6 +68,7 @@ const articles = [
     image: "/contents/banner-6.jpg",
     author: "ผศ.วิโรจน์ ศรีหิรัญ",
     dateText: "09 มิ.ย. 2025",
+    slug: "natural-therapy-replace-medicine",
   },
   {
     id: 7,
@@ -73,6 +79,7 @@ const articles = [
     image: "/contents/banner-7.jpg",
     author: "เนาวรัตน์ แซ่ย่าง",
     dateText: "21 ก.ค. 2025",
+    slug: "home-economics-student-wushu-talent",
   },
 ];
 
@@ -160,11 +167,14 @@ export default function ArticleSlider() {
                   <span>|</span> <span>{current.dateText}</span>
                 </p>
 
-                
+                <a
+                  href={`/${articles.slug}`}
+                  className="col-span-2 block"
+                >
                   <h2 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">
                     {current.title}
                   </h2>
-                
+                </a>
 
                 <p className="text-gray-600 leading-relaxed line-clamp-3">
                   {current.excerpt}
