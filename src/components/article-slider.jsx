@@ -138,19 +138,24 @@ export default function ArticleSlider() {
       <div className="overflow-hidden">
         <div className="grid md:grid-cols-2">
           <div className="relative aspect-video bg-gray-100 overflow-hidden rounded-lg">
-            <AnimatePresence custom={direction} mode="popLayout" initial={false}>
-              <motion.img
-                key={current.id}
-                src={current.image}
-                alt={current.title}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </AnimatePresence>
+            <a
+              href={`/${articles.slug}`}
+              className="col-span-2 block"
+            >
+              <AnimatePresence custom={direction} mode="popLayout" initial={false}>
+                <motion.img
+                  key={current.id}
+                  src={current.image}
+                  alt={current.title}
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </AnimatePresence>
+            </a>
           </div>
 
           <div className="p-8 flex flex-col justify-between">
