@@ -147,7 +147,7 @@ export default function Home() {
                         >
                             <img
                               src={post.thumbnail}
-                              alt=""
+                              alt={post.slug}
                               className="h-40 w-full object-cover"
                             />
                         </a>
