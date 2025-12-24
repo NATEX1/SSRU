@@ -2,7 +2,7 @@
 slug: "natural-therapy-replace-medicine"
 category: "6"
 title: "ธรรมชาติบำบัดจะนำไปสู่การรักษาโรคแทนยา"
-thumbnail: "content/BG-natural-therapy-replace-medicine.jpg"
+thumbnail: "contents/BG-natural-therapy-replace-medicine.jpg"
 excerpt: "การอาบป่า Forest Bathing หรือ Shinrin-yoku คือ การใช้เวลาอยู่ในป่าอย่างมีสติและใกล้ชิดธรรมชาติ ภายใต้ร่มไม้สูง ผู้ปฏิบัติจะได้สัมผัสสิ่งแวดล้อมรอบตัวอย่างเต็มที่ เช่น สูดอากาศบริสุทธิ์ สัมผัสดินและพืชพรรณ จุ่มร่างกายในลำธาร หรือพักผ่อนอย่างสงบ ทั้งการนั่งและการนอน มันช่วยสร้างความสมดุลระหว่างมนุษย์กับธรรมชาติอย่างลึกซึ้ง  การอาบป่าถูกบันทึกว่าเป็นแนวปฏิบัติที่เริ่มต้นในประเทศญี่ปุ่นในช่วงทศวรรษ 1980 โดยมีวัตถุประสงค์เพื่อเชื่อมโยงมนุษย์กับธรรมชาติ ผ่านการใช้เวลาที่มีคุณภาพในป่าและพื้นที่สีเขียว"
 author: "ผู้ช่วยศาสตราจารย์กัญภัส อู่ตะเภา"
 authorImage: ""
@@ -18,7 +18,7 @@ keywords: ["การศึกษา", "นวัตกรรม", "เทคโ
 ผู้ช่วยศาสตราจารย์กัญภัส อู่ตะเภา
 
 <div style="text-align: center; margin: 24px 0;">
-  <img src="content/one-natural-therapy-replace-medicine.jpg"
+  <img src="contents/one-natural-therapy-replace-medicine.jpg"
        alt=""
        style=" max-width: 100%; height: auto;">
 </div>
@@ -30,7 +30,7 @@ keywords: ["การศึกษา", "นวัตกรรม", "เทคโ
 <p style="text-indent: 3em;">ขณะที่โลกตะวันตกกำลังทดลองอย่างเข้มข้น โลกตะวันออกกลับเดินหน้ามานานแล้ว แนวคิด Shinrin-yoku หรือ “การอาบป่า” จากญี่ปุ่น เป็นสิ่งที่ได้รับการพิสูจน์ในเชิงวิทยาศาสตร์อย่างจริงจัง โดย ศาสตราจารย์ชิง ลี Dr. Qing Li แห่งมหาวิทยาลัย Nippon Medical School กรุงโตเกียว ผู้บุกเบิกงานวิจัยด้านนี้ งานวิจัย ของลีศึกษาผู้เข้าร่วมโปรแกรมก่อนและหลังการอาบป่าอย่างละเอียด มีการตรวจวัดความดันโลหิต ชีพจร ตรวจเลือดหาฮอร์โมนความเครียด คอร์ติซอล (Cortisol) ระดับภูมิต้านทานประเภท NK Cells รวมทั้งประเมินด้านจิตวิทยา เช่น ความเครียดและอาการซึมเศร้า ผลลัพธ์พบว่าความเครียดลดลง  อารมณ์ดีขึ้น เซลล์ภูมิต้านทานเพิ่มขึ้นความดันและอัตราการเต้นหัวใจลดลง  กล่าวได้ว่าเพียงแค่การเดินเข้าไปในป่า สูดอากาศบริสุทธิ์ และปล่อยให้ธรรมชาติทำงานของมัน ก็ช่วยปรับสมดุลทั้งร่างกายและจิตใจได้อย่างชัดเจน</p>
 
 <div style="text-align: center; margin: 24px 0;">
-  <img src="content/two-natural-therapy-replace-medicine.png"
+  <img src="contents/two-natural-therapy-replace-medicine.png"
        alt="รูป"
        style=" max-width: 100%; height: auto;">
 </div>
@@ -43,7 +43,7 @@ keywords: ["การศึกษา", "นวัตกรรม", "เทคโ
 <p style="text-indent: 3em;">ในเวลานี้มีหลายหน่วยงาน ทั้งราชการและเจ้าของหมู่บ้านโฮมเสตย์ใกล้ป่าใหญ่หลายแห่งจัดกระบวนการ ชวนกันอาบป่า </p>
 
 <div style="text-align: center; margin: 24px 0;">
-  <img src="content/three-natural-therapy-replace-medicine.png"
+  <img src="contents/three-natural-therapy-replace-medicine.png"
        alt="รูป"
        style=" max-width: 100%; height: auto;">
 </div>
