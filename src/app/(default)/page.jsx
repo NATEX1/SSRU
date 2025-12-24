@@ -268,7 +268,7 @@ export default function Home() {
         </div>
       </div>
       <br /><br />
-      <div className="bg-white border border-[#F3F4F6] rounded-2xl shadow mb-8">
+      <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-6 rounded-2xl shadow mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2">
           <div className="p-6 md:p-8">
             <div className="flex items-start gap-3 mb-4">
@@ -283,7 +283,7 @@ export default function Home() {
                 <img
                   src="/contents/editorial.jpg"   
                   alt="สารจากกองบรรณาธิการ"
-                  className="w-full sm:h-28 object-cover"
+                  className="w-full object-cover"
                 />
               </div>
 
