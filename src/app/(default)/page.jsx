@@ -283,7 +283,7 @@ export default function Home() {
                 <img
                   src="/contents/editorial.jpg"   
                   alt="สารจากกองบรรณาธิการ"
-                  className="w-full h-32 sm:h-28 object-cover"
+                  className="w-full sm:h-28 object-cover"
                 />
               </div>
 
