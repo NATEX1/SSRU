@@ -85,10 +85,9 @@ export default async function Page({ params }) {
       <div className="flex gap-4 bg-[#F9FAFB] rounded-2xl border border-[#F3F4F6] p-6 my-8">
         <div className="border-2 border-white shadow size-[60px] rounded-full overflow-hidden">
           <img
-            src={article.authorImage}
+            src={article.authorImage || "/assets/images/user.png"}
             className="w-full h-full object-cover"
             alt={article.author}
-            
           />
         </div>
         <div>
