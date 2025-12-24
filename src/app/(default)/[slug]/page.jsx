@@ -85,7 +85,7 @@ export default async function Page({ params }) {
       <div className="flex gap-4 bg-[#F9FAFB] rounded-2xl border border-[#F3F4F6] p-6 my-8">
         <div className="border-2 border-white shadow size-[60px] rounded-full overflow-hidden">
           <img
-            src="/contents/author.jpg"
+            src={`/contents/${article.authorImage}`}
             className="w-full h-full object-cover"
             alt={article.author}
           />
@@ -94,7 +94,7 @@ export default async function Page({ params }) {
           <p className="text-xs text-[#6A7282]">ผู้เขียนบทความ</p>
           <p className="text-[#3F458D] text-lg font-bold">{article.author}</p>
           <p className="text-[#4A5565] text-sm">
-            คณบดีวิทยาลัยการเมืองและการปกครอง มหาวิทยาลัยราชภัฏสวนสุนันทา
+            {article.authotPosition}
           </p>
         </div>
       </div>
