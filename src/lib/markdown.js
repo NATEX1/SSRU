@@ -99,7 +99,7 @@ export function getAllCategories() {
 // ฟังก์ชันช่วยสำหรับแปลง category slug เป็นชื่อไทย
 export function getCategoryName(slug) {
   const categoryMap = {
-    "executive-thoughts": "เปิดมุมคิดผู้บริหาร",
+    "executive-thoughts": "มองไกลกับผู้บริหาร",
     "career-path-conversations": "สนทนาบนเส้นทางงาน",
     "featured-research": "งานวิจัยแนะนำ",
     "hall-of-fame": "Hall of fame",

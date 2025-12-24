@@ -238,7 +238,7 @@ export default function Home() {
               ))}
             </ul>
           </div>
-
+          <div> <br /></div>
           <div>
             <h4 className="text-2xl font-bold text-[#F06FAA] mb-4">อ่านข่าวย้อนหลัง</h4>
             <hr className="mb-4" />
@@ -258,7 +258,7 @@ export default function Home() {
                 </li>
                 <li>
                   <div>
-                    <h6>เพลงที่เพราะที่สุดคือเพลง</h6>
+                    <h6>เพลงที่เพราะที่สุดคือเพลง?</h6>
                     <div className="flex gap-2 items-center text-[#99A1AF]">
                       <div className="flex items-center text-xs">
                         <Eye className="h-3"/> 1,250
