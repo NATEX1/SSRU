@@ -268,16 +268,51 @@ export default function Home() {
         </div>
       </div>
       <br /><br />
-      <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-6 rounded-2xl shadow mb-8">
-        <div className="overflow-hidden">
-          <div className="grid md:grid-cols-2 text-left">
-            {/* <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div> */}
-              <h4 className="text-2xl font-bold">
+      <div className="bg-white border border-[#F3F4F6] rounded-2xl shadow mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="p-6 md:p-8">
+            <div className="flex items-start gap-3 mb-4">
+              <div className="w-2 h-7 rounded-full bg-[#F06FAA]" />
+              <h4 className="text-xl md:text-2xl font-bold text-[#101828] leading-tight">
                 สารจากกองบรรณาธิการ
               </h4>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-[180px_1fr] gap-4 items-start">
+              <div className="overflow-hidden rounded-xl">
+                <img
+                  src="/contents/editorial.jpg"   
+                  alt="สารจากกองบรรณาธิการ"
+                  className="w-full h-32 sm:h-28 object-cover"
+                />
+              </div>
+
+              <p className="text-[#475467] leading-relaxed text-sm md:text-base">
+                เว็บไซต์ข่าวนี้เป็นเว็บไซต์หนึ่งของสำนักข่าวสวนสุนันทา
+                เรารายงานข่าวและเรื่องราวน่าสนใจด้วยความตั้งใจ
+                นำเสนอข้อมูลที่ถูกต้อง ทันสมัย และสะท้อนถึงมุมมองในสังคม
+                อย่างสร้างสรรค์ เพื่อเป็นสื่อกลางในการสื่อสารข้อมูลข่าวสาร
+                และสร้างการรับรู้ร่วมกันแก่ประชาชนทุกคน
+              </p>
+            </div>
+          </div>
+
+          <div className="p-6 md:p-8 border-t md:border-t-0 md:border-l border-[#E5E7EB]">
+            <div className="flex items-start gap-3 mb-4">
+              <div className="w-2 h-7 rounded-full bg-[#F06FAA]" />
+              <h4 className="text-xl md:text-2xl font-bold text-[#101828] leading-tight">
+                เกณฑ์ในการส่งบทความ
+              </h4>
+            </div>
+
+            <p className="text-[#475467] leading-relaxed text-sm md:text-base">
+              
+            </p>
+
           </div>
         </div>
       </div>
+
     </div>
   );
 }
