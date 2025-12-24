@@ -46,7 +46,7 @@ export default function MagazineCarousel({ data }) {
                       <img
                         src={item.image}
                         alt={item.title}
-                        className="h-[306px] object-cover"
+                        className="h-[320px] object-cover"
                       />
                     </figure>
 
