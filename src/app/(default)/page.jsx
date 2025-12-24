@@ -203,7 +203,7 @@ export default function Home() {
           </div>
           <div className="flex gap-8 flex-1 mb-8">
             <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-16 px-8 rounded-4xl w-full">
-              <MagazineCarousel data={magazines} />
+              {/* <MagazineCarousel data={magazines} /> */}
             </div>
 
             <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-16 px-8 rounded-4xl w-full">
