@@ -11,28 +11,28 @@ import "swiper/css/navigation";
 
 const shortClips = [
   {
-    id: "jUbjexT277U",
-    title: "จากก้าวเล็กๆ สู่ก้าวที่สำคัญ ✨#ssru #สวนสุนันทา #สมัครเรียน  #tcas69 #บัณฑิตสวนสุนันทา #ลูกพระนาง",
-    views: "2.7k",
-    url: "https://youtube.com/shorts/jUbjexT277U?si=F7FL0Wage-eN0RGV",
-  },
-  {
     id: "qqBm0GBcTgs",
     title: "“ เป็นผู้นำต้องมีความพราว สง่างาม” รศ.พล.ต.ท.ดร.สัณฐาน ชยนนท์ #ssru",
     views: "405",
     url: "https://youtube.com/shorts/qqBm0GBcTgs?si=Mf5tpNuescDAAYUE",
   },
   {
-    id: "mqeRpF0eHJo",
-    title: "#รับปริญญา #ssru #ลูกพระนาง",
-    views: "314",
-    url: "https://youtube.com/shorts/mqeRpF0eHJo?si=TTUjJHOwLMsG4ltN",
+    id: "jUbjexT277U",
+    title: "จากก้าวเล็กๆ สู่ก้าวที่สำคัญ ✨#ssru #สวนสุนันทา #สมัครเรียน  #tcas69 #บัณฑิตสวนสุนันทา #ลูกพระนาง",
+    views: "2.7k",
+    url: "https://youtube.com/shorts/jUbjexT277U?si=F7FL0Wage-eN0RGV",
   },
   {
     id: "zzzAumXytjE",
     title: "#สวนสุนันทา #ลูกพระนาง #รับปริญญา",
     views: "257",
     url: "https://youtube.com/shorts/zzzAumXytjE?si=bCJKXBcSE1BJdPOD",
+  },
+  {
+    id: "mqeRpF0eHJo",
+    title: "#รับปริญญา #ssru #ลูกพระนาง",
+    views: "314",
+    url: "https://youtube.com/shorts/mqeRpF0eHJo?si=TTUjJHOwLMsG4ltN",
   },
 ];
 
