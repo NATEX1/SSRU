@@ -5,6 +5,8 @@ title: "เพลงที่เพราะที่สุดคือเพล
 thumbnail: "contents/the-most-beautiful-song-is-song.jpg"
 excerpt: "หากมีคนถามเราว่า เพลงที่เพราะ ไพเราะ หรือเพลงที่เราชอบมากที่สุดคือเพลงอะไร? คงเป็นคำถามที่ตอบได้ยากมากคำถามหนึ่งในชีวิตเลยทีเดียว"
 author: "ผู้ช่วยศาสตราจารย์ วิโรจน์ ศรีหิรัญ"
+authorImage: ""
+authotPosition: ""
 date: "2023-11-28"
 readCount: 1250
 shareCount: 125

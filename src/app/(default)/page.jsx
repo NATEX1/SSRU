@@ -5,83 +5,6 @@ import MagazineCarousel from "@/components/home/magazine-carousel";
 import { getOnePostEachOtherCategory, getCategoryName } from "@/lib/markdown";
 import { ArrowRight, Calendar, Eye, Share2 } from "lucide-react";
 
-const magazines = [
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "ฉบับเดือนพฤศจิกายน 2568",
-    type: "Digital Version Available",
-  },
-];
-
-const clips = [
-  {
-    image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-];
 
 export default function Home() {
   const catPost = getOnePostEachOtherCategory();
@@ -283,3 +206,81 @@ export default function Home() {
     </div>
   );
 }
+
+const magazines = [
+  {
+    image: "/assets/images/ssru-around.jpg",
+    issue: "Issue 12",
+    year: "2025",
+    title: "ฉบับเดือนพฤศจิกายน 2568",
+    type: "Digital Version Available",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    issue: "Issue 12",
+    year: "2025",
+    title: "ฉบับเดือนพฤศจิกายน 2568",
+    type: "Digital Version Available",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    issue: "Issue 12",
+    year: "2025",
+    title: "ฉบับเดือนพฤศจิกายน 2568",
+    type: "Digital Version Available",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    issue: "Issue 12",
+    year: "2025",
+    title: "ฉบับเดือนพฤศจิกายน 2568",
+    type: "Digital Version Available",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    issue: "Issue 12",
+    year: "2025",
+    title: "ฉบับเดือนพฤศจิกายน 2568",
+    type: "Digital Version Available",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    issue: "Issue 12",
+    year: "2025",
+    title: "ฉบับเดือนพฤศจิกายน 2568",
+    type: "Digital Version Available",
+  },
+];
+
+const clips = [
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+  {
+    image: "/assets/images/ssru-around.jpg",
+    views: "12.5k",
+    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
+  },
+];
