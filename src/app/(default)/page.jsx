@@ -211,6 +211,9 @@ export default function Home() {
               <ClipCarousel data={clips} />
             </div>
           </div>
+          <div className="flex gap-8 flex-1 mb-8">
+            
+          </div>
         </div>
 
         <div className="sticky top-20 pt-2 w-[362px] max-[1024px]:hidden space-y-8">
