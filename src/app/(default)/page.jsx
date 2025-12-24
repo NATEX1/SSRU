@@ -7,7 +7,7 @@ import { ArrowRight, Calendar, Eye, Share2 } from "lucide-react";
 
 const magazines = [
   {
-    image: "/contents/magazin1.jpg",
+    image: "/contents/magazine1.jpg",
     issue: "Issue 12",
     year: "2025",
     title: "รอบรั้วแก้วเจ้าจอมฉบับที่ 1",
@@ -15,7 +15,7 @@ const magazines = [
     link: "https://online.fliphtml5.com/eakkq/ftzw/",
   },
   {
-    image: "/contents/magazin2.jpg",
+    image: "/contents/magazine2.jpg",
     issue: "Issue 12",
     year: "2025",
     title: "รอบรั้วแก้วเจ้าจอมฉบับที่ 2",
