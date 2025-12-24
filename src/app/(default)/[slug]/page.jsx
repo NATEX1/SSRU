@@ -88,7 +88,8 @@ export default async function Page({ params }) {
             src={`/contents/${article.authorImage}`}
             className="w-full h-full object-cover"
             alt={article.author}
-          />
+            
+          />{article}
         </div>
         <div>
           <p className="text-xs text-[#6A7282]">ผู้เขียนบทความ</p>
