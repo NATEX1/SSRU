@@ -203,7 +203,7 @@ export default function Home() {
           </div>
           <div className="flex gap-8 flex-1 mb-8">
             <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-16 px-8 rounded-4xl w-full">
-              {/* <MagazineCarousel data={magazines} /> */}
+              <MagazineCarousel data={magazines} />
             </div>
 
             <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-16 px-8 rounded-4xl w-full">
@@ -245,7 +245,7 @@ export default function Home() {
               <ul className="space-y-4">
                 <li>
                   <div>
-                    <h6>วิทยาลัยการเมืองและการปกครองวิทยาลัยยอดนิยมอันดับ 1 สวนสุนันทาใต้ร่มเงา “สัณฐาน ชยนนท์”</h6>
+                    <h6>ปฐมบทแห่งสวนสุนันทา</h6>
                     <div className="flex gap-2 items-center text-[#99A1AF]">
                       <div className="flex items-center text-xs">
                         <Eye className="h-3"/> 1,250
@@ -258,7 +258,7 @@ export default function Home() {
                 </li>
                 <li>
                   <div>
-                    <h6>ผู้นำการสร้างมืออาชีพ: วิสัยทัศน์ที่สะท้อนหัวใจของการพัฒนาคน</h6>
+                    <h6>เพลงที่เพราะที่สุดคือเพลง</h6>
                     <div className="flex gap-2 items-center text-[#99A1AF]">
                       <div className="flex items-center text-xs">
                         <Eye className="h-3"/> 1,250
