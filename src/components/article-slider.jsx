@@ -160,13 +160,11 @@ export default function ArticleSlider() {
                   <span>|</span> <span>{current.dateText}</span>
                 </p>
 
-                <a
-                  href={`/${post.slug}`}
-                >
+                
                   <h2 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">
                     {current.title}
                   </h2>
-                </a>
+                
 
                 <p className="text-gray-600 leading-relaxed line-clamp-3">
                   {current.excerpt}
