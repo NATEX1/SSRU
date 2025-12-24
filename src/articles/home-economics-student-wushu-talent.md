@@ -5,7 +5,7 @@ title: "สาวคหกรรมศาสตร์ที่มีพรสว
 thumbnail: "/contents/banner-7.jpg"
 excerpt: "นักศึกษาสาวจากคณะวิทยาศาสตร์และเทคโนโลยีมาจากแม่แจ่ม จังหวัดเชียงใหม่ เรียนด้านคหกรรมศาสตร์ แต่ความสามารถของเธอโดดเด่นยิ่งในด้านกีฬา"
 author: "น.ส.เนาวรัตน์ แซ่ย่าง (ไป๋)"
-authorImage: "/contents/contents7.JPG"
+authorImage: "contents/contents7.JPG"
 authotPosition: "นักศึกษาจากคณะวิทยาศาสตร์และเทคโนโลยี"
 date: "2023-11-28"
 readCount: 1250
