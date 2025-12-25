@@ -148,9 +148,14 @@ export default function Home() {
                   <div key={i}>
                     <div className="flex items-center gap-2 mb-4" key={i}>
                       <div className="w-1.5 h-6  rounded-2xl bg-[#F06FAA]"></div>
-                      <h4 className="text-2xl font-bold">
-                        {getCategoryName(post.category)}
-                      </h4>
+                      <a
+                        href={`/categories/${post.category}`}
+                        className="hover:text-[#F06FAA] transition"
+                      >
+                        <h4 className="text-2xl font-bold">
+                          {getCategoryName(post.category)}
+                        </h4>
+                      </a>
                     </div>
 
                     <div className="card shadow-sm">
