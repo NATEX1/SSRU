@@ -133,11 +133,11 @@ export default function Home() {
                           </div>
                           <div
                             className="
-                            absolute inset-0
-                            bg-linear-to-b
-                            from-transparent from-10%
-                            to-black/80 to-100%
-                          "
+                                pointer-events-none
+                                absolute inset-0
+                                bg-linear-to-b
+                                from-transparent from-10%
+                                to-black/80 to-100%"
                           ></div>
                         </div>
                       </div>
