@@ -56,6 +56,15 @@ const clips = [
     title: "Vlog: 1 วันในรั้วสวนสุนันทา",
   },
 ];
+const archiveCategories = [
+  { category: "มองการไกลกับผู้บริหาร", href: "/categories/executive-thoughts" },
+  { category: "สนทนาบนเส้นทางงาน", href: "/categories/career-path-conversations" },
+  { category: "งานวิจัยแนะนำ", href: "/categories/featured-research" },
+  { category: "สวนสุนันทาเมื่อวันวาน", href: "/categories/ssru-muea-wan" },
+  { category: "มุมคิดวันนี้", href: "/categories/thoughts-today" },
+  { category: "สารคดีความรู้", href: "/categories/documentary-knowledge" },
+  { category: "Hall of fame", href: "/categories/hall-of-fame" },
+];
 
 export default function Home() {
   const catPost = getOnePostEachOtherCategory();
@@ -75,7 +84,12 @@ export default function Home() {
                         <div className="flex items-center gap-2 mb-4">
                           <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
                           <h4 className="text-2xl font-bold">
-                            {getCategoryName(post.category)}
+                            <a
+                              href={`/categories/${post.category}`}
+                              className="hover:text-[#F06FAA] transition"
+                            >
+                              {getCategoryName(post.category)}
+                            </a>
                           </h4>
                         </div>
 
@@ -230,39 +244,35 @@ export default function Home() {
           <div>
             <h4 className="text-2xl font-bold text-[#F06FAA] mb-4">อ่านข่าวย้อนหลัง</h4>
             <hr className="mb-4" />
-              <ul className="space-y-4">
-                <li>
-                  <div>
-                    <h6>ปฐมบทแห่งสวนสุนันทา</h6>
-                    <div className="flex gap-2 items-center text-[#99A1AF]">
-                      <div className="flex items-center text-xs">
-                        <Eye className="h-3"/> 1,250
-                      </div>
-                      <div className="flex items-center text-xs">
-                        <Share2 className="h-3"/> 553
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <h6>เพลงที่เพราะที่สุดคือเพลง?</h6>
-                    <div className="flex gap-2 items-center text-[#99A1AF]">
-                      <div className="flex items-center text-xs">
-                        <Eye className="h-3"/> 1,250
-                      </div>
-                      <div className="flex items-center text-xs">
-                        <Share2 className="h-3"/> 553
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              </ul>
 
-              <div className="text-right">
-                <a className="text-[#3F458D] hover:underline" href="">อ่านทั้งหมด</a>
-              </div>
+            <ul className="space-y-4">
+              {archiveCategories.map((item) => (
+                <li key={item.href}>
+                  <div>
+                    <h6>
+                      <a
+                        href={item.href}
+                        className="hover:text-[#F06FAA] transition"
+                      >
+                        {item.category}
+                      </a>
+                    </h6>
+
+                    <div className="flex gap-2 items-center text-[#99A1AF]">
+                      {/* เผื่ออยากใส่คำอธิบาย/จำนวนบทความ/อัปเดตล่าสุดในอนาคต */}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            {/* <div className="text-right">
+              <a className="text-[#3F458D] hover:underline" href="/categories">
+                อ่านทั้งหมด
+              </a>
+            </div> */}
           </div>
+
 
           <CommentForm />
         </div>

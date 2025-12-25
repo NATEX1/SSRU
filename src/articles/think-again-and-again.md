@@ -8,9 +8,10 @@ author: "รองศาสตราจารย์ ฤๅเดช เกิด
 authorImage: "profile-1.png"
 authotPosition: "อธิการบดีมหาวิทยาลัยราชภัฏสวนสุนันทา"
 date: "2023-11-28"
-readCount: 1250
-shareCount: 125
+readCount: 102
+shareCount: 2
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
+links_category: "/categories/thoughts-today"
 ---
 
 <div style="text-align:center">

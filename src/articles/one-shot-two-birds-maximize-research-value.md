@@ -8,9 +8,10 @@ author: "ผู้ช่วยศาสตราจารย์ ดร.วนิ
 authorImage: "contents/one-shot-two-birds-maximize-research-value-three.jpg"
 authotPosition: ""
 date: "2023-11-28"
-readCount: 1250
-shareCount: 125
+readCount: 160
+shareCount: 1
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
+links_category: "/categories/featured-research"
 ---
 
 

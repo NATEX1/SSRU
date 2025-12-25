@@ -11,6 +11,7 @@ date: "2023-11-28"
 readCount: 1250
 shareCount: 125
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
+links_category: "/categories/hall-of-fame"
 ---
 
 **เนาวรัตน์..แซ่ย่าง**
