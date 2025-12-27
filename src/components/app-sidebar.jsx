@@ -8,16 +8,17 @@ import {
   Lightbulb,
   FileText,
   Star,
-  Building,
   Phone,
   ChevronLeft,
   Menu,
+  SquarePen,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function AppSidebar() {
   const [collapsed, setCollapsed] = useState(true);
+  const sidebarRef = useRef(null);
 
   const menus = [
     { icon: Home, label: "หน้าแรก", href: "/" },
@@ -29,10 +30,26 @@ export default function AppSidebar() {
     { icon: FileText, label: "สารคดีความรู้", href: "/categories/documentary-knowledge" },
     { icon: Star, label: "Hall of fame", href: "/categories/hall-of-fame" },
     { icon: Phone, label: "ติดต่อเรา", href: "/contact-us" },
+    {icon: SquarePen, label: 'เขียนบทความ', href: '/write'}
   ];
+
+  // close sidebar when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setCollapsed(true);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div
+      ref={sidebarRef}
       className={`fixed top-0 left-0 flex flex-col items-center h-screen bg-white border-r border-[#F9FAFB] transition-all duration-300 ease-in-out z-50 ${
         collapsed ? "w-20" : "w-64"
       }`}
@@ -47,14 +64,12 @@ export default function AppSidebar() {
             <Menu className="h-5 w-5 text-gray-600" />
           </button>
         ) : (
-          <>
-            <button
-              onClick={() => setCollapsed(true)}
-              className="p-2 hover:bg-gray-100 rounded-md transition-colors"
-            >
-              <ChevronLeft className="h-5 w-5 text-gray-600" />
-            </button>
-          </>
+          <button
+            onClick={() => setCollapsed(true)}
+            className="p-2 hover:bg-gray-100 rounded-md transition-colors"
+          >
+            <ChevronLeft className="h-5 w-5 text-gray-600" />
+          </button>
         )}
       </div>
 

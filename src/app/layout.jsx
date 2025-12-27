@@ -1,5 +1,8 @@
 import { Inter, Kanit } from "next/font/google";
 import "./globals.css";
+import SessionProvider from '@/components/session-provider'
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,7 +26,8 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await getServerSession(authOptions)
   return (
     <html lang="en" data-theme="light">
       <body
@@ -36,7 +40,9 @@ export default function RootLayout({ children }) {
           fontFamily: "var(--font-inter), var(--font-kanit), sans-serif",
         }}
       >
-        {children}
+        <SessionProvider session={session}>
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );

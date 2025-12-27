@@ -1,8 +1,14 @@
-import { drizzle } from 'drizzle-orm/planetscale-serverless';
-import { Client } from '@planetscale/database';
+import mysql from "mysql2/promise";
+import { drizzle } from "drizzle-orm/mysql2";
 
-const client = new Client({
-  url: process.env.DATABASE_URL,
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  port: 8889,
+  waitForConnections: true,
+  connectionLimit: 5,
 });
 
-export const db = drizzle(client);
+export const db = drizzle(pool);

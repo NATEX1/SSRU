@@ -5,7 +5,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function layout({ children }) {
   return (
-    <div>
+    <div className="bg-white">
       <AppHeader />
       <main>
         <AppSidebar />

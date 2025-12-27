@@ -34,7 +34,7 @@ export default async function CategoryPage({ params }) {
 
   const category = categories.find((cat) => cat.slug === slug);
 
-  console.log(posts);
+  // console.log(posts);
   
 
   // ถ้าไม่พบหมวดหมู่

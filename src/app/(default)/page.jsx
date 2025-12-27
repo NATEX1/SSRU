@@ -80,73 +80,73 @@ export default function Home() {
               {catPost.map((post, i) => {
                 if (i == 0) {
                   return (
-                      <div key={i} className="col-span-2 ">
-                        <div className="flex items-center gap-2 mb-4">
-                          <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
-                          <h4 className="text-2xl font-bold">
-                            <a
-                              href={`/categories/${post.category}`}
-                              className="hover:text-[#F06FAA] transition"
-                            >
-                              {getCategoryName(post.category)}
-                            </a>
-                          </h4>
-                        </div>
-
-                        <div className="relative overflow-hidden rounded-2xl ">
+                    <div key={i} className="col-span-2 ">
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
+                        <h4 className="text-2xl font-bold">
                           <a
-                            href={`/${post.slug}`}
-                            className="col-span-2 block"
+                            href={`/categories/${post.category}`}
+                            className="hover:text-[#F06FAA] transition"
                           >
-                            <img
-                              src={post.thumbnail}
-                              alt=""
-                              className="opacity-80"
-                            />
+                            {getCategoryName(post.category)}
                           </a>
+                        </h4>
+                      </div>
 
-                          <div className=" absolute bottom-0 left-0 right-0 p-4 z-20">
-                            <h6 className="text-white">{post.title}</h6>
-                            <p className="line-clamp-2 text-muted text-sm mb-4">
-                              {post.excerpt}
-                            </p>
+                      <div className="relative overflow-hidden rounded-2xl ">
+                        <a
+                          href={`/${post.slug}`}
+                          className="col-span-2 block"
+                        >
+                          <img
+                            src={post.thumbnail}
+                            alt=""
+                            className="opacity-80"
+                          />
+                        </a>
 
-                            <div className="flex items-center justify-between">
-                              <div className="flex gap-4">
-                                <div className="flex items-center gap-1 text-white text-xs">
-                                  <Calendar className="h-3" /> {post.date}
-                                </div>
-                                <div className="flex items-center gap-1 text-white text-xs">
-                                  <Eye className="h-3" /> {post.readCount}
-                                </div>
-                                <div className="flex items-center gap-1 text-white text-xs">
-                                  <Share2 className="h-3" /> {post.shareCount}
-                                </div>
+                        <div className=" absolute bottom-0 left-0 right-0 p-4 z-20">
+                          <h6 className="text-white">{post.title}</h6>
+                          <p className="line-clamp-2 text-muted text-sm mb-4">
+                            {post.excerpt}
+                          </p>
+
+                          <div className="flex items-center justify-between">
+                            <div className="flex gap-4">
+                              <div className="flex items-center gap-1 text-white text-xs">
+                                <Calendar className="h-3" /> {post.date}
                               </div>
-
-                              <a
-                                href={`/${post.slug}`}
-                              >
-                                <span className="text-[#F06FAA]  text-xs flex items-center">อ่านต่อ <ArrowRight className="h-3" /></span>
-                              </a>
+                              <div className="flex items-center gap-1 text-white text-xs">
+                                <Eye className="h-3" /> {post.readCount}
+                              </div>
+                              <div className="flex items-center gap-1 text-white text-xs">
+                                <Share2 className="h-3" /> {post.shareCount}
+                              </div>
                             </div>
+
+                            <a
+                              href={`/${post.slug}`}
+                            >
+                              <span className="text-[#F06FAA]  text-xs flex items-center">อ่านต่อ <ArrowRight className="h-3" /></span>
+                            </a>
                           </div>
-                          <div
-                            className="
+                        </div>
+                        <div
+                          className="
                                 pointer-events-none
                                 absolute inset-0
                                 bg-linear-to-b
                                 from-transparent from-10%
                                 to-black/80 to-100%"
-                          ></div>
-                        </div>
+                        ></div>
                       </div>
+                    </div>
                   );
                 }
 
                 return (
-                  <div key={i}>
-                    <div className="flex items-center gap-2 mb-4" key={i}>
+                  <div key={i} className="flex flex-col">
+                    <div className="flex items-center gap-2 mb-4">
                       <div className="w-1.5 h-6  rounded-2xl bg-[#F06FAA]"></div>
                       <a
                         href={`/categories/${post.category}`}
@@ -158,19 +158,19 @@ export default function Home() {
                       </a>
                     </div>
 
-                    <div className="card shadow-sm">
+                    <div className="card  overflow-hidden">
                       <a
                         href={`/${post.slug}`}
                         className="col-span-2 block"
                       >
                         <figure>
-                      
+
                           <img
                             src={post.thumbnail}
                             alt={post.slug}
                             className="h-40 w-full object-cover"
                           />
-                      </figure> 
+                        </figure>
                       </a>
                       <div className="card-body p-1">
                         <h2 className="card-title line-clamp-1">
@@ -216,7 +216,7 @@ export default function Home() {
             </div>
           </div>
           <div className="flex gap-8 flex-1 mb-8">
-            
+
           </div>
         </div>
         <div className="sticky top-20 pt-2 w-[362px] max-[1024px]:hidden space-y-8">
@@ -296,7 +296,7 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-[180px_1fr] gap-4 items-start">
               <div className="overflow-hidden rounded-xl">
                 <img
-                  src="/contents/editorial.jpg"   
+                  src="/contents/editorial.jpg"
                   alt="สารจากกองบรรณาธิการ"
                   className="w-full object-cover"
                 />
@@ -320,7 +320,7 @@ export default function Home() {
               </h4>
             </div>
 
-            <p className="text-[#475467] leading-relaxed text-sm md:text-base">
+            <div className="text-[#475467] leading-relaxed text-sm md:text-base">
               <ul>
                 <li>ใช้ ภาษาข่าวทางการ สุภาพ เป็นกลาง</li>
                 <li>โครงสร้างตามหลัก 5W1H (ใคร ทำอะไร ที่ไหน เมื่อไร อย่างไร เพื่ออะไร)</li>
@@ -330,7 +330,7 @@ export default function Home() {
                 <li>ระบุ ชื่อกิจกรรม วันที่ สถานที่ หน่วยงาน และชื่อบุคคล/ตำแหน่งให้ถูกต้อง</li>
                 <li>ไม่ใช้ภาษาการเมือง ไม่โฆษณา ไม่แสดงความคิดเห็นส่วนตัว</li>
               </ul>
-            </p>
+            </div>
 
           </div>
         </div>

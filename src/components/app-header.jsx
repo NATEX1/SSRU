@@ -1,4 +1,5 @@
-import { Search } from "lucide-react";
+import { Search, SquarePen } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 export default function AppHeader() {
@@ -22,7 +23,8 @@ export default function AppHeader() {
           />
         </div>
 
-        <div className="border border-[#E5E7EB] rounded-full ml-auto z-10 flex p-0.5">
+       <div className="flex gap-4 items-center">
+         <div className="border border-[#E5E7EB] rounded-full ml-auto z-10 flex p-0.5">
           <div className="px-3 py-1 bg-[#F06FAA] rounded-full cursor-pointer border-0">
             TH
           </div>
@@ -33,6 +35,9 @@ export default function AppHeader() {
             CN
           </div>
         </div>
+
+        
+       </div>
       </div>
     </header>
   );

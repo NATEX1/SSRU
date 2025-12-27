@@ -1,0 +1,15 @@
+### Create user
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "name": "Eren Jeager",
+  "email": "mikaren@gmail.com",
+  "password": "123456",
+  "role": "approval"
+}
+
+
+### Get all users
+GET http://localhost:3000/api/users?role=admin
+

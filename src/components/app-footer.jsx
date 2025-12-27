@@ -6,7 +6,7 @@ export default function AppFooter() {
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex gap-8 items-center">
           <img
-            src="assets/images/logo_new.png"
+            src="/assets/images/logo_new.png"
             className="h-[125px]"
             alt="logo" 
           />
