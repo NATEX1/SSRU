@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "fe592acf-6c9f-4c23-80bb-d1ff8ca07775",
+  "id": "4e060920-d12d-43c0-9828-975dae05ed44",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "article_tags": {
@@ -9,14 +9,14 @@
       "columns": {
         "article_id": {
           "name": "article_id",
-          "type": "int",
+          "type": "bigint unsigned",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "tag_id": {
           "name": "tag_id",
-          "type": "int",
+          "type": "bigint unsigned",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -51,7 +51,15 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "article_tags_article_id_tag_id_pk": {
+          "name": "article_tags_article_id_tag_id_pk",
+          "columns": [
+            "article_id",
+            "tag_id"
+          ]
+        }
+      },
       "uniqueConstraints": {},
       "checkConstraint": {}
     },
@@ -60,21 +68,21 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": true
         },
         "category_id": {
           "name": "category_id",
-          "type": "int",
+          "type": "bigint unsigned",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "author_id": {
           "name": "author_id",
-          "type": "int",
+          "type": "bigint unsigned",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -133,7 +141,34 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "articles_category_id_categories_id_fk": {
+          "name": "articles_category_id_categories_id_fk",
+          "tableFrom": "articles",
+          "tableTo": "categories",
+          "columnsFrom": [
+            "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "articles_author_id_users_id_fk": {
+          "name": "articles_author_id_users_id_fk",
+          "tableFrom": "articles",
+          "tableTo": "users",
+          "columnsFrom": [
+            "author_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {
         "articles_id": {
           "name": "articles_id",
@@ -150,7 +185,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": true
@@ -188,7 +223,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": true
@@ -241,7 +276,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": true
@@ -272,7 +307,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": true

@@ -1,12 +1,13 @@
 CREATE TABLE `article_tags` (
-	`article_id` int NOT NULL,
-	`tag_id` int NOT NULL
+	`article_id` bigint unsigned NOT NULL,
+	`tag_id` bigint unsigned NOT NULL,
+	CONSTRAINT `article_tags_article_id_tag_id_pk` PRIMARY KEY(`article_id`,`tag_id`)
 );
 --> statement-breakpoint
 CREATE TABLE `articles` (
-	`id` int AUTO_INCREMENT NOT NULL,
-	`category_id` int NOT NULL,
-	`author_id` int NOT NULL,
+	`id` serial AUTO_INCREMENT NOT NULL,
+	`category_id` bigint unsigned NOT NULL,
+	`author_id` bigint unsigned NOT NULL,
 	`title` varchar(255) NOT NULL,
 	`slug` varchar(100) NOT NULL,
 	`content` text NOT NULL,
@@ -18,14 +19,14 @@ CREATE TABLE `articles` (
 );
 --> statement-breakpoint
 CREATE TABLE `categories` (
-	`id` int AUTO_INCREMENT NOT NULL,
+	`id` serial AUTO_INCREMENT NOT NULL,
 	`name` varchar(100) NOT NULL,
 	`slug` varchar(100) NOT NULL,
 	CONSTRAINT `categories_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
 CREATE TABLE `comments` (
-	`id` int AUTO_INCREMENT NOT NULL,
+	`id` serial AUTO_INCREMENT NOT NULL,
 	`name` varchar(255) NOT NULL,
 	`email` varchar(255),
 	`message` text NOT NULL,
@@ -34,13 +35,13 @@ CREATE TABLE `comments` (
 );
 --> statement-breakpoint
 CREATE TABLE `tags` (
-	`id` int AUTO_INCREMENT NOT NULL,
+	`id` serial AUTO_INCREMENT NOT NULL,
 	`name` varchar(50) NOT NULL,
 	CONSTRAINT `tags_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
 CREATE TABLE `users` (
-	`id` int AUTO_INCREMENT NOT NULL,
+	`id` serial AUTO_INCREMENT NOT NULL,
 	`name` varchar(50) NOT NULL,
 	`email` varchar(100) NOT NULL,
 	`password` varchar(255) NOT NULL,
@@ -52,4 +53,6 @@ CREATE TABLE `users` (
 );
 --> statement-breakpoint
 ALTER TABLE `article_tags` ADD CONSTRAINT `article_tags_article_id_articles_id_fk` FOREIGN KEY (`article_id`) REFERENCES `articles`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `article_tags` ADD CONSTRAINT `article_tags_tag_id_tags_id_fk` FOREIGN KEY (`tag_id`) REFERENCES `tags`(`id`) ON DELETE no action ON UPDATE no action;
+ALTER TABLE `article_tags` ADD CONSTRAINT `article_tags_tag_id_tags_id_fk` FOREIGN KEY (`tag_id`) REFERENCES `tags`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `articles` ADD CONSTRAINT `articles_category_id_categories_id_fk` FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `articles` ADD CONSTRAINT `articles_author_id_users_id_fk` FOREIGN KEY (`author_id`) REFERENCES `users`(`id`) ON DELETE no action ON UPDATE no action;

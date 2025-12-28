@@ -3,13 +3,27 @@ POST http://localhost:3000/api/users
 Content-Type: application/json
 
 {
-  "name": "Eren Jeager",
-  "email": "mikaren@gmail.com",
+  "name": "Test Test",
+  "email": "test@gmail.com",
   "password": "123456",
   "role": "approval"
 }
 
 
 ### Get all users
-GET http://localhost:3000/api/users?role=admin
+GET http://localhost:3000/api/users
 
+
+### Create user in production
+POST http://kcc-uat.ssru.ac.th/api/users
+Content-Type: application/json
+
+{
+  "name": "Test Test",
+  "email": "test@gmail.com",
+  "password": "123456",
+  "role": "approval"
+}
+
+### Get users in production
+GET http://kcc-uat.ssru.ac.th/api/users

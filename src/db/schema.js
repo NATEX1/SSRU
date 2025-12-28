@@ -1,33 +1,41 @@
 import {
   mysqlTable,
-  int,
+  serial,
+  bigint,
   varchar,
   text,
   timestamp,
   mysqlEnum,
+  primaryKey,
 } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable("users", {
-  id: int("id").autoincrement().primaryKey(),
+  id: serial("id").primaryKey(),
   name: varchar("name", { length: 50 }).notNull(),
   email: varchar("email", { length: 100 }).notNull(),
   password: varchar("password", { length: 255 }).notNull(),
   role: varchar("role", { length: 20 }).default("author"),
-  position: varchar('position', {length: 50}),
-  status: mysqlEnum('status', ['active', 'inactive']).notNull().default('active'),
+  position: varchar("position", { length: 50 }),
+  status: mysqlEnum("status", ["active", "inactive"])
+    .notNull()
+    .default("active"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const categories = mysqlTable("categories", {
-  id: int("id").autoincrement().primaryKey(),
+  id: serial("id").primaryKey(),
   name: varchar("name", { length: 100 }).notNull(),
   slug: varchar("slug", { length: 100 }).notNull(),
 });
 
 export const articles = mysqlTable("articles", {
-  id: int("id").autoincrement().primaryKey(),
-  categoryId: int("category_id").notNull(),
-  authorId: int("author_id").notNull(),
+  id: serial("id").primaryKey(),
+  categoryId: bigint("category_id", { mode: "number", unsigned: true })
+    .notNull()
+    .references(() => categories.id),
+  authorId: bigint("author_id", { mode: "number", unsigned: true })
+    .notNull()
+    .references(() => users.id),
   title: varchar("title", { length: 255 }).notNull(),
   slug: varchar("slug", { length: 100 }).notNull(),
   content: text("content").notNull(),
@@ -37,18 +45,28 @@ export const articles = mysqlTable("articles", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const tags = mysqlTable('tags', {
-  id: int('id').autoincrement().primaryKey(),
-  name: varchar('name', { length: 50 }).notNull(),
+export const tags = mysqlTable("tags", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 50 }).notNull(),
 });
 
-export const articleTags = mysqlTable('article_tags', {
-  articleId: int('article_id').notNull().references(() => articles.id),
-  tagId: int('tag_id').notNull().references(() => tags.id),
-});
+export const articleTags = mysqlTable(
+  "article_tags",
+  {
+    articleId: bigint("article_id", { mode: "number", unsigned: true })
+      .notNull()
+      .references(() => articles.id),
+    tagId: bigint("tag_id", { mode: "number", unsigned: true })
+      .notNull()
+      .references(() => tags.id),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.articleId, table.tagId] }),
+  })
+);
 
 export const comments = mysqlTable("comments", {
-  id: int("id").autoincrement().primaryKey(),
+  id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }),
   message: text("message").notNull(),

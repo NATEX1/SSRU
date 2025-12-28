@@ -4,7 +4,7 @@ import { users } from "@/db/schema";
 import bcrypt from "bcryptjs";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { count, like, or, eq, and, not } from "drizzle-orm";
+import { count, like, or, eq, and, not, ne } from "drizzle-orm";
 
 export async function POST(req) {
   try {
@@ -61,7 +61,7 @@ export async function GET(req) {
     const role = searchParams.get("role");
 
     const conditions = [
-      not(eq(users.role, "admin")), 
+      ne(users.role, 'admin') 
     ];
 
     if (q) {
