@@ -36,10 +36,13 @@ export default function SSRUCarousel() {
       {/* Carousel */}
       <div
         ref={containerRef}
-        className="flex w-full overflow-x-auto scroll-smooth gap-4 snap-x snap-mandatory"
+        className="flex overflow-x-hidden scroll-smooth space-x-4 w-[calc(311px*3)]"
       >
         {slides.map((item) => (
-          <div key={item} className="flex-shrink-0 w-[260px] sm:w-[311px] snap-start">
+          <div
+            key={item}
+            className="card bg-white shadow rounded-xl flex-shrink-0 w-[311px]"
+          >
             <figure>
               <img
                 src="/assets/images/ssru-around.jpg"
