@@ -1,0 +1,13 @@
+### Create category
+POST http://localhost:3000/api/categories
+{
+    "name": "สนทนาบนเส้นทางงาน",
+    "slug": "career-path-conversations"
+}
+
+### Get categories
+GET http://localhost:3000/api/categories
+
+### Get a category
+GET http://localhost:3000/api/categories/1
+ 

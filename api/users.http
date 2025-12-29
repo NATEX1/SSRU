@@ -3,10 +3,10 @@ POST http://localhost:3000/api/users
 Content-Type: application/json
 
 {
-  "name": "Test Test",
-  "email": "test@gmail.com",
+  "name": "Super Admin",
+  "email": "admin@gmail.com",
   "password": "123456",
-  "role": "approval"
+  "role": "admin"
 }
 
 

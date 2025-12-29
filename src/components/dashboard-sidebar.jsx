@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -26,12 +26,36 @@ import { signOut, useSession } from "next-auth/react";
 
 export default function DashboardSidebar() {
   const { open } = useSidebar();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (status !== "authenticated") return;
+
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/me");
+        const data = await res.json();
+        setUser(data);
+      } catch (error) {
+        console.error("fetch user error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [status]);
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
         {open && <div className="text-4xl font-bold">LOGO</div>}
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>General</SidebarGroupLabel>
@@ -39,7 +63,7 @@ export default function DashboardSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href={"/backoffice"}>
+                  <Link href="/backoffice">
                     <Home /> หน้าแรก
                   </Link>
                 </SidebarMenuButton>
@@ -47,7 +71,7 @@ export default function DashboardSidebar() {
 
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href={"/backoffice/users"}>
+                  <Link href="/backoffice/users">
                     <User2 /> ผู้ใช้ในระบบ
                   </Link>
                 </SidebarMenuButton>
@@ -55,7 +79,7 @@ export default function DashboardSidebar() {
 
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href={"/backoffice/articles"}>
+                  <Link href="/backoffice/articles">
                     <FileText /> บทความ
                   </Link>
                 </SidebarMenuButton>
@@ -71,24 +95,20 @@ export default function DashboardSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <User2 /> Username
+                  <User2 />
+                  {user?.name}
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
+
               <DropdownMenuContent side="top" className="w-64">
-                <DropdownMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Link href={"/backoffice/account"}>
+                <DropdownMenuItem asChild>
+                    <Link href="/backoffice/account">
                       <UserCircle /> บัญชี
                     </Link>
-                  </SidebarMenuButton>
                 </DropdownMenuItem>
 
-                <DropdownMenuItem>
-                  <SidebarMenuButton
-                    onClick={() => signOut({ callbackUrl: "/signin" })}
-                  >
+                <DropdownMenuItem onClick={() => signOut({callbackUrl: '/'})}>
                     <LogOut /> ออกจากระบบ
-                  </SidebarMenuButton>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

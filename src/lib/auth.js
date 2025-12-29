@@ -1,6 +1,4 @@
-import { db } from "@/db";
-import { users } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import prisma from "@/lib/prisma";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
@@ -15,20 +13,17 @@ export const authOptions = {
         email: { label: "E-mail", type: "text" },
         password: { label: "Password", type: "password" },
       },
-
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null;
-        }
+        if (!credentials?.email || !credentials?.password) return null;
 
-        const user = await db
-          .select()
-          .from(users)
-          .where(eq(users.email, credentials.email))
-          .then((res) => res[0]);
+        // หา user ด้วย Prisma
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
 
         if (!user) return null;
 
+        // ตรวจสอบ password
         const isValid = await bcrypt.compare(
           credentials.password,
           user.password
@@ -60,6 +55,6 @@ export const authOptions = {
   },
 
   pages: {
-    signIn: "/signin", 
+    signIn: "/signin",
   },
 };

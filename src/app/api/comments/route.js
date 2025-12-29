@@ -1,5 +1,5 @@
-import { db } from '@/db';
-import { comments } from '@/db/schema';
+
+import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
@@ -13,10 +13,12 @@ export async function POST(req) {
       );
     }
 
-    const result = await db.insert(comments).values({
-      name,
-      email,
-      message,
+    const result = await prisma.comment.create({
+      data: {
+        name,
+        email,
+        message
+      }
     })
 
     return NextResponse.json(result, { status: 200 });

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/table";
 import {
   flexRender,
-  createColumnHelper,
   useReactTable,
   getCoreRowModel,
 } from "@tanstack/react-table";
@@ -63,7 +62,7 @@ export default function page() {
         const data = await res.json();
 
         if (data.success) {
-          setData(data.data);
+          setData(data.users);
           setTotalPages(data.pagination.totalPages);
         }
       } catch (err) {
@@ -154,10 +153,11 @@ export default function page() {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
   return (
-    <div className="p-8">
+    <div>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-4xl">จัดการผู้ใช้ในระบบ</h2>
+        <h2 className="text-4xl font-bold">จัดการผู้ใช้ในระบบ</h2>
         <Button>
           <UserPlus /> เพิ่มผู้ใช้
         </Button>
@@ -195,7 +195,7 @@ export default function page() {
       {/* Table */}
       {!loading && (
         <div className="overflow-hidden rounded-md border">
-          <Table>
+          <Table className={'table-fixed'}>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>

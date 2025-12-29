@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserStatus {
+  active
+  inactive
+}
+
+model User {
+  id        Int      @id @default(autoincrement()) @map("id")
+  name      String   @map("name")
+  email     String   @unique @map("email")
+  password  String   @map("password")
+  role      String   @default("author") @map("role")
+  position  String?  @map("position")
+  status    UserStatus @default(active) @map("status")
+  createdAt DateTime @default(now()) @map("created_at")
+  Articles  Article[] 
+
+  @@map("users")
+}
+
+model Category {
+  id       Int       @id @default(autoincrement()) @map("id")
+  name     String    @map("name")
+  slug     String    @unique @map("slug")
+  articles Article[]
+
+  @@map("categories")
+}
+
+model Article {
+  id         Int       @id @default(autoincrement()) @map("id")
+  categoryId Int       @map("category_id")
+  authorId   Int       @map("author_id")
+  title      String    @map("title")
+  slug       String    @unique @map("slug")
+  excerpt    String?   @map("excerpt")
+  content    String    @map("content")
+  thumbnail  String?   @map("thumbnail")
+  status     String    @default("draft") @map("status")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @default(now()) @map("updated_at")
+  
+  author     User      @relation(fields: [authorId], references: [id])
+  category   Category  @relation(fields: [categoryId], references: [id])
+  tags       ArticleTag[]
+
+  @@map("articles")
+}
+
+model Tag {
+  id       Int          @id @default(autoincrement()) @map("id")
+  name     String       @unique @map("name")
+  articles ArticleTag[]
+
+  @@map("tags")
+}
+
+model ArticleTag {
+  article   Article @relation(fields: [articleId], references: [id])
+  articleId Int     @map("article_id")
+  tag       Tag     @relation(fields: [tagId], references: [id])
+  tagId     Int     @map("tag_id")
+
+  @@id([articleId, tagId])
+  @@map("article_tags")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement()) @map("id")
+  name      String   @map("name")
+  email     String?  @map("email")
+  message   String   @map("message")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("comments")
+}

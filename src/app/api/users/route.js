@@ -1,19 +1,10 @@
 import { NextResponse } from "next/server";
-import { db } from "@/db";
-import { users } from "@/db/schema";
+import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { count, like, or, eq, and, not, ne } from "drizzle-orm";
 
 export async function POST(req) {
   try {
-    // const session = await getServerSession(authOptions)
-
-    // if (!session || session.user.role !== 'admin') {
-    //   return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    // }
-
+    // รับข้อมูลจาก request
     const { name, email, password, role } = await req.json();
 
     if (!name || !email || !password) {
@@ -23,17 +14,20 @@ export async function POST(req) {
       );
     }
 
+    // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await db.insert(users).values({
-      name,
-      email,
-      password: hashedPassword,
-      role: role || "author",
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role: role || "author",
+      },
     });
 
     return NextResponse.json(
-      { message: "User created" },
+      { message: "User created", user },
       { status: 201 }
     );
   } catch (err) {
@@ -42,7 +36,6 @@ export async function POST(req) {
       {
         message: "Error creating user",
         error: err.message,
-        code: err.code,
       },
       { status: 500 }
     );
@@ -55,53 +48,33 @@ export async function GET(req) {
 
     const page = Number(searchParams.get("page")) || 1;
     const limit = Number(searchParams.get("limit")) || 10;
-    const offset = (page - 1) * limit;
-
     const q = searchParams.get("q");
     const role = searchParams.get("role");
 
-    const conditions = [
-      ne(users.role, 'admin') 
-    ];
+    const where = {
+      role: role ? role : undefined,
+      NOT: { role: "admin" },
+      OR: q
+        ? [
+            { name: { contains: q, mode: "insensitive" } },
+            { email: { contains: q, mode: "insensitive" } },
+          ]
+        : undefined,
+    };
 
-    if (q) {
-      conditions.push(
-        or(
-          like(users.name, `%${q}%`),
-          like(users.email, `%${q}%`)
-        )
-      );
-    }
-
-    if (role) {
-      conditions.push(eq(users.role, role));
-    }
-
-    const whereClause = and(...conditions);
-
-    const data = await db
-      .select({
-        id: users.id,
-        name: users.name,
-        email: users.email,
-        role: users.role,
-        status: users.status,
-        position: users.position,
-        createdAt: users.createdAt,
-      })
-      .from(users)
-      .where(whereClause)
-      .limit(limit)
-      .offset(offset);
-
-    const [{ count: total }] = await db
-      .select({ count: count() })
-      .from(users)
-      .where(whereClause);
+    const [total, users] = await Promise.all([
+      prisma.user.count({ where }),
+      prisma.user.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { createdAt: "desc" },
+      }),
+    ]);
 
     return NextResponse.json({
       success: true,
-      data,
+      users,
       pagination: {
         page,
         limit,
@@ -117,6 +90,3 @@ export async function GET(req) {
     );
   }
 }
-
-
-
