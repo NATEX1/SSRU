@@ -49,26 +49,7 @@ export default function AppFooter() {
         </ul>
 
         {/* Social */}
-        <ul className="flex justify-center flex-wrap gap-4">
-          {[
-            ["YouTube.webp", "https://www.youtube.com/@ssrutube/shorts"],
-            ["facebook.png", "https://www.facebook.com/kaewchaochomonline"],
-            ["Instagram.webp", "https://www.instagram.com/ssru_official"],
-            ["x.png", "https://x.com/official_ssru"],
-            ["line.png", "https://lin.ee/1WNbkCe"],
-            ["tiktok.webp", "https://www.tiktok.com/@ssru_official"],
-          ].map(([img, link], i) => (
-            <li key={i}>
-              <a href={link}>
-                <img
-                  src={`/assets/images/${img}`}
-                  className="rounded-full h-8 w-8 hover:opacity-80 transition"
-                  alt=""
-                />
-              </a>
-            </li>
-          ))}
-        </ul>
+        
 
       </div>
     </footer>
