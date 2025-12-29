@@ -3,7 +3,7 @@ import React from "react";
 export default function AppFooter() {
   return (
     <footer className="bg-[#F9FAFB] border border-[#F3F4F6] mt-8">
-      <div className="container mx-auto flex items-center justify-between">
+      <div className="container mx-auto px-4 py-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex gap-8 items-center">
           <img
             src="/assets/images/logo_new.png"
@@ -50,7 +50,7 @@ export default function AppFooter() {
           </li>
         </ul>
 
-        <ul className="flex gap-8">
+        <ul className="flex flex-wrap gap-4 lg:gap-6">
           <li>
             <a href="https://www.youtube.com/@ssrutube/shorts" className="text-[#6A7282]">
               <img
