@@ -50,62 +50,26 @@ export default function AppFooter() {
           </li>
         </ul>
 
-        <ul className="flex flex-wrap gap-4 lg:gap-6">
-          <li>
-            <a href="https://www.youtube.com/@ssrutube/shorts" className="text-[#6A7282]">
-              <img
-                src="/assets/images/YouTube.webp"
-                className="rounded-full h-8 w-8"
-                alt="" 
-              />
-            </a>
-          </li>
-          <li>
-            <a href="https://www.facebook.com/kaewchaochomonline" className="text-[#6A7282]">
-              <img
-                src="/assets/images/facebook.png"
-                className="rounded-full h-8 w-8 "
-                alt="" 
-              />
-            </a>
-          </li>
-          <li>
-            <a href="https://www.instagram.com/ssru_official?igsh=cjQ1dW5jM3E3cmM1&utm_source=qr" className="text-[#6A7282]">
-              <img
-                src="/assets/images/Instagram.webp"
-                className="rounded-full h-8 w-8 "
-                alt="" 
-              />
-            </a>
-          </li>
-          <li>
-            <a href="https://x.com/official_ssru?s=21&t=JiEIQMw3IlVQkEh6kGiHaA" className="text-[#6A7282]">
-              <img
-                src="/assets/images/x.png"
-                className="rounded-full h-8 w-8 "
-                alt="" 
-              />
-            </a>
-          </li>
-          <li>
-            <a href="https://lin.ee/1WNbkCe" className="text-[#6A7282]">
-              <img
-                src="/assets/images/line.png"
-                className="rounded-full h-8 w-8 "
-                alt="" 
-              />
-            </a>
-          </li>
-          <li>
-            <a href="https://www.tiktok.com/@ssru_official?_r=1&_t=ZS-927UzisFNKq" className="text-[#6A7282]">
-              <img
-                src="/assets/images/tiktok.webp"
-                className="rounded-full h-8 w-8 "
-                alt="" 
-              />
-            </a>
-          </li>
-          
+        {/* Social */}
+        <ul className="flex justify-center flex-wrap gap-4">
+          {[
+            ["YouTube.webp", "https://www.youtube.com/@ssrutube/shorts"],
+            ["facebook.png", "https://www.facebook.com/kaewchaochomonline"],
+            ["Instagram.webp", "https://www.instagram.com/ssru_official"],
+            ["x.png", "https://x.com/official_ssru"],
+            ["line.png", "https://lin.ee/1WNbkCe"],
+            ["tiktok.webp", "https://www.tiktok.com/@ssru_official"],
+          ].map(([img, link], i) => (
+            <li key={i}>
+              <a href={link}>
+                <img
+                  src={`/assets/images/${img}`}
+                  className="rounded-full h-8 w-8 hover:opacity-80 transition"
+                  alt=""
+                />
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     </footer>
