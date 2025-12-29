@@ -7,7 +7,7 @@ excerpt: "การอาบป่า Forest Bathing หรือ Shinrin-yoku �
 author: "ผู้ช่วยศาสตราจารย์กัญภัส อู่ตะเภา"
 authorImage: ""
 authotPosition: ""
-date: "2025-11-28"
+date: "2023-11-28"
 readCount: 333
 shareCount: 5
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
