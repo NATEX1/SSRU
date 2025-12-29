@@ -11,3 +11,10 @@ GET http://localhost:3000/api/categories
 ### Get a category
 GET http://localhost:3000/api/categories/1
  
+
+### Create category in production
+POST https://kcc-uat.ssru.ac.th/api/categories
+{
+    "name": "สนทนาบนเส้นทางงาน",
+    "slug": "career-path-conversations"
+}

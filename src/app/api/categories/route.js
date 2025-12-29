@@ -1,17 +1,44 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req) {
   try {
-    const categories = await prisma.category.findMany({
-      orderBy: {
-        id: "desc",
-      },
-    });
+    const { searchParams } = new URL(req.url);
+
+    const q = searchParams.get("q") || "";
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const limit = parseInt(searchParams.get("limit") || "10", 10);
+
+    const skip = (page - 1) * limit;
+
+    const where = q
+      ? {
+          name: {
+            contains: q,
+            mode: "insensitive",
+          },
+        }
+      : {};
+
+    const [categories, total] = await Promise.all([
+      prisma.category.findMany({
+        where,
+        orderBy: { id: "desc" },
+        skip,
+        take: limit,
+      }),
+      prisma.category.count({ where }),
+    ]);
 
     return NextResponse.json({
       success: true,
       data: categories,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
     });
   } catch (error) {
     console.error(error);
@@ -45,11 +72,18 @@ export async function POST(req) {
       },
     });
 
-    return NextResponse.json({ success: true, category: newCategory }, { status: 201 });
+    return NextResponse.json(
+      { success: true, category: newCategory },
+      { status: 201 }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { success: false, message: "Error creating category", error: error.message },
+      {
+        success: false,
+        message: "Error creating category",
+        error: error.message,
+      },
       { status: 500 }
     );
   }

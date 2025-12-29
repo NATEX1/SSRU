@@ -6,8 +6,8 @@ export default function layout({ children }) {
   return (
     <SidebarProvider>
       <DashboardSidebar />
-      <main className="w-full">
-        <div className="px-8 py-4 border-b">
+      <main className="w-full bg-muted">
+        <div className="p-4 border-b bg-white shadow">
           <SidebarTrigger />
         </div>
         <div className="p-8">{children}</div>

@@ -15,7 +15,17 @@ import {
   useSidebar,
 } from "./ui/sidebar";
 import Link from "next/link";
-import { FileText, Home, LogOut, User2, UserCircle } from "lucide-react";
+import {
+  FileText,
+  Group,
+  Home,
+  Layers,
+  LogOut,
+  Settings,
+  User2,
+  UserCircle,
+  Users,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +33,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { signOut, useSession } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export default function DashboardSidebar() {
   const { open } = useSidebar();
@@ -32,8 +43,6 @@ export default function DashboardSidebar() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (status !== "authenticated") return;
-
     const fetchUser = async () => {
       try {
         setLoading(true);
@@ -50,70 +59,98 @@ export default function DashboardSidebar() {
     fetchUser();
   }, [status]);
 
+  const menus = [
+    {
+      name: "ทั่วไป",
+      items: [
+        {
+          label: "หน้าแรก",
+          icon: Home,
+          href: "/backoffice",
+        },
+        {
+          label: "จัดการผู้ใช้ในระบบ",
+          icon: Users,
+          href: "/backoffice/users",
+        },
+        {
+          label: "จัดการบทความ",
+          icon: FileText,
+          href: "/backoffice/articles",
+        },
+        {
+          label: 'จัดการหมวดหมู่',
+          icon: Layers,
+          href: '/backoffice/categories'
+        }
+      ],
+    },
+    {
+      name: "ตั้งค่า",
+      items: [
+        {
+          label: "บัญชีของฉัน",
+          icon: UserCircle,
+          href: "/backoffice/account",
+        },
+        {
+          label: "ตั้งค่า",
+          icon: Settings,
+          href: "/backoffice/settings",
+        },
+      ],
+    },
+  ];
+
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader>
+      {/* <SidebarHeader>
         {open && <div className="text-4xl font-bold">LOGO</div>}
-      </SidebarHeader>
+      </SidebarHeader> */}
 
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>General</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="/backoffice">
-                    <Home /> หน้าแรก
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="/backoffice/users">
-                    <User2 /> ผู้ใช้ในระบบ
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="/backoffice/articles">
-                    <FileText /> บทความ
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {menus.map((group, idx) => (
+          <SidebarGroup key={idx}>
+            <SidebarGroupLabel>{group.name}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {group.items.map((item, i) => (
+                  <SidebarMenuItem key={i}>
+                    <SidebarMenuButton asChild>
+                      <Link href={item.href}>
+                        <item.icon /> {item.label}
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
 
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <User2 />
-                  {user?.name}
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
+      <SidebarFooter className={"border-t border-sidebar-accent"}>
+        <div className="flex items-center justify-between">
+          <div className="flex gap-2 items-center">
+            <Avatar className={"dark"}>
+              {user && user.image ? (
+                <AvatarImage src={user.image} />
+              ) : (
+                <AvatarFallback>
+                  {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+                </AvatarFallback>
+              )}
+            </Avatar>
 
-              <DropdownMenuContent side="top" className="w-64">
-                <DropdownMenuItem asChild>
-                    <Link href="/backoffice/account">
-                      <UserCircle /> บัญชี
-                    </Link>
-                </DropdownMenuItem>
+            {open && user?.name}
+          </div>
 
-                <DropdownMenuItem onClick={() => signOut({callbackUrl: '/'})}>
-                    <LogOut /> ออกจากระบบ
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
+          {open && (
+            <button className="px-2 py-1 cursor-pointer">
+              <LogOut className="h-4 w-4" />
+            </button>
+          )}
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

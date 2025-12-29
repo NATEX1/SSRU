@@ -14,6 +14,17 @@ export async function POST(req) {
       );
     }
 
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      return NextResponse.json(
+        { message: "อีเมลนี้มีผู้ใช้ในระบบแล้ว!" },
+        { status: 400 }
+      );
+    }
+
     // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 

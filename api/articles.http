@@ -1,5 +1,5 @@
 ### Get articles
-GET http://localhost:3000/api/articles?category=2
+GET http://localhost:3000/api/articles
 
 ### Get a article
 GET http://localhost:3000/api/articles/3

@@ -5,6 +5,26 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+async function generateUniqueSlug(title) {
+  const baseSlug = title.trim().replace(/\s+/g, "-");
+  let slug = baseSlug;
+  let counter = 1;
+
+  while (true) {
+    const exists = await prisma.article.findUnique({
+      where: { slug },
+    });
+
+    if (!exists) break;
+
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+
+  return slug;
+}
+
+
 export async function POST(req) {
   try {
     const session = await getServerSession(authOptions)
@@ -15,7 +35,6 @@ export async function POST(req) {
     const formData = await req.formData();
 
     const title = formData.get("title");
-    const slug = formData.get("slug");
     const content = formData.get("content");
     const categoryId = parseInt(formData.get("categoryId") || "0");
     const status = formData.get("status") || "draft";
@@ -35,6 +54,8 @@ export async function POST(req) {
       fs.writeFileSync(filePath, buffer);
       thumbnailPath = "/uploads/" + fileName;
     }
+
+    const slug = await generateUniqueSlug(title)
 
     // create article first
     const article = await prisma.article.create({

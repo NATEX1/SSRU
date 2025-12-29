@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { BookPlus } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -41,7 +43,6 @@ import {
   Search,
   Trash,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -62,7 +63,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function Page() {
+export default function page() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -70,147 +71,60 @@ export default function Page() {
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [categories, setCategories] = useState([]);
-
-  const columns = [
-    {
-      accessorKey: "title",
-      header: "หัวข้อ",
-    },
-    {
-      id: "author",
-      header: "ผู้เขียน",
-      cell: ({ row }) => {
-        const data = row.original;
-
-        return (
-          <div className="flex gap-1 items-center">
-            {data.author.image && data.author.image !== "" ? (
-              <Avatar>
-                <AvatarImage src={data.author.image} alt="User avatar" />
-              </Avatar>
-            ) : (
-              <Avatar>
-                <AvatarFallback>
-                  {data.author.name ? data.author.name[0] : "U"}{" "}
-                  {/* fallback เป็น U ถ้าไม่มีชื่อ */}
-                </AvatarFallback>
-              </Avatar>
-            )}
-            <p>{data.author.name || "Unknown"}</p>
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ row }) => {
-        const status = row.original.status;
-
-        const statusColor =
-          {
-            draft: "bg-yellow-100 text-yellow-800 border border-yellow-800",
-            published: "bg-green-100 text-green-800 border border-green-800",
-            archived: "bg-gray-100 text-gray-600 border border-gray-600",
-          }[status] || "bg-gray-100 text-gray-600 border border-gray-600";
-
-        const Icon =
-          {
-            draft: Pencil,
-            published: BadgeCheck,
-            archived: Archive,
-          }[status] || Pencil;
-
-        return (
-          <span
-            className={`px-2 py-0.5 rounded-full text-xs font-semibold inline-flex items-center gap-1 ${statusColor}`}
-          >
-            <Icon className="h-3 w-3" />
-            {status?.charAt(0).toUpperCase() + status?.slice(1)}
-          </span>
-        );
-      },
-    },
-    {
-      id: "createdAt",
-      header: "สร้างเมื่อ",
-      cell: ({ row }) => {
-        const date = new Date(row.original.createdAt);
-
-        return date.toLocaleDateString("th-TH", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-      },
-    },
-    {
-      id: "actions",
-      enableHiding: false,
-      cell: ({ row }) => (
-        <div className="flex gap-2">
-          <Button variant={"ghost"} className={"cursor-pointer underline"}>
-            <Pencil className="size-4" /> แก้ไข
-          </Button>
-          <Button
-            variant={"ghost"}
-            className={"cursor-pointer underline text-red-500"}
-          >
-            <Trash  className="size-4"/> ลบ
-          </Button>
-        </div>
-      ),
-    },
-  ];
 
   useEffect(() => {
     const handler = setTimeout(async () => {
-      setLoading(true);
       try {
         const params = new URLSearchParams();
         params.append("page", page);
         params.append("limit", limit);
         if (search) params.append("q", search);
-        if (selectedCategory !== "all")
-          params.append("category", selectedCategory);
 
-        const res = await fetch(`/api/articles?${params.toString()}`);
+        const res = await fetch(`/api/categories?${params.toString()}`);
         const json = await res.json();
 
         if (json.success) {
-          setData(json.articles);
+          setData(json.data);
           setTotalPages(json.pagination.totalPages);
           setTotal(json.pagination.total);
         }
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.error("Failed to fetch categories", error);
       } finally {
         setLoading(false);
       }
     }, 500);
 
-    // cleanup ก่อน next effect
     return () => clearTimeout(handler);
-  }, [page, search, selectedCategory]);
+  }, [search, limit, page]);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await fetch("/api/categories");
-        const json = await res.json();
+  const columns = [
+    {
+      accessorKey: "name",
+      header: "ชื่อหมวดหมู่",
+    },
+    {
+      accessorKey: "slug",
+      header: "Slug",
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => (
+        <div className="flex gap-1">
+          <Button variant={"ghost"} className={"cursor-pointer underline"}>
+            <Pencil className="size-4" /> แก้ไข
+          </Button>
 
-        if (json.success) {
-          setCategories(json.data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch categories", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
+          <Button
+            variant={"ghost"}
+            className={"cursor-pointer underline text-red-500"}
+          >
+            <Trash className="size-4" /> ลบ
+          </Button>
+        </div>
+      ),
+    },
+  ];
 
   const table = useReactTable({
     data,
@@ -220,14 +134,14 @@ export default function Page() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="text-4xl font-bold">จัดการบทความ</h2>
+      <div className="flex justify-between mb-8">
+        <h1 className="text-4xl font-bold">จัดการหมวดหมู่</h1>
+
         <Button>
-          เพิ่มบทความ
+          เพิ่มหมวดหมู่
         </Button>
       </div>
 
-      {/* Table */}
       <div className="overflow-hidden rounded-2xl shadow border bg-white">
         <div className="p-4 flex gap-1 justify-between">
           <Select value={limit} onValueChange={setLimit}>
@@ -254,31 +168,6 @@ export default function Page() {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </InputGroup>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant={"ghost"}>
-                  <Filter />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>เลือกหมวดหมู่</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup
-                  value={selectedCategory}
-                  onValueChange={setSelectedCategory}
-                >
-                  <DropdownMenuRadioItem value="all">
-                    ทั้งหมด
-                  </DropdownMenuRadioItem>
-                  {categories.map((cat) => (
-                    <DropdownMenuRadioItem value={cat.id} key={cat.id}>
-                      {cat.name}
-                    </DropdownMenuRadioItem>
-                  ))}
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
         </div>
 

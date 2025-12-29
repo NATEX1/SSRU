@@ -12,8 +12,7 @@ export function StatusBadge({ status }) {
       }`}
     >
       <CircleDot className="h-3 w-3" />
-      {status.charAt(0).toUpperCase() + status.slice(1)}
+      {status === "active" ? "ใช้งานได้" : "ใช้งานไม่ได้"}
     </span>
   );
 }
-

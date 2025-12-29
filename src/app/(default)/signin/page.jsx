@@ -30,30 +30,38 @@ export default function Page() {
       return;
     }
 
-    router.replace("/");
+    const sessionRes = await fetch("/api/auth/session");
+    const sessionData = await sessionRes.json();
+
+    // ตรวจสอบ role
+    if (sessionData?.user?.role === "admin") {
+      router.replace("/backoffice");
+    } else {
+      router.replace("/");
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
         <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="email"
-        required
-      />
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="email"
+          required
+        />
       </div>
 
-     <div>
-       <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="password"
-        required
-      />
-     </div>
+      <div>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="password"
+          required
+        />
+      </div>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 

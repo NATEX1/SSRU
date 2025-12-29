@@ -18,16 +18,22 @@ enum UserStatus {
   inactive
 }
 
+enum UserRole {
+  admin
+  approver
+  author
+}
+
 model User {
-  id        Int      @id @default(autoincrement()) @map("id")
-  name      String   @map("name")
-  email     String   @unique @map("email")
-  password  String   @map("password")
-  role      String   @default("author") @map("role")
-  position  String?  @map("position")
+  id        Int        @id @default(autoincrement()) @map("id")
+  name      String     @map("name")
+  email     String     @unique @map("email")
+  password  String     @map("password")
+  role      UserRole   @default(author) @map("role")
+  position  String?    @map("position")
   status    UserStatus @default(active) @map("status")
-  createdAt DateTime @default(now()) @map("created_at")
-  Articles  Article[] 
+  createdAt DateTime   @default(now()) @map("created_at")
+  Articles  Article[]
 
   @@map("users")
 }
@@ -42,21 +48,21 @@ model Category {
 }
 
 model Article {
-  id         Int       @id @default(autoincrement()) @map("id")
-  categoryId Int       @map("category_id")
-  authorId   Int       @map("author_id")
-  title      String    @map("title")
-  slug       String    @unique @map("slug")
-  excerpt    String?   @map("excerpt")
-  content    String    @map("content")
-  thumbnail  String?   @map("thumbnail")
-  status     String    @default("draft") @map("status")
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @default(now()) @map("updated_at")
-  
-  author     User      @relation(fields: [authorId], references: [id])
-  category   Category  @relation(fields: [categoryId], references: [id])
-  tags       ArticleTag[]
+  id         Int      @id @default(autoincrement()) @map("id")
+  categoryId Int      @map("category_id")
+  authorId   Int      @map("author_id")
+  title      String   @map("title")
+  slug       String   @unique @map("slug")
+  excerpt    String?  @map("excerpt")
+  content    String   @map("content")
+  thumbnail  String?  @map("thumbnail")
+  status     String   @default("draft") @map("status")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @map("updated_at")
+
+  author   User         @relation(fields: [authorId], references: [id])
+  category Category     @relation(fields: [categoryId], references: [id])
+  tags     ArticleTag[]
 
   @@map("articles")
 }
