@@ -29,36 +29,32 @@ export default function MagazineCarousel({ data }) {
           <Swiper
             modules={[Grid]}
             loop={false}
-            spaceBetween={12}
-            // ✅ Responsive: เปลี่ยนจำนวนสไลด์ตามขนาดหน้าจอ
+            spaceBetween={16}
             breakpoints={{
-              0: { slidesPerView: 1.15 },     // มือถือ: เห็น 1 ใบ + โผล่นิด ๆ
+              0: { slidesPerView: 1.15 },
               480: { slidesPerView: 1.5 },
-              640: { slidesPerView: 2 },      // sm
-              1024: { slidesPerView: 3 },     // lg
-              1280: { slidesPerView: 4 },     // xl
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+              1280: { slidesPerView: 4 },
             }}
-          >
+            >
             {data?.map((item, index) => (
               <SwiperSlide key={index} className="px-1 sm:px-2">
                 <a
                   href={item.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="block h-full"
+                  className="block w-full h-full"
                 >
-                  <div className="bg-white shadow rounded-xl overflow-hidden h-full flex flex-col">
-                    <div className="relative w-full overflow-hidden">
+                  <div className="w-full h-full bg-white shadow rounded-xl overflow-hidden flex flex-col">
+                    <figure className="w-full">
                       <img
                         src={item.image}
                         alt={item.title}
-                        className="
-                          w-full object-cover
-                          h-[260px] sm:h-[300px] lg:h-[340px]
-                        "
+                        className="w-full h-[260px] sm:h-[300px] lg:h-[340px] object-cover"
                         loading="lazy"
                       />
-                    </div>
+                    </figure>
 
                     <div className="p-4 sm:p-5 flex-1 flex flex-col gap-2">
                       <div className="flex justify-between items-start gap-3">
@@ -84,6 +80,7 @@ export default function MagazineCarousel({ data }) {
               </SwiperSlide>
             ))}
           </Swiper>
+
         </div>
       </div>
     </div>
