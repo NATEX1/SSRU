@@ -28,9 +28,8 @@ export default function MagazineCarousel({ data }) {
         <div className="w-full overflow-hidden">
           <Swiper
             modules={[Grid]}
-            // slidesPerView={2}
-            spaceBetween={16}
-            slidesPerView={1}        // ✅ มือถือ = 1 อันต่อแถว
+            spaceBetween={30}
+            slidesPerView={1.15}       
             breakpoints={{
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },
