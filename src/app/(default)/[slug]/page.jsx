@@ -66,13 +66,13 @@ export default async function Page({ params }) {
         </div>
       </div>
 
-      {article.thumbnail && (
+      {/* {article.thumbnail && (
         <img
           src={article.thumbnail}
           alt={article.title}
           className="w-[800px] h-[450px] rounded-2xl mx-auto my-8"
         />
-      )}
+      )} */}
 
       <article className="prose prose-lg max-w-none">
         <ReactMarkdown
