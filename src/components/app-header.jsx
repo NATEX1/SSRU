@@ -21,7 +21,7 @@ export default function AppHeader() {
           <img
             src="/assets/images/logo_new.png"
             alt="logo"
-            className="h-14 w-14 lg:h-20 lg:w-20 object-contain"
+            className="h-14 w-14 lg:h-40 lg:w-40 object-contain"
           />
         </div>
 
