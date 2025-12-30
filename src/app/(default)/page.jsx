@@ -95,46 +95,48 @@ export default function Home() {
                         </div>
 
                         <div className="relative overflow-hidden rounded-2xl lg:max-w-full sm:max-w-[350px] bg-white md:bg-transparent">
-                          <div className="md:hidden">
-                            <a href={`/${post.slug}`} className="block">
-                              <div className="relative w-full aspect-[16/9] bg-gray-100">
-                                <img
-                                  src={post.thumbnail}
-                                  alt=""
-                                  className="absolute inset-0 w-full h-full object-contain block"
-                                />
-                              </div>
-                            </a>
-
-                            <div className="p-4">
+                          <div className="md:hidden px-3">
+                            <div className="w-full max-w-[360px] mx-auto bg-white border border-[#F3F4F6] rounded-2xl shadow-sm overflow-hidden">
                               <a href={`/${post.slug}`} className="block">
-                                <h6 className="text-gray-900 text-base font-semibold leading-snug break-words">
-                                  {post.title}
-                                </h6>
+                                <div className="relative w-full aspect-[16/9] bg-gray-100">
+                                  <img
+                                    src={post.thumbnail}
+                                    alt=""
+                                    className="absolute inset-0 w-full h-full object-cover block"
+                                  />
+                                </div>
                               </a>
 
-                              <p className="mt-2 text-gray-600 text-sm leading-relaxed break-words">
-                                {post.excerpt}
-                              </p>
-
-                              <div className="flex items-center justify-between gap-2 flex-wrap mt-3">
-                                <div className="flex gap-3 flex-wrap text-[10px] text-gray-600">
-                                  <div className="flex items-center gap-1">
-                                    <Calendar className="h-3 shrink-0" /> {post.date}
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <Eye className="h-3 shrink-0" /> {post.readCount}
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <Share2 className="h-3 shrink-0" /> {post.shareCount}
-                                  </div>
-                                </div>
-
-                                <a href={`/${post.slug}`} className="shrink-0">
-                                  <span className="text-[#F06FAA] text-xs flex items-center whitespace-nowrap">
-                                    อ่านต่อ <ArrowRight className="h-3 ml-0.5" />
-                                  </span>
+                              <div className="p-4">
+                                <a href={`/${post.slug}`} className="block">
+                                  <h6 className="text-gray-900 text-base font-semibold leading-snug break-words">
+                                    {post.title}
+                                  </h6>
                                 </a>
+
+                                <p className="mt-2 text-gray-600 text-sm leading-relaxed break-words">
+                                  {post.excerpt}
+                                </p>
+
+                                <div className="flex items-center justify-between gap-2 flex-wrap mt-3">
+                                  <div className="flex gap-3 flex-wrap text-[10px] text-gray-600">
+                                    <div className="flex items-center gap-1">
+                                      <Calendar className="h-3 shrink-0" /> {post.date}
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <Eye className="h-3 shrink-0" /> {post.readCount}
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <Share2 className="h-3 shrink-0" /> {post.shareCount}
+                                    </div>
+                                  </div>
+
+                                  <a href={`/${post.slug}`} className="shrink-0">
+                                    <span className="text-[#F06FAA] text-xs flex items-center whitespace-nowrap">
+                                      อ่านต่อ <ArrowRight className="h-3 ml-0.5" />
+                                    </span>
+                                  </a>
+                                </div>
                               </div>
                             </div>
                           </div>
