@@ -37,7 +37,7 @@ export default function MagazineCarousel({ data }) {
               1024: { slidesPerView: 3 },
               1280: { slidesPerView: 4 },
             }}
-            >
+          >
             {data?.map((item, index) => (
               <SwiperSlide key={index} className="px-1 sm:px-2">
                 <a
@@ -80,6 +80,7 @@ export default function MagazineCarousel({ data }) {
               </SwiperSlide>
             ))}
           </Swiper>
+
 
         </div>
       </div>
