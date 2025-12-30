@@ -28,15 +28,16 @@ export default function MagazineCarousel({ data }) {
         <div className="w-full overflow-hidden">
           <Swiper
             modules={[Grid]}
-            loop={false}
-            spaceBetween={16}
+            // slidesPerView={2}
+            spaceBetween={12}
+            slidesPerView={1.15}
             breakpoints={{
-              0: { slidesPerView: 1.15 },
-              480: { slidesPerView: 1.5 },
               640: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-              1280: { slidesPerView: 4 },
+              1024: { slidesPerView: 4 },
             }}
+            loop={false}
+            onSlideChange={() => console.log("slide change")}
+            onSwiper={(swiper) => console.log(swiper)}
           >
             {data?.map((item, index) => (
               <SwiperSlide key={index} className="px-1 sm:px-2">
@@ -44,14 +45,14 @@ export default function MagazineCarousel({ data }) {
                   href={item.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="block size-auto"
+                  className="block w-full"
                 >
-                  <div className="size-auto bg-white shadow rounded-xl overflow-hidden flex flex-col">
-                    <figure className="size-auto">
+                  <div className="w-full bg-white shadow rounded-xl overflow-hidden flex flex-col">
+                    <figure className="w-full">
                       <img
                         src={item.image}
                         alt={item.title}
-                        className="size-auto object-cover"
+                        className="w-screen h-[300px] sm:h-[300px] lg:h-[340px] object-cover"
                         loading="lazy"
                       />
                     </figure>
