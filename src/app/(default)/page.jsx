@@ -101,25 +101,28 @@ export default function Home() {
                           <img
                             src={post.thumbnail}
                             alt=""
-                            className="opacity-80"
+                            className="w-full h-56 sm:h-64 md:h-full opacity-80"
                           />
                         </a>
 
-                        <div className=" absolute bottom-0 left-0 right-0 p-4 z-20">
-                          <h6 className="text-white">{post.title}</h6>
-                          <p className="line-clamp-2 text-muted text-sm mb-4">
+                        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-20">
+                          <h6 className="text-white text-base sm:text-lg font-semibold leading-snug line-clamp-2">
+                            {post.title}
+                          </h6>
+
+                          <p className="mt-1 line-clamp-2 text-white/80 text-xs sm:text-sm mb-3 sm:mb-4">
                             {post.excerpt}
                           </p>
 
                           <div className="flex items-center justify-between">
-                            <div className="flex gap-4">
-                              <div className="flex items-center gap-1 text-white text-xs">
+                            <div className="flex gap-3 flex-wrap">
+                              <div className="flex items-center gap-1 text-white text-[10px] sm:text-xs">
                                 <Calendar className="h-3" /> {post.date}
                               </div>
-                              <div className="flex items-center gap-1 text-white text-xs">
+                              <div className="flex items-center gap-1 text-white text-[10px] sm:text-xs">
                                 <Eye className="h-3" /> {post.readCount}
                               </div>
-                              <div className="flex items-center gap-1 text-white text-xs">
+                              <div className="flex items-center gap-1 text-white text-[10px] sm:text-xs">
                                 <Share2 className="h-3" /> {post.shareCount}
                               </div>
                             </div>
@@ -152,7 +155,7 @@ export default function Home() {
                         href={`/categories/${post.category}`}
                         className="hover:text-[#F06FAA] transition"
                       >
-                        <h4 className="text-2xl font-bold">
+                        <h4 className="text-lg sm:text-xl lg:text-2xl font-bold">
                           {getCategoryName(post.category)}
                         </h4>
                       </a>
@@ -168,7 +171,7 @@ export default function Home() {
                           <img
                             src={post.thumbnail}
                             alt={post.slug}
-                            className="h-40 w-full object-cover"
+                            className="w-full h-56 sm:h-64 md:h-full object-cover opacity-80" 
                           />
                         </figure>
                       </a>
