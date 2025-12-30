@@ -80,10 +80,10 @@ export default function Home() {
               {catPost.map((post, i) => {
                 if (i == 0) {
                   return (
-                    <div key={i} className="col-span-1 md:col-span-2 ">
-                      <div className="flex items-center gap-2 mb-4">
+                    <div key={i} className="col-span-1 md:col-span-2 max-w-full overflow-hidden">
+                      <div className="flex items-center gap-2 mb-4 max-w-full">
                         <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
-                        <h4 className="text-2xl font-bold">
+                        <h4 className="text-lg sm:text-xl lg:text-2xl font-bold break-words">
                           <a
                             href={`/categories/${post.category}`}
                             className="hover:text-[#F06FAA] transition"
@@ -93,111 +93,116 @@ export default function Home() {
                         </h4>
                       </div>
 
-                      <div className="relative overflow-hidden rounded-2xl h-56 sm:h-64 md:h-full lg:h-auto">
-                        <a
-                          href={`/${post.slug}`}
-                          className="col-span-2 block"
-                        >
+                      <div className="relative overflow-hidden rounded-2xl max-w-full">
+                        <a href={`/${post.slug}`} className="block max-w-full">
                           <img
                             src={post.thumbnail}
                             alt=""
-                            className="w-[50px] max-w-[50px] h-full object-cover opacity-80 block lg:w-full lg:max-w-full lg:h-56 sm:lg:h-64 md:lg:h-full"
+                            className="w-full max-w-full h-56 sm:h-64 md:h-full object-cover opacity-80 block"
                           />
                         </a>
 
-                        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-20">
-                          <h6 className="text-white text-base sm:text-lg font-semibold leading-snug line-clamp-2">
+                        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-20 max-w-full">
+                          <h6 className="text-white text-sm sm:text-lg font-semibold leading-snug line-clamp-2 break-words">
                             {post.title}
                           </h6>
 
-                          <p className="mt-1 line-clamp-2 text-white/80 text-xs sm:text-sm mb-3 sm:mb-4">
+                          <p className="mt-1 line-clamp-2 text-white/80 text-[11px] sm:text-sm mb-3 sm:mb-4 break-words">
                             {post.excerpt}
                           </p>
 
-                          <div className="flex items-center justify-between">
-                            <div className="flex gap-3 flex-wrap">
-                              <div className="flex items-center gap-1 text-white text-[10px] sm:text-xs">
-                                <Calendar className="h-3" /> {post.date}
+                          <div className="flex items-center justify-between gap-2 flex-wrap">
+                            {/* meta */}
+                            <div className="flex gap-3 flex-wrap text-[10px] sm:text-xs text-white">
+                              <div className="flex items-center gap-1">
+                                <Calendar className="h-3 shrink-0" /> {post.date}
                               </div>
-                              <div className="flex items-center gap-1 text-white text-[10px] sm:text-xs">
-                                <Eye className="h-3" /> {post.readCount}
+                              <div className="flex items-center gap-1">
+                                <Eye className="h-3 shrink-0" /> {post.readCount}
                               </div>
-                              <div className="flex items-center gap-1 text-white text-[10px] sm:text-xs">
-                                <Share2 className="h-3" /> {post.shareCount}
+                              <div className="flex items-center gap-1">
+                                <Share2 className="h-3 shrink-0" /> {post.shareCount}
                               </div>
                             </div>
 
-                            <a
-                              href={`/${post.slug}`}
-                            >
-                              <span className="text-[#F06FAA]  text-xs flex items-center">อ่านต่อ <ArrowRight className="h-3" /></span>
+                            {/* read more */}
+                            <a href={`/${post.slug}`} className="shrink-0">
+                              <span className="text-[#F06FAA] text-xs flex items-center whitespace-nowrap">
+                                อ่านต่อ <ArrowRight className="h-3 ml-0.5" />
+                              </span>
                             </a>
                           </div>
                         </div>
+
                         <div
                           className="
-                                pointer-events-none
-                                absolute inset-0
-                                bg-linear-to-b
-                                from-transparent from-10%
-                                to-black/80 to-100%"
+                            pointer-events-none
+                            absolute inset-0
+                            bg-linear-to-b
+                            from-transparent from-10%
+                            to-black/80 to-100%"
                         ></div>
                       </div>
                     </div>
+
                   );
                 }
 
                 return (
-                  <div key={i} className="flex flex-col">
+                  <div key={i} className="flex flex-col max-w-full overflow-hidden">
                     <div className="flex items-center gap-2 mb-4">
-                      <div className="w-1.5 h-6  rounded-2xl bg-[#F06FAA]"></div>
+                      <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
                       <a
                         href={`/categories/${post.category}`}
                         className="hover:text-[#F06FAA] transition"
                       >
-                        <h4 className="text-lg sm:text-xl lg:text-2xl font-bold">
+                        <h4 className="text-lg sm:text-xl lg:text-2xl font-bold break-words">
                           {getCategoryName(post.category)}
                         </h4>
                       </a>
                     </div>
 
-                    <div className="card  overflow-hidden">
-                      <a
-                        href={`/${post.slug}`}
-                        className="col-span-2 block"
-                      >
-                        <figure className="h-40 lg:h-auto">
-
+                    <div className="card overflow-hidden max-w-full">
+                      <a href={`/${post.slug}`} className="block">
+                        <figure className="max-w-full overflow-hidden">
                           <img
                             src={post.thumbnail}
                             alt={post.slug}
-                            className="w-[50px] max-w-[50px] h-full object-cover block lg:w-full lg:max-w-full lg:h-40" 
+                            className="h-40 w-full max-w-full object-cover block"
                           />
                         </figure>
                       </a>
-                      <div className="card-body p-1">
-                        <h2 className="card-title line-clamp-1">
+
+                      <div className="card-body p-2 sm:p-3 max-w-full">
+                        <h2 className="card-title line-clamp-1 break-words">
                           {post.title}
                         </h2>
-                        <p className="line-clamp-2">{post.excerpt}</p>
-                        <div className="flex items-center justify-between">
-                          <div className="flex">
-                            <div className="flex items-center text-[10px]">
-                              <Calendar className="h-2.5" /> 28/11/2568
+
+                        <p className="line-clamp-2 break-words text-sm">
+                          {post.excerpt}
+                        </p>
+
+                        <div className="flex items-center justify-between gap-2 flex-wrap">
+                          {/* meta */}
+                          <div className="flex items-center gap-2 flex-wrap text-[10px] text-gray-600">
+                            <div className="flex items-center gap-1">
+                              <Calendar className="h-2.5 shrink-0" />
+                              <span>28/11/2568</span>
                             </div>
-                            <div className="flex items-center text-[10px]">
-                              <Eye className="h-2.5" /> {post.readCount}
+                            <div className="flex items-center gap-1">
+                              <Eye className="h-2.5 shrink-0" />
+                              <span>{post.readCount}</span>
                             </div>
-                            <div className="flex items-center text-[10px]">
-                              <Share2 className="h-2.5" /> {post.shareCount}
+                            <div className="flex items-center gap-1">
+                              <Share2 className="h-2.5 shrink-0" />
+                              <span>{post.shareCount}</span>
                             </div>
                           </div>
-                          <a
-                            href={`/${post.slug}`}
-                            className="col-span-2 block"
-                          >
-                            <span className="text-[#3F458D] text-xs flex items-center cursor-pointer">
-                              อ่านต่อ <ArrowRight className="h-2.5" />
+
+                          {/* read more */}
+                          <a href={`/${post.slug}`} className="shrink-0">
+                            <span className="text-[#3F458D] text-xs flex items-center cursor-pointer whitespace-nowrap">
+                              อ่านต่อ <ArrowRight className="h-2.5 ml-0.5" />
                             </span>
                           </a>
                         </div>
