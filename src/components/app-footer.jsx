@@ -41,10 +41,10 @@ export default function AppFooter() {
             02 160 1023
           </a>
 
-          <a href="mailto:pr@ssru.ac.th"
+          <a href="mailto:kcc@ssru.ac.th"
             className="flex items-center gap-2 text-[#6A7282] hover:underline">
             <img src="/assets/images/mail.png" className="h-4 w-4" alt="mail" />
-            pr@ssru.ac.th
+            kcc@ssru.ac.th
           </a>
         </ul>
 
