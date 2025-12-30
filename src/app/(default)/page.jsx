@@ -76,11 +76,11 @@ export default function Home() {
       <div className="flex items-start gap-4">
         <div className="flex-1">
           <div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {catPost.map((post, i) => {
                 if (i == 0) {
                   return (
-                    <div key={i} className="col-span-2 ">
+                    <div key={i} className="col-span-1 md:col-span-2 ">
                       <div className="flex items-center gap-2 mb-4">
                         <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
                         <h4 className="text-2xl font-bold">
@@ -206,16 +206,16 @@ export default function Home() {
             </div>
           </div>
           <br /><br />
-          <div className="flex gap-8 flex-1 mb-8">
-            <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-16 px-8 rounded-4xl w-full">
+          <div className="flex flex-col lg:flex-row gap-8 flex-1 mb-8">
+            <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-10 lg:py-16 px-5 lg:px-8 rounded-4xl w-full">
               <MagazineCarousel data={magazines} />
             </div>
 
-            <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-16 px-8 rounded-4xl w-full">
+            <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-10 lg:py-16 px-5 lg:px-8 rounded-4xl w-full">
               <ClipCarousel data={clips} />
             </div>
           </div>
-          <div className="flex gap-8 flex-1 mb-8">
+          <div className="flex flex-col lg:flex-row gap-8 flex-1 mb-8">
 
           </div>
         </div>
