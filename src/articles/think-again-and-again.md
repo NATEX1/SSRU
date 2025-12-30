@@ -12,6 +12,7 @@ readCount: 102
 shareCount: 2
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
 links_category: "/categories/thoughts-today"
+order: 5
 ---
 
 <div style="text-align:center">

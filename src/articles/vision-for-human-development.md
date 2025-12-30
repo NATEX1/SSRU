@@ -12,6 +12,7 @@ readCount: 754
 shareCount: 50
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
 links_category: "/categories/executive-thoughts"
+order: 1
 ---
 
 **วิสัยทัศน์ผู้บริหาร 1**

@@ -12,6 +12,7 @@ readCount: 333
 shareCount: 5
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
 links_category: "/categories/documentary-knowledge"
+order: 2
 ---
 
 **การอาบป่า: ธรรมชาติบำบัดจะนำไปสู่การรักษาโรคแทนยา**
