@@ -9,7 +9,7 @@ export async function POST(req) {
 
     if (!name || !email || !password) {
       return NextResponse.json(
-        { message: "Missing required fields" },
+        { success: false, message: "Missing required fields" },
         { status: 400 }
       );
     }
@@ -20,7 +20,7 @@ export async function POST(req) {
 
     if (existingUser) {
       return NextResponse.json(
-        { message: "อีเมลนี้มีผู้ใช้ในระบบแล้ว!" },
+        { success: false, message: "อีเมลนี้มีผู้ใช้ในระบบแล้ว!" },
         { status: 400 }
       );
     }
@@ -45,6 +45,7 @@ export async function POST(req) {
     console.error(err);
     return NextResponse.json(
       {
+        success: false,
         message: "Error creating user",
         error: err.message,
       },
