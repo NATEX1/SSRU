@@ -29,7 +29,7 @@ export default function MagazineCarousel({ data }) {
           <Swiper
             modules={[Grid]}
             spaceBetween={16}
-            slidesPerView={1.5}       
+            slidesPerView={1.15}       
             breakpoints={{
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 2 },
@@ -51,7 +51,7 @@ export default function MagazineCarousel({ data }) {
                       <img
                         src={item.image}
                         alt={item.title}
-                        className="h-[360px] object-cover"
+                        className="h-[300px] object-cover"
                       />
                     </figure>
 
