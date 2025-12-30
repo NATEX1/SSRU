@@ -40,7 +40,7 @@ export default function AppHeader() {
         </div>
 
         {/* Right: (Mobile Search Icon) + Language Switch */}
-        <div className="flex items-center gap-2 ml-auto md:hidden">
+        <div className="flex items-center gap-2 ml-auto">
           <button
             type="button"
             onClick={() => setMobileSearchOpen(true)}
