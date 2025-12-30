@@ -62,6 +62,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import DeleteDialog from "@/components/delete-dialog";
 
 export default function page() {
   const [data, setData] = useState([]);
@@ -72,31 +73,54 @@ export default function page() {
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    const handler = setTimeout(async () => {
-      try {
-        const params = new URLSearchParams();
-        params.append("page", page);
-        params.append("limit", limit);
-        if (search) params.append("q", search);
+  const fetchCategories = async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      params.append("page", page);
+      params.append("limit", limit);
+      if (search) params.append("q", search);
 
-        const res = await fetch(`/api/categories?${params.toString()}`);
-        const json = await res.json();
+      const res = await fetch(`/api/categories?${params.toString()}`);
+      const json = await res.json();
 
-        if (json.success) {
-          setData(json.data);
-          setTotalPages(json.pagination.totalPages);
-          setTotal(json.pagination.total);
-        }
-      } catch (error) {
-        console.error("Failed to fetch categories", error);
-      } finally {
-        setLoading(false);
+      if (json.success) {
+        setData(json.data);
+        setTotalPages(json.pagination.totalPages);
+        setTotal(json.pagination.total);
       }
+    } catch (error) {
+      console.error("Failed to fetch categories", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      fetchCategories();
     }, 500);
 
     return () => clearTimeout(handler);
-  }, [search, limit, page]);
+  }, [search, page, limit]);
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`/api/categories/${id}`, {
+        method: "DELETE",
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        throw new Error(json.message || "ลบข้อมูลไม่สำเร็จ");
+      }
+
+      await fetchCategories();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const columns = [
     {
@@ -115,12 +139,14 @@ export default function page() {
             <Pencil className="size-4" /> แก้ไข
           </Button>
 
-          <Button
-            variant={"ghost"}
-            className={"cursor-pointer underline text-red-500"}
-          >
-            <Trash className="size-4" /> ลบ
-          </Button>
+          <DeleteDialog onConfirm={() => handleDelete(row.original.slug)}>
+            <Button
+              variant={"ghost"}
+              className={"cursor-pointer underline text-red-500"}
+            >
+              <Trash className="size-4" /> ลบ
+            </Button>
+          </DeleteDialog>
         </div>
       ),
     },
@@ -137,9 +163,7 @@ export default function page() {
       <div className="flex justify-between mb-8">
         <h1 className="text-4xl font-bold">จัดการหมวดหมู่</h1>
 
-        <Button>
-          เพิ่มหมวดหมู่
-        </Button>
+        <Button>เพิ่มหมวดหมู่</Button>
       </div>
 
       <div className="overflow-hidden rounded-2xl shadow border bg-white">

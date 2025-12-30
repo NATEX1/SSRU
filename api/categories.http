@@ -1,15 +1,16 @@
 ### Create category
 POST http://localhost:3000/api/categories
+Content-Type: application/json
+
 {
-    "name": "สนทนาบนเส้นทางงาน",
-    "slug": "career-path-conversations"
+    "name": "Hall of fame"
 }
 
 ### Get categories
-GET http://localhost:3000/api/categories
+GET http://localhost:3000/api/categories/
 
 ### Get a category
-GET http://localhost:3000/api/categories/1
+GET http://localhost:3000/api/categories/สนทนาบนเส้นทางงาน
  
 
 ### Create category in production

@@ -1,6 +1,25 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+async function generateUniqueSlug(title) {
+  const baseSlug = title.trim().replace(/\s+/g, "-");
+  let slug = baseSlug;
+  let counter = 1;
+
+  while (true) {
+    const exists = await prisma.category.findUnique({
+      where: { slug },
+    });
+
+    if (!exists) break;
+
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+
+  return slug;
+}
+
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
@@ -55,15 +74,16 @@ export async function GET(req) {
 
 export async function POST(req) {
   try {
-    const { name, slug } = await req.json();
+    const { name } = await req.json();
 
-    if (!name || !slug) {
+    if (!name) {
       return NextResponse.json(
-        { success: false, message: "Name and slug are required" },
+        { success: false, message: "Name are required" },
         { status: 400 }
       );
     }
 
+    const slug = await generateUniqueSlug(name)
     // สร้าง Category ใหม่
     const newCategory = await prisma.category.create({
       data: {

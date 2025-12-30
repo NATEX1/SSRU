@@ -27,6 +27,7 @@ enum UserRole {
 model User {
   id        Int        @id @default(autoincrement()) @map("id")
   name      String     @map("name")
+  image     String?     @map("image")
   email     String     @unique @map("email")
   password  String     @map("password")
   role      UserRole   @default(author) @map("role")
@@ -61,7 +62,7 @@ model Article {
   updatedAt  DateTime @default(now()) @map("updated_at")
 
   author   User         @relation(fields: [authorId], references: [id])
-  category Category     @relation(fields: [categoryId], references: [id])
+  category Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   tags     ArticleTag[]
 
   @@map("articles")

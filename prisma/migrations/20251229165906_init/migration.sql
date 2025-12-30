@@ -1,12 +1,19 @@
+-- CreateEnum
+CREATE TYPE "UserStatus" AS ENUM ('active', 'inactive');
+
+-- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('admin', 'approver', 'author');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "image" TEXT,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "role" TEXT NOT NULL DEFAULT 'author',
+    "role" "UserRole" NOT NULL DEFAULT 'author',
     "position" TEXT,
-    "status" TEXT NOT NULL DEFAULT 'active',
+    "status" "UserStatus" NOT NULL DEFAULT 'active',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
@@ -28,6 +35,7 @@ CREATE TABLE "articles" (
     "author_id" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
+    "excerpt" TEXT,
     "content" TEXT NOT NULL,
     "thumbnail" TEXT,
     "status" TEXT NOT NULL DEFAULT 'draft',
@@ -80,7 +88,7 @@ CREATE UNIQUE INDEX "tags_name_key" ON "tags"("name");
 ALTER TABLE "articles" ADD CONSTRAINT "articles_author_id_fkey" FOREIGN KEY ("author_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "articles" ADD CONSTRAINT "articles_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "articles" ADD CONSTRAINT "articles_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "article_tags" ADD CONSTRAINT "article_tags_article_id_fkey" FOREIGN KEY ("article_id") REFERENCES "articles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
