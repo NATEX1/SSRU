@@ -97,7 +97,7 @@ export default function Home() {
                         <div className="relative overflow-hidden rounded-2xl max-w-full bg-white">
                           <div className="md:hidden max-w-[320px] rounded-2xl">
                             <a href={`/${post.slug}`} className="block">
-                              <div className="relative w-full aspect-[16/9] bg-gray-100">
+                              <div className="relative w-full bg-gray-100">
                                 <img
                                   src={post.thumbnail}
                                   alt=""
