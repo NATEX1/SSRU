@@ -10,12 +10,12 @@ import { Grid } from "swiper/modules";
 
 export default function MagazineCarousel({ data }) {
   return (
-    <div className="flex-1">
+    <div className="relative overflow-hidden rounded-2xl w-full">
       <div>
         <p className="text-[#F06FAA]">E-BOOK</p>
 
         <div className="flex justify-between items-end mb-4">
-          <h2 className="text-[#101828] text-4xl font-bold">SSRU Around</h2>
+          <h2 className="text-[#101828] text-2xl font-bold">SSRU Around</h2>
 
           <a href="#" className="hover:underline">
             <div className="text-[#6A7282] flex text-xs items-center gap-1">
