@@ -70,7 +70,7 @@ export default function Home() {
   const catPost = getOnePostEachOtherCategory();
 
   return (
-    <div className="px-4 sm:px-5 lg:px-0">
+    <div className="px-4 sm:px-5 lg:px-0 overflow-x-hidden lg:overflow-visible">
       <ArticleSlider />
 
       <div className="flex items-start gap-4">
@@ -101,7 +101,7 @@ export default function Home() {
                           <img
                             src={post.thumbnail}
                             alt=""
-                            className="w-full h-56 sm:h-64 md:h-full opacity-80"
+                            className="w-full max-w-full h-56 sm:h-64 md:h-full object-cover opacity-80 block"
                           />
                         </a>
 
@@ -171,7 +171,7 @@ export default function Home() {
                           <img
                             src={post.thumbnail}
                             alt={post.slug}
-                            className="w-full h-56 sm:h-64 md:h-full object-cover opacity-80" 
+                            className="h-40 w-full max-w-full object-cover block" 
                           />
                         </figure>
                       </a>
