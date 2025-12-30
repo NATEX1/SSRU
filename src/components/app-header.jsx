@@ -40,7 +40,7 @@ export default function AppHeader() {
         </div>
 
         {/* Right: (Mobile Search Icon) + Language Switch */}
-        <div className="flex items-center gap-2 ml-auto">
+        <div className="flex items-center gap-2 ml-auto md:hidden">
           <button
             type="button"
             onClick={() => setMobileSearchOpen(true)}
@@ -54,7 +54,7 @@ export default function AppHeader() {
           {/* Language Switch */}
           <div
             className={`border border-[#E5E7EB] rounded-full flex p-0.5 bg-white transition-opacity duration-200
-              ${mobileSearchOpen ? "opacity-0 lg:opacity-100 pointer-events-none lg:pointer-events-auto" : "opacity-100"}`}
+              ${mobileSearchOpen ? "opacity-0 lg:opacity-100 pointer-events-none lg:pointer-events-auto" : "opacity-100 md:hidden"}`}
           >
             <button
               type="button"

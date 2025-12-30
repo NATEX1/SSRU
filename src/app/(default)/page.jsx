@@ -94,8 +94,8 @@ export default function Home() {
                           </h4>
                         </div>
 
-                        <div className="relative overflow-hidden rounded-2xl max-w-full bg-white md:bg-transparent">
-                          <div className="md:hidden max-w-[300px]">
+                        <div className="relative overflow-hidden rounded-2xl max-w-full bg-white">
+                          <div className="md:hidden max-w-[320px] rounded-2xl">
                             <a href={`/${post.slug}`} className="block">
                               <div className="relative w-full aspect-[16/9] bg-gray-100">
                                 <img
