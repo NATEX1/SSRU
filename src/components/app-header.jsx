@@ -51,18 +51,7 @@ export default function AppHeader() {
       </div>
 
       {/* Mobile Search bar */}
-      <div className="lg:hidden border-t border-[#F3F4F6] bg-white">
-        <div className="container mx-auto px-4 py-3">
-          <div className="w-full h-10 px-3 py-2 flex items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full focus-within:border-[#F06FAA]">
-            <Search className="h-[1em] text-[#99A1AF]" />
-            <input
-              type="text"
-              placeholder="ค้นหา..."
-              className="w-full outline-none bg-transparent"
-            />
-          </div>
-        </div>
-      </div>
+      
     </header>
 
   );
