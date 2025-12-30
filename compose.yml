@@ -1,8 +1,7 @@
-name: ssru
-
 services:
   postgres:
     image: postgres:16
+    container_name: postgres
     restart: always
     environment:
       POSTGRES_USER: ssru
@@ -16,18 +15,22 @@ services:
       - pg-network
 
   pgadmin:
-    image: dpage/pgadmin4:latest 
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@gmail.com
       PGADMIN_DEFAULT_PASSWORD: P@ssw0rd
     ports:
-      - "8080:80" 
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
     networks:
       - pg-network
 
 volumes:
   pgdata:
+  pgadmin_data:
 
 networks:
   pg-network:

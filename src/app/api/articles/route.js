@@ -40,7 +40,7 @@ export async function POST(req) {
     const status = formData.get("status") || "draft";
     const tagsArray = JSON.parse(formData.get("tags") || "[]");
 
-    if (!title || !slug || !content || !categoryId) {
+    if (!title || !content || !categoryId) {
       return NextResponse.json({ success: false, message: "Missing required fields" }, { status: 400 });
     }
 
