@@ -81,7 +81,7 @@ export default function Home() {
                 {catPost.map((post, i) => {
                   if (i == 0) {
                     return (
-                      <div key={i} className="col-span-1 md:col-span-2 lg:max-w-full md:w-[320px] overflow-hidden">
+                      <div key={i} className="col-span-1 md:col-span-2 max-w-full overflow-hidden">
                         <div className="flex items-center gap-2 mb-4 max-w-full">
                           <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
                           <h4 className="text-lg sm:text-xl lg:text-2xl font-bold break-words">
