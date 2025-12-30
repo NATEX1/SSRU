@@ -4,6 +4,9 @@ CREATE TYPE "UserStatus" AS ENUM ('active', 'inactive');
 -- CreateEnum
 CREATE TYPE "UserRole" AS ENUM ('admin', 'approver', 'author');
 
+-- CreateEnum
+CREATE TYPE "ArticleStatus" AS ENUM ('draft', 'approved', 'rejected');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
@@ -38,7 +41,7 @@ CREATE TABLE "articles" (
     "excerpt" TEXT,
     "content" TEXT NOT NULL,
     "thumbnail" TEXT,
-    "status" TEXT NOT NULL DEFAULT 'draft',
+    "status" "ArticleStatus" NOT NULL DEFAULT 'draft',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
