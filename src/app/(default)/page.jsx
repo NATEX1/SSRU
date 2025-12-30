@@ -70,7 +70,7 @@ export default function Home() {
   const catPost = getOnePostEachOtherCategory();
 
   return (
-    <div>
+    <div className="px-4 sm:px-5 lg:px-0">
       <ArticleSlider />
 
       <div className="flex items-start gap-4">
