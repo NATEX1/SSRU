@@ -42,7 +42,7 @@ export default function ClipCarousel() {
       <p className="text-[#F06FAA]">SSRU CHANNEL</p>
 
       <div className="flex justify-between items-end mb-4">
-        <h2 className="text-[#101828] text-4xl font-bold">Short Clips</h2>
+        <h2 className="text-[#101828] text-xl font-bold">Short Clips</h2>
 
         <a
           href="https://www.youtube.com/@ssrutube/shorts"
