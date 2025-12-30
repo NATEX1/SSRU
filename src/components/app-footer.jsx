@@ -69,7 +69,7 @@ export default function AppFooter() {
             </li>
           ))}
         </ul>
-
+          <br /><br />
       </div>
     </footer>
 
