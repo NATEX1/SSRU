@@ -44,14 +44,14 @@ export default function MagazineCarousel({ data }) {
                   href={item.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="block w-full h-full"
+                  className="block size-auto"
                 >
-                  <div className="w-full h-full bg-white shadow rounded-xl overflow-hidden flex flex-col">
-                    <figure className="w-full">
+                  <div className="size-auto bg-white shadow rounded-xl overflow-hidden flex flex-col">
+                    <figure className="size-auto">
                       <img
                         src={item.image}
                         alt={item.title}
-                        className="w-full h-[260px] sm:h-[300px] lg:h-[340px] object-cover"
+                        className="size-auto object-cover"
                         loading="lazy"
                       />
                     </figure>
