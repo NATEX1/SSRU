@@ -167,7 +167,7 @@ export default function ArticleSlider() {
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.25 }}
               >
-                <p className="text-xs text-[#99A1AF] mb-2">
+                <p className="text-xs lg:text-sm text-[#99A1AF] mb-2">
                   <span className="text-[#F06FAA]">{current.author}</span>{" "}
                   <span>|</span> <span>{current.dateText}</span>
                 </p>
@@ -176,12 +176,12 @@ export default function ArticleSlider() {
                   href={`/${current.slug}`}
                   className="col-span-2 block"
                 >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">
+                  <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">
                     {current.title}
                   </h2>
                 </a>
 
-                <p className="text-gray-600 leading-relaxed line-clamp-3">
+                <p className="text-gray-600 text-base lg:text-lg leading-relaxed line-clamp-3 lg:line-clamp-4">
                   {current.excerpt}
                 </p>
               </motion.div>
