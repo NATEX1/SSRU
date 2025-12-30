@@ -17,6 +17,7 @@ export function getAllPosts() {
 
       return {
         slug,
+        order: data.order ?? 999,
         title: data.title,
         thumbnail: data.thumbnail,
         excerpt: data.excerpt,
@@ -29,7 +30,7 @@ export function getAllPosts() {
         content,
       };
     })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    .sort((a, b) => a.order - b.order);
 
   return allPosts;
 }
