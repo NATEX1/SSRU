@@ -93,7 +93,7 @@ export default function Home() {
                         </h4>
                       </div>
 
-                      <div className="relative overflow-hidden rounded-2xl ">
+                      <div className="relative overflow-hidden rounded-2xl h-56 sm:h-64 md:h-full lg:h-auto">
                         <a
                           href={`/${post.slug}`}
                           className="col-span-2 block"
@@ -101,7 +101,7 @@ export default function Home() {
                           <img
                             src={post.thumbnail}
                             alt=""
-                            className="w-full max-w-full h-56 sm:h-64 md:h-full object-cover opacity-80 block"
+                            className="w-[50px] max-w-[50px] h-full object-cover opacity-80 block lg:w-full lg:max-w-full lg:h-56 sm:lg:h-64 md:lg:h-full"
                           />
                         </a>
 
@@ -166,12 +166,12 @@ export default function Home() {
                         href={`/${post.slug}`}
                         className="col-span-2 block"
                       >
-                        <figure>
+                        <figure className="h-40 lg:h-auto">
 
                           <img
                             src={post.thumbnail}
                             alt={post.slug}
-                            className="h-40 w-full max-w-full object-cover block" 
+                            className="w-[50px] max-w-[50px] h-full object-cover block lg:w-full lg:max-w-full lg:h-40" 
                           />
                         </figure>
                       </a>
