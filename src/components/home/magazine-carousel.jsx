@@ -28,11 +28,11 @@ export default function MagazineCarousel({ data }) {
         <div className="w-full overflow-hidden">
           <Swiper
             modules={[Grid]}
-            spaceBetween={30}
-            slidesPerView={1.15}       
+            spaceBetween={16}
+            slidesPerView={1.5}       
             breakpoints={{
               640: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
+              1024: { slidesPerView: 2 },
             }}
             loop={false}
             onSlideChange={() => console.log("slide change")}
