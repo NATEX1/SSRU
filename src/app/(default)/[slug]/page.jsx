@@ -32,7 +32,7 @@ export default async function Page({ params }) {
   }
 
   return (
-    <div className="max-w-[1250px] mx-auto p-4">
+    <div className="container mx-auto px-4 py-6">
       <Link
         href="/"
         className="flex items-center text-sm text-[#6A7282] mb-8 hover:underline"
