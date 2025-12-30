@@ -70,7 +70,7 @@ export default function Home() {
   const catPost = getOnePostEachOtherCategory();
 
   return (
-    <div className="mb-8">
+    <div className="p-6 mb-8">
       <div className="overflow-hidden">
         <ArticleSlider />
 
@@ -94,7 +94,7 @@ export default function Home() {
                           </h4>
                         </div>
 
-                        <div className="relative overflow-hidden rounded-2xl max-w-[250px]">
+                        <div className="relative overflow-hidden rounded-2xl lg:max-w-full sm:max-w-[350px]">
                           <a href={`/${post.slug}`} className="block max-w-full">
                             <img
                               src={post.thumbnail}
