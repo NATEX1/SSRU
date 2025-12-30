@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Home,
   Briefcase,
@@ -12,13 +13,20 @@ import {
   ChevronLeft,
   Menu,
   SquarePen,
+  X,
 } from "lucide-react";
 import Link from "next/link";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function AppSidebar() {
+  const pathname = usePathname();
+
+  // desktop collapse
   const [collapsed, setCollapsed] = useState(true);
-  const sidebarRef = useRef(null);
+
+  // mobile drawer open/close
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const menus = [
     { icon: Home, label: "หน้าแรก", href: "/" },
@@ -30,78 +38,134 @@ export default function AppSidebar() {
     { icon: FileText, label: "สารคดีความรู้", href: "/categories/documentary-knowledge" },
     { icon: Star, label: "Hall of fame", href: "/categories/hall-of-fame" },
     { icon: Phone, label: "ติดต่อเรา", href: "/contact-us" },
-    {icon: SquarePen, label: 'เขียนบทความ', href: '/write'}
+    { icon: SquarePen, label: "เขียนบทความ", href: "/write" },
   ];
 
-  // close sidebar when clicking outside
+  // ปิด drawer เมื่อเปลี่ยนหน้า (มือถือ)
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-        setCollapsed(true);
-      }
-    };
+    setMobileOpen(false);
+  }, [pathname]);
 
-    document.addEventListener("mousedown", handleClickOutside);
+  // ล็อกการ scroll 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = prev;
     };
-  }, []);
+  }, [mobileOpen]);
 
-  return (
-    <div
-      ref={sidebarRef}
-      className={`fixed top-0 left-0 flex flex-col items-center h-screen bg-white border-r border-[#F9FAFB] transition-all duration-300 ease-in-out z-50 ${
-        collapsed ? "w-20" : "w-64"
-      }`}
-    >
-      {/* Header with toggle */}
-      <div className="flex h-20 items-center justify-between px-4 border-b border-[#F3F4F6]">
-        {collapsed ? (
+  const SidebarContent = ({ isDesktop }) => (
+    <div className="flex flex-col h-full bg-white border-r border-[#F3F4F6]">
+      {/* Header */}
+      <div className="flex h-16 items-center justify-between px-4 border-b border-[#F3F4F6]">
+        {/* Mobile: ปุ่มปิด */}
+        {!isDesktop ? (
           <button
-            onClick={() => setCollapsed(false)}
-            className="w-full flex items-center justify-center p-2 hover:bg-gray-100 rounded-full transition-colors "
+            onClick={() => setMobileOpen(false)}
+            className="p-2 hover:bg-gray-100 rounded-md transition-colors"
+            aria-label="Close menu"
           >
-            <Menu className="h-5 w-5 text-gray-600" />
+            <X className="h-5 w-5 text-gray-600" />
           </button>
         ) : (
-          <button
-            onClick={() => setCollapsed(true)}
-            className="p-2 hover:bg-gray-100 rounded-md transition-colors"
-          >
-            <ChevronLeft className="h-5 w-5 text-gray-600" />
-          </button>
+          // Desktop: toggle collapse
+          <>
+            {collapsed ? (
+              <button
+                onClick={() => setCollapsed(false)}
+                className="w-full flex items-center justify-center p-2 hover:bg-gray-100 rounded-full transition-colors"
+                aria-label="Expand sidebar"
+              >
+                <Menu className="h-5 w-5 text-gray-600" />
+              </button>
+            ) : (
+              <button
+                onClick={() => setCollapsed(true)}
+                className="p-2 hover:bg-gray-100 rounded-md transition-colors"
+                aria-label="Collapse sidebar"
+              >
+                <ChevronLeft className="h-5 w-5 text-gray-600" />
+              </button>
+            )}
+          </>
         )}
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto py-4 w-full">
+      <nav className="flex-1 overflow-y-auto py-4">
         <ul className="space-y-1 px-3">
-          {menus.map((menu, index) => (
-            <li key={index}>
-              <Link href={menu.href}>
-                <button
-                  className={`cursor-pointer group relative flex w-full items-center rounded-md p-3 text-sm transition-all duration-300 hover:bg-gray-100 text-gray-700 ${
-                    collapsed ? "justify-center" : ""
-                  }`}
+          {menus.map((menu, index) => {
+            const active = pathname === menu.href || pathname?.startsWith(menu.href + "/");
+            const Icon = menu.icon;
+
+            return (
+              <li key={index}>
+                <Link
+                  href={menu.href}
+                  className={`group relative flex items-center rounded-md p-3 text-sm transition
+                    hover:bg-gray-100
+                    ${active ? "bg-gray-100 text-gray-900" : "text-gray-700"}
+                    ${isDesktop && collapsed ? "justify-center" : ""}`}
+                  onClick={() => {
+                    // มือถือ: กดเมนูแล้วปิด drawer
+                    if (!isDesktop) setMobileOpen(false);
+                  }}
                 >
-                  <menu.icon
-                    className={`h-5 w-5 shrink-0 text-gray-600 transition-all duration-300 `}
-                  />
+                  <Icon className="h-5 w-5 shrink-0 text-gray-600" />
+
                   <span
-                    className={`text-gray-700 font-normal whitespace-nowrap transition-all duration-300 flex justify-start ${
-                      collapsed
-                        ? "w-0 overflow-x-hidden opacity-0"
-                        : "w-full opacity-100 ml-3"
-                    }`}
+                    className={`ml-3 whitespace-nowrap transition-all duration-200
+                      ${isDesktop && collapsed ? "w-0 overflow-hidden opacity-0 ml-0" : "opacity-100"}
+                    `}
                   >
                     {menu.label}
                   </span>
-                </button>
-              </Link>
-            </li>
-          ))}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </div>
+  );
+
+  return (
+    <>
+      {/* Mobile Top Button */}
+      <button
+        onClick={() => setMobileOpen(true)}
+        className="lg:hidden fixed top-4 left-4 z-[60] p-2 bg-white border border-[#F3F4F6] rounded-full shadow-sm hover:bg-gray-50"
+        aria-label="Open menu"
+      >
+        <Menu className="h-5 w-5 text-gray-700" />
+      </button>
+
+      {/* Desktop Sidebar */}
+      <aside
+        className={`hidden lg:block fixed top-0 left-0 h-screen z-50 transition-all duration-300 ease-in-out
+          ${collapsed ? "w-20" : "w-64"}`}
+      >
+        <SidebarContent isDesktop />
+      </aside>
+
+      {/* Mobile Drawer + Overlay */}
+      <div className={`lg:hidden fixed inset-0 z-50 ${mobileOpen ? "" : "pointer-events-none"}`}>
+        <div
+          className={`absolute inset-0 bg-black/40 transition-opacity duration-200
+            ${mobileOpen ? "opacity-100" : "opacity-0"}`}
+          onClick={() => setMobileOpen(false)}
+        />
+        <aside
+          className={`absolute top-0 left-0 h-full w-72 max-w-[85vw] transform bg-white transition-transform duration-200
+            ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
+        >
+          <SidebarContent isDesktop={false} />
+        </aside>
+      </div>
+
+      <div className={`hidden lg:block ${collapsed ? "w-20" : "w-64"}`} />
+    </>
   );
 }
