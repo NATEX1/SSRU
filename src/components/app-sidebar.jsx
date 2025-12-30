@@ -16,7 +16,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 export default function AppSidebar() {
@@ -25,7 +25,7 @@ export default function AppSidebar() {
   // desktop collapse
   const [collapsed, setCollapsed] = useState(true);
 
-  // mobile drawer open/close
+  // mobile drawer
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const menus = [
@@ -46,25 +46,23 @@ export default function AppSidebar() {
     setMobileOpen(false);
   }, [pathname]);
 
-  // ล็อกการ scroll 
+  // ล็อก scroll ตอน drawer เปิด
   useEffect(() => {
     if (!mobileOpen) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
+    return () => (document.body.style.overflow = prev);
   }, [mobileOpen]);
 
   const SidebarContent = ({ isDesktop }) => (
     <div className="flex flex-col h-full bg-white border-r border-[#F3F4F6]">
-      {/* Header */}
-      <div className="flex h-16 items-center justify-between px-4 border-b border-[#F3F4F6]">
+      <div className="w-full h-20 flex items-center justify-between px-4 border-b border-[#F3F4F6]">
         {/* Mobile: ปุ่มปิด */}
         {!isDesktop ? (
           <button
+            type="button"
             onClick={() => setMobileOpen(false)}
-            className="p-2 hover:bg-gray-100 rounded-md transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-md transition-colors z-10"
             aria-label="Close menu"
           >
             <X className="h-5 w-5 text-gray-600" />
@@ -74,6 +72,7 @@ export default function AppSidebar() {
           <>
             {collapsed ? (
               <button
+                type="button"
                 onClick={() => setCollapsed(false)}
                 className="w-full flex items-center justify-center p-2 hover:bg-gray-100 rounded-full transition-colors"
                 aria-label="Expand sidebar"
@@ -82,6 +81,7 @@ export default function AppSidebar() {
               </button>
             ) : (
               <button
+                type="button"
                 onClick={() => setCollapsed(true)}
                 className="p-2 hover:bg-gray-100 rounded-md transition-colors"
                 aria-label="Collapse sidebar"
@@ -93,25 +93,23 @@ export default function AppSidebar() {
         )}
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 overflow-y-auto py-4">
         <ul className="space-y-1 px-3">
           {menus.map((menu, index) => {
-            const active = pathname === menu.href || pathname?.startsWith(menu.href + "/");
             const Icon = menu.icon;
+            const active = pathname === menu.href || pathname?.startsWith(menu.href + "/");
 
             return (
               <li key={index}>
                 <Link
                   href={menu.href}
+                  onClick={() => {
+                    if (!isDesktop) setMobileOpen(false);
+                  }}
                   className={`group relative flex items-center rounded-md p-3 text-sm transition
                     hover:bg-gray-100
                     ${active ? "bg-gray-100 text-gray-900" : "text-gray-700"}
                     ${isDesktop && collapsed ? "justify-center" : ""}`}
-                  onClick={() => {
-                    // มือถือ: กดเมนูแล้วปิด drawer
-                    if (!isDesktop) setMobileOpen(false);
-                  }}
                 >
                   <Icon className="h-5 w-5 shrink-0 text-gray-600" />
 
@@ -133,10 +131,11 @@ export default function AppSidebar() {
 
   return (
     <>
-      {/* Mobile Top Button */}
+      {/* Mobile hamburger */}
       <button
+        type="button"
         onClick={() => setMobileOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-[60] p-2 bg-white border border-[#F3F4F6] rounded-full shadow-sm hover:bg-gray-50"
+        className="lg:hidden fixed top-4 left-4 z-[70] p-2 bg-white border border-[#F3F4F6] rounded-full shadow-sm hover:bg-gray-50"
         aria-label="Open menu"
       >
         <Menu className="h-5 w-5 text-gray-700" />
@@ -150,21 +149,21 @@ export default function AppSidebar() {
         <SidebarContent isDesktop />
       </aside>
 
-      {/* Mobile Drawer + Overlay */}
-      <div className={`lg:hidden fixed inset-0 z-50 ${mobileOpen ? "" : "pointer-events-none"}`}>
-        <div
-          className={`absolute inset-0 bg-black/40 transition-opacity duration-200
-            ${mobileOpen ? "opacity-100" : "opacity-0"}`}
-          onClick={() => setMobileOpen(false)}
-        />
-        <aside
-          className={`absolute top-0 left-0 h-full w-72 max-w-[85vw] transform bg-white transition-transform duration-200
-            ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
-        >
-          <SidebarContent isDesktop={false} />
-        </aside>
-      </div>
+      {/* Mobile Drawer */}
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 z-[60]">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setMobileOpen(false)}
+            aria-label="Close overlay"
+          />
 
+          <aside className="absolute top-0 left-0 h-full w-72 max-w-[85vw] bg-white shadow-xl">
+            <SidebarContent isDesktop={false} />
+          </aside>
+        </div>
+      )}
       <div className={`hidden lg:block ${collapsed ? "w-20" : "w-64"}`} />
     </>
   );
