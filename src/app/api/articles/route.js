@@ -24,14 +24,14 @@ async function generateUniqueSlug(title) {
   return slug;
 }
 
-
 export async function POST(req) {
   try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session) return NextResponse.json({message: 'ไม่ได้รับอนุญาต'}, {status: 401})
+    const session = await getServerSession(authOptions);
 
-    const authorId = session.user.id
+    if (!session) {
+      return NextResponse.json({ message: "ไม่ได้รับอนุญาต" }, { status: 401 });
+    }
+
     const formData = await req.formData();
 
     const title = formData.get("title");
@@ -40,45 +40,70 @@ export async function POST(req) {
     const status = formData.get("status") || "draft";
     const tagsArray = JSON.parse(formData.get("tags") || "[]");
 
+    const authorType = formData.get("authorType") || "user";
+    const penName = formData.get("penName");
+
     if (!title || !content || !categoryId) {
-      return NextResponse.json({ success: false, message: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    // validate pen name
+    if (authorType === "penname" && !penName) {
+      return NextResponse.json(
+        { success: false, message: "Pen name is required" },
+        { status: 400 }
+      );
     }
 
     // handle thumbnail
     let thumbnailPath = null;
     const thumbnailFile = formData.get("thumbnail");
+
     if (thumbnailFile && thumbnailFile.arrayBuffer) {
       const buffer = Buffer.from(await thumbnailFile.arrayBuffer());
       const fileName = Date.now() + "-" + thumbnailFile.name;
       const filePath = path.join(process.cwd(), "public", "uploads", fileName);
+
       fs.writeFileSync(filePath, buffer);
       thumbnailPath = "/uploads/" + fileName;
     }
 
-    const slug = await generateUniqueSlug(title)
+    const slug = await generateUniqueSlug(title);
 
-    // create article first
+    // 🧠 author logic
+    const articleData = {
+      title,
+      slug,
+      content,
+      categoryId,
+      thumbnail: thumbnailPath,
+      status,
+
+      authorType,
+      authorId: authorType === "user" ? session.user.id : null,
+      penName: authorType === "penname" ? penName : null,
+    };
+
+    // create article
     const article = await prisma.article.create({
-      data: {
-        title,
-        slug,
-        content,
-        categoryId,
-        authorId,
-        thumbnail: thumbnailPath,
-        status,
-      },
+      data: articleData,
     });
 
-    // loop tags + create ArticleTag
+    // handle tags
     for (const tagName of tagsArray) {
-      // find or create tag
-      let tag = await prisma.tag.findUnique({ where: { name: tagName } });
+      let tag = await prisma.tag.findUnique({
+        where: { name: tagName },
+      });
+
       if (!tag) {
-        tag = await prisma.tag.create({ data: { name: tagName } });
+        tag = await prisma.tag.create({
+          data: { name: tagName },
+        });
       }
 
-      // create junction table
       await prisma.articleTag.create({
         data: {
           articleId: article.id,
@@ -90,7 +115,10 @@ export async function POST(req) {
     return NextResponse.json({ success: true, article }, { status: 201 });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: err.message },
+      { status: 500 }
+    );
   }
 }
 
@@ -102,10 +130,10 @@ export async function GET(req) {
     const limit = Number(searchParams.get("limit")) || 10;
     const offset = (page - 1) * limit;
 
-    const category = searchParams.get("category")
+    const category = searchParams.get("category");
     const q = searchParams.get("q");
 
-    const where = {}
+    const where = {};
 
     if (q) {
       where.OR = [
@@ -124,8 +152,8 @@ export async function GET(req) {
       ];
     }
 
-    if (category && category !== "all"){
-      where.categoryId = Number(category); 
+    if (category && category !== "all") {
+      where.categoryId = Number(category);
     }
 
     // Query articles พร้อม relation
@@ -133,7 +161,9 @@ export async function GET(req) {
       where,
       skip: offset,
       take: limit,
+      orderBy: { createdAt: "desc" },
       include: {
+        category: true,
         tags: {
           include: { tag: true },
         },
@@ -145,17 +175,14 @@ export async function GET(req) {
             role: true,
             position: true,
             status: true,
-            createdAt: true,
-          }
+          },
         },
-        category: true,
       },
-      orderBy: { createdAt: "desc" },
     });
 
     // นับจำนวนทั้งหมด
     const total = await prisma.article.count();
-
+    
     return NextResponse.json({
       success: true,
       articles,
@@ -169,7 +196,11 @@ export async function GET(req) {
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { success: false, message: "Error fetching articles", error: error.message },
+      {
+        success: false,
+        message: "Error fetching articles",
+        error: error.message,
+      },
       { status: 500 }
     );
   }

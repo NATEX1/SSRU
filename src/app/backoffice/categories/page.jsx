@@ -85,7 +85,7 @@ export default function page() {
       const json = await res.json();
 
       if (json.success) {
-        setData(json.data);
+        setData(json.categories);
         setTotalPages(json.pagination.totalPages);
         setTotal(json.pagination.total);
       }

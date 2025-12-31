@@ -34,7 +34,7 @@ export default async function Page({ params }) {
   return (
     <div className="container mx-auto px-4 py-6">
       <Link
-        href="/"
+        href={article.links_category}
         className="inline-flex items-center gap-2 text-sm text-[#6A7282] mb-6 hover:underline"
       >
         <ArrowLeft className="h-4" />
@@ -95,7 +95,7 @@ export default async function Page({ params }) {
 
           <div className="min-w-0">
             <p className="text-xs text-[#6A7282]">ผู้เขียนบทความ</p>
-            <p className="text-[#3F458D] text-lg font-bold break-words">
+            <p className="text-[#3F458D] text-sm font-bold break-words">
               {article.author}
             </p>
             <p className="text-[#4A5565] text-sm break-words">

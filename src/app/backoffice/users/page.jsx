@@ -53,6 +53,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import DeleteDialog from "@/components/delete-dialog";
 
 import DeleteDialog from "@/components/delete-dialog";
 import UserDialog from "@/components/backoffice/user-dialog";
@@ -227,10 +228,10 @@ export default function page() {
             <UserPlus className="mr-2 h-4 w-4" /> เพิ่มผู้ใช้
           </Button>
         </UserDialog>
-      </div>
+      </div >
 
       {/* Table */}
-      <div className="overflow-hidden border rounded-2xl shadow bg-white">
+      < div className="overflow-hidden border rounded-2xl shadow bg-white" >
         <div className="flex gap-4 justify-between p-4">
           <Select value={limit.toString()} onValueChange={(val) => setLimit(Number(val))}>
             <SelectTrigger>
@@ -286,58 +287,62 @@ export default function page() {
         </div>
 
         {/* Loading */}
-        {loading && (
-          <div className="flex justify-center py-10 text-muted-foreground border-y">
-            กำลังโหลดข้อมูล...
-          </div>
-        )}
+        {
+          loading && (
+            <div className="flex justify-center py-10 text-muted-foreground border-y">
+              กำลังโหลดข้อมูล...
+            </div>
+          )
+        }
 
-        {!loading && (
-          <Table className={"tborder-y"}>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-
-            <TableBody>
-              {data.length > 0 ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
+        {
+          !loading && (
+            <Table className={"tborder-y"}>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                      </TableHead>
                     ))}
                   </TableRow>
-                ))
-              ) : (
-                <TableRow className={"p-4"}>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center text-muted-foreground"
-                  >
-                    ไม่พบข้อมูล
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        )}
+                ))}
+              </TableHeader>
+
+              <TableBody>
+                {data.length > 0 ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow className={"p-4"}>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center text-muted-foreground"
+                    >
+                      ไม่พบข้อมูล
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )
+        }
 
         <Pagination className="p-4 justify-between items-center">
           <div className="text-sm text-muted-foreground">
@@ -391,7 +396,7 @@ export default function page() {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
