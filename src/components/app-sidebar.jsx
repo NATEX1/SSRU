@@ -152,7 +152,10 @@ export default function AppSidebar() {
 
       {/* Mobile Drawer + overlay */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-[80]" onClick={() => setMobileOpen(false)}>
+        <div
+          className="lg:hidden fixed inset-0 z-[80]"
+          onClick={() => setMobileOpen(false)}
+        >
           {/* overlay */}
           <div className="absolute inset-0 bg-black/40" />
 
@@ -161,23 +164,28 @@ export default function AppSidebar() {
             className="absolute top-0 left-0 h-full w-72 max-w-[85vw] bg-white shadow-xl flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* ✅ Mobile top section (Search + Social + Language) */}
-            <div className="pt-5 pb-4 px-4 border-b border-[#F3F4F6]">
-              {/* Top row: Title + Close */}
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-[#111827]">เมนู</p>
-                <button
-                  type="button"
-                  onClick={() => setMobileOpen(false)}
-                  className="p-2 rounded-full hover:bg-gray-100"
-                  aria-label="Close drawer"
-                >
-                  <X className="h-5 w-5 text-gray-700" />
-                </button>
-              </div>
+            {/* Header */}
+            <div className="h-20 px-4 flex items-center justify-between border-b border-[#F3F4F6]">
+              <p className="text-sm font-semibold text-[#111827]">เมนู</p>
+              <button
+                type="button"
+                onClick={() => setMobileOpen(false)}
+                className="p-2 rounded-full hover:bg-gray-100"
+                aria-label="Close drawer"
+              >
+                <X className="h-5 w-5 text-gray-700" />
+              </button>
+            </div>
 
-              {/* Search input */}
-              <div className="mt-3 w-full h-10 px-3 py-2 flex items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full focus-within:border-[#F06FAA]">
+            {/* 🔼 Menu list (scrollable) */}
+            <div className="flex-1 overflow-y-auto">
+              <SidebarList isDesktop={false} />
+            </div>
+
+            {/* 🔽 Bottom section : Search + Social + Language */}
+            <div className="px-4 py-4 border-t border-[#F3F4F6] space-y-4">
+              {/* Search */}
+              <div className="w-full h-10 px-3 py-2 flex items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full focus-within:border-[#F06FAA]">
                 <Search className="h-[1em] text-[#99A1AF]" />
                 <input
                   ref={mobileSearchRef}
@@ -188,7 +196,7 @@ export default function AppSidebar() {
               </div>
 
               {/* Social icons */}
-              <ul className="mt-3 flex flex-wrap items-center gap-2">
+              <ul className="flex flex-wrap items-center gap-2">
                 {socials.map(([img, link], i) => (
                   <li key={i}>
                     <a
@@ -196,7 +204,6 @@ export default function AppSidebar() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group block"
-                      aria-label={`social-${i}`}
                     >
                       <img
                         src={`/assets/images/${img}`}
@@ -216,8 +223,8 @@ export default function AppSidebar() {
                 ))}
               </ul>
 
-              {/* Language switch (same style as commented one) */}
-              {/* <div className="mt-3 inline-flex items-center gap-1 border border-[#E5E7EB] rounded-full p-0.5 bg-white">
+              {/* Language switch */}
+              <div className="inline-flex items-center gap-1 border border-[#E5E7EB] rounded-full p-0.5 bg-white">
                 <button className="px-3 py-1 bg-[#F06FAA] text-white rounded-full text-sm">
                   TH
                 </button>
@@ -227,14 +234,12 @@ export default function AppSidebar() {
                 <button className="px-3 py-1 rounded-full text-sm text-[#111827] hover:bg-gray-50">
                   CN
                 </button>
-              </div> */}
+              </div>
             </div>
-
-            {/* Menu list */}
-            <SidebarList isDesktop={false} />
           </aside>
         </div>
       )}
+
 
       {/* Spacer desktop */}
       <div className={`hidden lg:block ${collapsed ? "w-20" : "w-64"}`} />
