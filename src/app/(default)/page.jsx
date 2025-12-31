@@ -69,6 +69,11 @@ const archiveCategories = [
 export default function Home() {
   const catPost = getOnePostEachOtherCategory();
 
+  const popularPosts = [...(catPost || [])]
+  .filter(p => typeof p.readCount === "number")
+  .sort((a, b) => b.readCount - a.readCount)
+  .slice(0, 7);
+
   return (
     <div className="p-6 mb-8">
       <div className="overflow-hidden">
@@ -222,6 +227,54 @@ export default function Home() {
               <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-10 lg:py-16 px-5 lg:px-8 rounded-4xl w-full">
                 <ClipCarousel data={clips} />
               </div>
+
+              {/*  ยอดนิยม (Mobile)  */}
+              <div className="lg:hidden mb-8">
+                <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-2xl shadow">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-1.5 h-6 bg-[#F06FAA] rounded" />
+                    <h4 className="text-xl font-bold text-[#101828]">ยอดนิยม</h4>
+                  </div>
+
+                  <div className="space-y-3">
+                    {popularPosts.map((post) => (
+                      <a
+                        key={post.slug}
+                        href={`/${post.slug}`}
+                        className="block bg-white border border-[#F3F4F6] rounded-xl overflow-hidden hover:shadow-sm transition"
+                      >
+                        <div className="flex gap-3 p-3">
+                          {/* image */}
+                          <div className="w-24 h-20 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                            <img
+                              src={post.thumbnail}
+                              alt={post.title}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                            />
+                          </div>
+
+                          {/* text */}
+                          <div className="min-w-0 flex-1">
+                            <h2 className="card-title line-clamp-1 break-words">
+                              {post.title}
+                            </h2>
+
+                            <p className="line-clamp-2 break-words text-sm text-[#475467] mt-1">
+                              {post.excerpt}
+                            </p>
+
+                            <div className="mt-2 text-xs text-[#99A1AF]">
+                              {post.date} • อ่าน {post.readCount}
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
             </div>
             <div className="flex flex-col lg:flex-row gap-8 flex-1 mb-8">
 
@@ -236,8 +289,8 @@ export default function Home() {
               </div>
 
               <ul className="flex flex-col gap-4">
-                {(catPost || []).slice(0, 7).map((post, i) => (
-                  <li key={post?.slug || i}>
+                {popularPosts.map((post, i) => (
+                  <li key={post.slug}>
                     <a href={`/${post.slug}`} className="flex gap-4 group">
                       <div className="text-[#E5E7EB] text-3xl font-bold group-hover:text-[#3F458D] transition">
                         {String(i + 1).padStart(2, "0")}
@@ -247,57 +300,14 @@ export default function Home() {
                         <p className="group-hover:text-[#F06FAA] transition line-clamp-2 break-words">
                           {post.title}
                         </p>
-                        <p className="text-[#99A1AF] text-sm">{post.date}</p>
+                        <p className="text-[#99A1AF] text-sm">
+                          {post.date}
+                        </p>
                       </div>
                     </a>
                   </li>
                 ))}
               </ul>
-            </div>
-
-            {/* Mobile */}
-            <div className="lg:hidden bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-2xl shadow mb-8">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-1.5 h-6 bg-[#F06FAA] rounded" />
-                <h4 className="text-xl font-bold text-[#101828]">ยอดนิยม</h4>
-              </div>
-
-              <div className="space-y-3">
-                {(catPost || []).slice(0, 7).map((post, i) => (
-                  <a
-                    key={post?.slug || i}
-                    href={`/${post.slug}`}
-                    className="block bg-white border border-[#F3F4F6] rounded-xl overflow-hidden hover:shadow-sm transition"
-                  >
-                    <div className="flex gap-3 p-3">
-                      {/* image left */}
-                      <div className="w-24 h-20 shrink-0 overflow-hidden rounded-lg bg-gray-100">
-                        <img
-                          src={post.thumbnail}
-                          alt={post.title}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-
-                      {/* text right */}
-                      <div className="min-w-0 flex-1">
-                        <h2 className="card-title line-clamp-1 break-words">
-                          {post.title}
-                        </h2>
-
-                        <p className="line-clamp-2 break-words text-sm text-[#475467] mt-1">
-                          {post.excerpt}
-                        </p>
-
-                        <div className="mt-2 text-xs text-[#99A1AF]">
-                          {post.date}
-                        </div>
-                      </div>
-                    </div>
-                  </a>
-                ))}
-              </div>
             </div>
 
             <div> <br /></div>
