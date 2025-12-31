@@ -17,7 +17,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
-  CircleDot,
   Filter,
   Pencil,
   Search,
@@ -33,21 +32,14 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import {
-  NativeSelect,
-  NativeSelectOption,
-} from "@/components/ui/native-select";
-import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -62,6 +54,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import DeleteDialog from "@/components/delete-dialog";
+import UserDialog from "@/components/backoffice/user-dialog";
+
 export default function page() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -72,36 +67,60 @@ export default function page() {
   const [selectedRole, setSelectedRole] = useState("all");
   const [limit, setLimit] = useState(5);
 
-  useEffect(() => {
-    const handler = setTimeout(async () => {
-      setLoading(true);
-      try {
-        const params = new URLSearchParams();
-        params.append("page", page);
-        params.append("limit", limit);
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      params.append("page", page);
+      params.append("limit", limit);
 
-        if (search) params.append("q", search);
-        if (selectedRole && selectedRole !== "all") {
-          params.append("role", selectedRole);
-        }
-
-        const res = await fetch(`/api/users?${params.toString()}`);
-        const json = await res.json();
-
-        if (json.success) {
-          setData(json.users);
-          setTotalPages(json.pagination.totalPages);
-          setTotal(json.pagination.total);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
+      if (search) params.append("q", search);
+      if (selectedRole && selectedRole !== "all") {
+        params.append("role", selectedRole);
       }
+
+      const res = await fetch(`/api/users?${params.toString()}`);
+      const json = await res.json();
+
+      if (json.success) {
+        setData(json.users);
+        setTotalPages(json.pagination.totalPages);
+        setTotal(json.pagination.total);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      fetchData();
     }, 500);
 
     return () => clearTimeout(handler);
   }, [page, search, selectedRole, limit]);
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`/api/users/${id}`, {
+        method: "DELETE",
+      });
+      const json = await res.json();
+
+      if (!res.ok) {
+        throw new Error(json.message || "ลบข้อมูลไม่สำเร็จ");
+      }
+
+      // Refresh data
+      fetchData();
+
+    } catch (err) {
+      console.error(err);
+      alert("เกิดข้อผิดพลาดในการลบข้อมูล");
+    }
+  };
 
   const columns = [
     {
@@ -171,15 +190,23 @@ export default function page() {
       enableHiding: false,
       cell: ({ row }) => (
         <div className="flex gap-1">
-          <Button variant={"ghost"} className={"cursor-pointer underline"}>
-            <Pencil className="size-4" /> แก้ไข
-          </Button>
-          <Button
-            variant={"ghost"}
-            className={"cursor-pointer  underline text-red-500"}
+          <UserDialog
+            user={row.original}
+            mode="edit"
+            onSuccess={fetchData}
           >
-            <Trash className="size-4" /> ลบ
-          </Button>
+            <Button variant={"ghost"} className={"cursor-pointer underline"}>
+              <Pencil className="size-4" /> แก้ไข
+            </Button>
+          </UserDialog>
+          <DeleteDialog onConfirm={() => handleDelete(row.original.id)}>
+            <Button
+              variant={"ghost"}
+              className={"cursor-pointer underline text-red-500 hover:text-red-600 hover:bg-red-500/10"}
+            >
+              <Trash className="size-4" /> ลบ
+            </Button>
+          </DeleteDialog>
         </div>
       ),
     },
@@ -195,24 +222,26 @@ export default function page() {
     <div>
       <div className="flex justify-between mb-8">
         <h2 className="text-4xl font-bold">จัดการผู้ใช้ในระบบ</h2>
-        <Button>
-          เพิ่มผู้ใช้
-        </Button>
+        <UserDialog mode="create" onSuccess={fetchData}>
+          <Button>
+            <UserPlus className="mr-2 h-4 w-4" /> เพิ่มผู้ใช้
+          </Button>
+        </UserDialog>
       </div>
 
       {/* Table */}
       <div className="overflow-hidden border rounded-2xl shadow bg-white">
         <div className="flex gap-4 justify-between p-4">
-          <Select value={limit} onValueChange={setLimit}>
+          <Select value={limit.toString()} onValueChange={(val) => setLimit(Number(val))}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={5}>5</SelectItem>
-              <SelectItem value={10}>10</SelectItem>
-              <SelectItem value={25}>25</SelectItem>
-              <SelectItem value={50}>50</SelectItem>
-              <SelectItem value={100}>100</SelectItem>
+              <SelectItem value="5">5</SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="25">25</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>
             </SelectContent>
           </Select>
 
@@ -273,9 +302,9 @@ export default function page() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -314,9 +343,9 @@ export default function page() {
           <div className="text-sm text-muted-foreground">
             {data.length > 0
               ? `แสดง ${(page - 1) * limit + 1} - ${Math.min(
-                  page * limit,
-                  total
-                )} จากทั้งหมด ${total}`
+                page * limit,
+                total
+              )} จากทั้งหมด ${total}`
               : ""}
           </div>
 
