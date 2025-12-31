@@ -3,11 +3,12 @@
 import { ArrowRight, Film } from "lucide-react";
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Grid, Navigation } from "swiper/modules";
+import { Grid, Navigation, Pagination } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const shortClips = [
   {
@@ -17,22 +18,23 @@ const shortClips = [
     url: "https://youtube.com/shorts/qqBm0GBcTgs?si=Mf5tpNuescDAAYUE",
   },
   {
-    id: "jUbjexT277U",
-    title: "จากก้าวเล็กๆ สู่ก้าวที่สำคัญ ✨#ssru #สวนสุนันทา #สมัครเรียน  #tcas69 #บัณฑิตสวนสุนันทา #ลูกพระนาง",
-    views: "2.7k",
-    url: "https://youtube.com/shorts/jUbjexT277U?si=F7FL0Wage-eN0RGV",
+    id: "a9ml5nZen5Y",
+    title:
+      "“จากการเปลี่ยนผ่านผู้นำ สู่บทบาทอธิการบดีหญิง” รศ.ดร.ชุติกาญจน์ ศรีวิบูลย์ #ssru",
+    views: "896",
+    url: "https://youtube.com/shorts/a9ml5nZen5Y?si=_fzaQAMa57RggcHB",
   },
   {
-    id: "zzzAumXytjE",
-    title: "#สวนสุนันทา #ลูกพระนาง #รับปริญญา",
-    views: "257",
-    url: "https://youtube.com/shorts/zzzAumXytjE?si=bCJKXBcSE1BJdPOD",
+    id: "V5TMKwpSbkc",
+    title: "“ ยิงปืนนัดเดียวได้นก 2 ตัว” ผศ.ดร. วนิดา วอนสวัสดิ์ #ssru",
+    views: "1.3k",
+    url: "https://youtube.com/shorts/V5TMKwpSbkc?si=oOBCovxDNDmoFvaa",
   },
   {
-    id: "mqeRpF0eHJo",
-    title: "#รับปริญญา #ssru #ลูกพระนาง",
-    views: "314",
-    url: "https://youtube.com/shorts/mqeRpF0eHJo?si=TTUjJHOwLMsG4ltN",
+    id: "Wwih-fmMAIM",
+    title: "“เส้นทางไม่ง่าย แต่ท้อไม่เป็น” น้องไป๋ เนาวรัตน์ แซ่ย่าง #นักกีฬาวูซูทีมชาติ #ssru #วูซู",
+    views: "1.7k",
+    url: "https://youtube.com/shorts/Wwih-fmMAIM?si=IbPOVAHgynq7EF_4",
   },
 ];
 
@@ -42,7 +44,7 @@ export default function ClipCarousel() {
       <p className="text-[#F06FAA]">SSRU CHANNEL</p>
 
       <div className="flex justify-between items-end mb-4">
-        <h2 className="text-[#101828] text-xl font-bold">Short Clips</h2>
+        <h2 className="text-[#101828] text-2xl font-bold">Short Clips</h2>
 
         <a
           href="https://www.youtube.com/@ssrutube/shorts"
@@ -57,46 +59,89 @@ export default function ClipCarousel() {
         </a>
       </div>
 
-      <Swiper
-        modules={[Grid, Navigation]}
-        spaceBetween={16}
-        slidesPerView={2}
-        grid={{
-          rows: 2,
-          fill: "row",
-        }}
-        className="w-full"
-      >
-        {shortClips.map((item) => (
-          <SwiperSlide key={item.id} className="h-auto">
-            <a
-              href={item.url}
-              target="_blank"
-              rel="noreferrer"
-              className="block h-full"
-            >
-              <div className="h-full bg-white shadow rounded-xl overflow-hidden hover:shadow-md transition">
-                <img
-                  src={`https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`}
-                  alt={item.title}
-                  className="h-[200px] w-full object-cover"
-                />
+      {/* Mobile: slide (1 row) */}
+      <div className="lg:hidden">
+        <Swiper
+          modules={[Pagination]}
+          spaceBetween={12}
+          slidesPerView={1.15}
+          pagination={{ clickable: true }}
+          className="w-full !pb-8"
+        >
+          {shortClips.map((item) => (
+            <SwiperSlide key={item.id} className="h-auto">
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noreferrer"
+                className="block h-full"
+              >
+                <div className="h-full bg-white shadow rounded-xl overflow-hidden hover:shadow-md transition">
+                  <img
+                    src={`https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`}
+                    alt={item.title}
+                    className="h-[180px] w-full object-cover"
+                    loading="lazy"
+                  />
 
-                <div className="p-4 flex flex-col gap-2">
-                  <h3 className="font-semibold line-clamp-2">
-                    {item.title}
-                  </h3>
+                  <div className="p-4 flex flex-col gap-2">
+                    <h3 className="font-semibold line-clamp-2">{item.title}</h3>
 
-                  <div className="flex gap-1 items-center text-[#99A1AF] text-sm">
-                    <Film className="h-4" />
-                    <span>• {item.views} views</span>
+                    <div className="flex gap-1 items-center text-[#99A1AF] text-sm">
+                      <Film className="h-4" />
+                      <span>• {item.views} views</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </a>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+              </a>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
+      {/* Desktop: keep original grid */}
+      <div className="hidden lg:block">
+        <Swiper
+          modules={[Grid, Navigation]}
+          spaceBetween={16}
+          slidesPerView={2}
+          grid={{
+            rows: 2,
+            fill: "row",
+          }}
+          navigation
+          className="w-full"
+        >
+          {shortClips.map((item) => (
+            <SwiperSlide key={item.id} className="h-auto">
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noreferrer"
+                className="block h-full"
+              >
+                <div className="h-full bg-white shadow rounded-xl overflow-hidden hover:shadow-md transition">
+                  <img
+                    src={`https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`}
+                    alt={item.title}
+                    className="h-[200px] w-full object-cover"
+                    loading="lazy"
+                  />
+
+                  <div className="p-4 flex flex-col gap-2">
+                    <h3 className="font-semibold line-clamp-2">{item.title}</h3>
+
+                    <div className="flex gap-1 items-center text-[#99A1AF] text-sm">
+                      <Film className="h-4" />
+                      <span>• {item.views} views</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </div>
   );
 }

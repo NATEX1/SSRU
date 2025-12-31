@@ -177,12 +177,12 @@ export default function AppSidebar() {
               </button>
             </div>
 
-            {/* 🔼 Menu list (scrollable) */}
+            {/* Menu list (scrollable) */}
             <div className="flex-1 overflow-y-auto">
               <SidebarList isDesktop={false} />
             </div>
 
-            {/* 🔽 Bottom section : Search + Social + Language */}
+            {/* Bottom section : Search + Social + Language */}
             <div className="px-4 py-4 border-t border-[#F3F4F6] space-y-4">
               {/* Search */}
               <div className="w-full h-10 px-3 py-2 flex items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full focus-within:border-[#F06FAA]">
@@ -224,7 +224,7 @@ export default function AppSidebar() {
               </ul>
 
               {/* Language switch */}
-              <div className="inline-flex items-center gap-1 border border-[#E5E7EB] rounded-full p-0.5 bg-white">
+              {/* <div className="inline-flex items-center gap-1 border border-[#E5E7EB] rounded-full p-0.5 bg-white">
                 <button className="px-3 py-1 bg-[#F06FAA] text-white rounded-full text-sm">
                   TH
                 </button>
@@ -234,7 +234,7 @@ export default function AppSidebar() {
                 <button className="px-3 py-1 rounded-full text-sm text-[#111827] hover:bg-gray-50">
                   CN
                 </button>
-              </div>
+              </div> */}
             </div>
           </aside>
         </div>
