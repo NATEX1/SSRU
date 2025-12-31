@@ -61,6 +61,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import DeleteDialog from "@/components/delete-dialog";
 
 export default function Page() {
   const [data, setData] = useState([]);
@@ -82,26 +83,31 @@ export default function Page() {
       id: "author",
       header: "ผู้เขียน",
       cell: ({ row }) => {
-        const data = row.original;
+        const { author, authorType, penName } = row.original;
+
+        const displayName =
+          authorType == "penname" ? penName : author?.name || "Unknown";
 
         return (
-          <div className="flex gap-1 items-center">
-            {data.author.image && data.author.image !== "" ? (
-              <Avatar>
-                <AvatarImage src={data.author.image} alt="User avatar" />
-              </Avatar>
-            ) : (
-              <Avatar>
-                <AvatarFallback>
-                  {data.author.name ? data.author.name[0] : "U"}{" "}
-                  {/* fallback เป็น U ถ้าไม่มีชื่อ */}
-                </AvatarFallback>
-              </Avatar>
-            )}
-            <p>{data.author.name || "Unknown"}</p>
+          <div className="flex gap-2 items-center">
+            <Avatar>
+              <AvatarFallback>{displayName?.[0] || "U"}</AvatarFallback>
+            </Avatar>
+
+            <div className="flex flex-col">
+              <p className="font-medium">{displayName}</p>
+
+              {authorType !== "prename" && (
+                <p className="text-xs text-muted-foreground">{author?.email}</p>
+              )}
+            </div>
           </div>
         );
       },
+    },
+    {
+      accessorKey: "category.name",
+      header: 'หมวดหมู่'
     },
     {
       accessorKey: "status",
@@ -154,12 +160,14 @@ export default function Page() {
           <Button variant={"ghost"} className={"cursor-pointer underline"}>
             <Pencil className="size-4" /> แก้ไข
           </Button>
-          <Button
-            variant={"ghost"}
-            className={"cursor-pointer underline text-red-500"}
-          >
-            <Trash  className="size-4"/> ลบ
-          </Button>
+          <DeleteDialog onConfirm={() => console.log("ลบแล้วนะจ๊ะ")}>
+            <Button
+              variant={"ghost"}
+              className={"cursor-pointer underline text-red-500"}
+            >
+              <Trash className="size-4" /> ลบ
+            </Button>
+          </DeleteDialog>
         </div>
       ),
     },
@@ -202,7 +210,7 @@ export default function Page() {
         const json = await res.json();
 
         if (json.success) {
-          setCategories(json.data);
+          setCategories(json.categories);
         }
       } catch (error) {
         console.error("Failed to fetch categories", error);
@@ -222,9 +230,6 @@ export default function Page() {
     <div>
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-4xl font-bold">จัดการบทความ</h2>
-        <Button>
-          เพิ่มบทความ
-        </Button>
       </div>
 
       {/* Table */}

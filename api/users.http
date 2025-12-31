@@ -3,8 +3,8 @@ POST http://localhost:3000/api/users
 Content-Type: application/json
 
 {
-  "name": "Erwin Smith",
-  "email": "e.smith@gmail.com",
+  "name": "Nobara Kukisaki",
+  "email": "n.itatori@gmail.com",
   "password": "123456",
   "role": "author"
 }

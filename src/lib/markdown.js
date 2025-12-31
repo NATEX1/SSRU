@@ -27,6 +27,7 @@ export function getAllPosts() {
         readCount: data.readCount || 0,
         shareCount: data.shareCount || 0,
         keywords: data.keywords || [],
+        links_category: data.links_category || "",
         content,
       };
     })
@@ -56,6 +57,7 @@ export function getPostBySlug(slug) {
       readCount: data.readCount || 0,
       shareCount: data.shareCount || 0,
       keywords: data.keywords || [],
+      links_category: data.links_category,
       content,
     };
   } catch (error) {
@@ -152,4 +154,3 @@ export function getOnePostEachOtherCategory(currentCategory = null, limit = 7) {
 
   return Object.values(map);
 }
-

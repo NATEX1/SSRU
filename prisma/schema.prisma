@@ -30,6 +30,11 @@ enum ArticleStatus {
   rejected
 }
 
+enum AuthorType {
+  user
+  penname
+}
+
 model User {
   id        Int        @id @default(autoincrement()) @map("id")
   name      String     @map("name")
@@ -55,19 +60,23 @@ model Category {
 }
 
 model Article {
-  id         Int           @id @default(autoincrement()) @map("id")
-  categoryId Int           @map("category_id")
-  authorId   Int           @map("author_id")
-  title      String        @map("title")
-  slug       String        @unique @map("slug")
-  excerpt    String?       @map("excerpt")
-  content    String        @map("content")
-  thumbnail  String?       @map("thumbnail")
-  status     ArticleStatus @default(draft) @map("status")
-  createdAt  DateTime      @default(now()) @map("created_at")
-  updatedAt  DateTime      @default(now()) @map("updated_at")
+  id         Int @id @default(autoincrement()) @map("id")
+  categoryId Int @map("category_id")
 
-  author   User         @relation(fields: [authorId], references: [id])
+  authorType AuthorType @default(user) @map("author_type")
+  authorId   Int?       @map("author_id")
+  penName    String?    @map("pen_name")
+
+  title     String        @map("title")
+  slug      String        @unique @map("slug")
+  excerpt   String?       @map("excerpt")
+  content   String        @map("content")
+  thumbnail String?       @map("thumbnail")
+  status    ArticleStatus @default(draft) @map("status")
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @default(now()) @map("updated_at")
+
+  author   User?        @relation(fields: [authorId], references: [id])
   category Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   tags     ArticleTag[]
 

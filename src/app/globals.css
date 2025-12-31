@@ -192,20 +192,20 @@ body {
 } */
 
 /* Apply a specific max-width to the main content and toolbar areas */
-.ce-block__content,
+/* .ce-block__content,
 .ce-toolbar__content,
 .codex-editor__redactor {
-  max-width: 1250px; /* Change this value to your desired max-width */
-  margin: 0 auto; /* This centers the editor within its container */
-}
+  max-width: 100%; 
+  margin: 0 auto;
+} */
 
 /* Ensure individual blocks respect the width setting */
-.cdx-block {
-  max-width: 100%; /* Ensures blocks don't exceed the parent's (ce-block__content) max-width */
-}
+/* .cdx-block {
+  max-width: 100%; 
+} */
 
 .ce-block .ce-block__content img {
   display: block;
   margin: 0 auto;
-  height: 800px;
+  object-fit: contain;
 }

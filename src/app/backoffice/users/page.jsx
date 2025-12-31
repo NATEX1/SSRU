@@ -61,6 +61,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import DeleteDialog from "@/components/delete-dialog";
 
 export default function page() {
   const [data, setData] = useState([]);
@@ -174,12 +175,14 @@ export default function page() {
           <Button variant={"ghost"} className={"cursor-pointer underline"}>
             <Pencil className="size-4" /> แก้ไข
           </Button>
-          <Button
-            variant={"ghost"}
-            className={"cursor-pointer  underline text-red-500"}
-          >
-            <Trash className="size-4" /> ลบ
-          </Button>
+          <DeleteDialog onConfirm={() => console.log("ลบแล้วนะจ๊ะ")}>
+            <Button
+              variant={"ghost"}
+              className={"cursor-pointer  underline text-red-500"}
+            >
+              <Trash className="size-4" /> ลบ
+            </Button>
+          </DeleteDialog>
         </div>
       ),
     },
@@ -195,9 +198,7 @@ export default function page() {
     <div>
       <div className="flex justify-between mb-8">
         <h2 className="text-4xl font-bold">จัดการผู้ใช้ในระบบ</h2>
-        <Button>
-          เพิ่มผู้ใช้
-        </Button>
+        <Button>เพิ่มผู้ใช้</Button>
       </div>
 
       {/* Table */}

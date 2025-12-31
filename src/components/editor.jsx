@@ -7,6 +7,7 @@ import List from "@editorjs/list";
 import Paragraph from "@editorjs/paragraph";
 import ImageTool from "@editorjs/image";
 import AlignmentTuneTool from "editorjs-text-alignment-blocktune";
+import Quote from "@editorjs/quote";
 
 const DEFAULT_INITIAL_DATA = {
   time: new Date().getTime(),
@@ -56,6 +57,16 @@ export default function Editor({ data, onChange, holder }) {
               },
             },
           },
+
+          quote: {
+            class: Quote,
+            inlineToolbar: true,
+            shortcut: "CMD+SHIFT+O",
+            config: {
+              quotePlaceholder: "Enter a quote",
+              captionPlaceholder: "Quote's author",
+            },
+          },
           alignmentTune: {
             class: AlignmentTuneTool,
             config: {
@@ -82,5 +93,7 @@ export default function Editor({ data, onChange, holder }) {
     };
   }, []);
 
-  return <div id={holderId} className="prose max-w-none" />;
+  return (
+    <div id={holderId} className="prose max-w-none border rounded-lg p-4" />
+  );
 }
