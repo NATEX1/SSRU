@@ -275,6 +275,11 @@ export default function Home() {
                 </div>
               </div>
 
+              {/*  กล่องรับความเห็น (Mobile)  */}
+              <div className="lg:hidden mb-8">
+                <CommentForm />
+              </div>
+
             </div>
             <div className="flex flex-col lg:flex-row gap-8 flex-1 mb-8">
 
