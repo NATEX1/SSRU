@@ -70,7 +70,7 @@ export default function AppHeader() {
                   src={`/assets/images/${img}`}
                   alt=""
                   className="
-                    h-7 w-7 
+                    h-8 w-8 
                     rounded-full 
                     border border-[#E5E7EB]
                     bg-white
