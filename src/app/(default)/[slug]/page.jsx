@@ -20,9 +20,7 @@ export async function generateMetadata({ params }) {
   return {
     title: post.title,
     description: post.excerpt,
-    links_category: post.links_category,
-    authorImage: post.authorImage,
-    authotPosition: post.authotPosition,
+    author: post.author,
   };
 }
 
@@ -37,7 +35,7 @@ export default async function Page({ params }) {
   return (
     <div className="container mx-auto px-4 py-6">
       <Link
-        href={`/${article.links_category}`}
+        href={article.links_category}
         className="inline-flex items-center gap-2 text-sm text-[#6A7282] mb-6 hover:underline"
       >
         <ArrowLeft className="h-4" />
@@ -99,10 +97,10 @@ export default async function Page({ params }) {
           <div className="min-w-0">
             <p className="text-xs text-[#6A7282]">ผู้เขียนบทความ</p>
             <p className="text-[#3F458D] text-lg font-bold break-words">
-              {article.author} {article.authorImage }
+              {article.author}
             </p>
             <p className="text-[#4A5565] text-sm break-words">
-              {article.authotPosition || article.authotPosition}
+              {article.authorPosition  || article.authotPosition}
             </p>
           </div>
         </div>
