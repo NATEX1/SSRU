@@ -264,9 +264,9 @@ export default function Home() {
                               {post.excerpt}
                             </p>
 
-                            {/* <div className="mt-2 text-xs text-[#99A1AF]">
-                              {post.date} • อ่าน {post.readCount}
-                            </div> */}
+                            <div className="mt-2 text-xs text-[#99A1AF]">
+                              {post.date}
+                            </div>
                           </div>
                         </div>
                       </a>
