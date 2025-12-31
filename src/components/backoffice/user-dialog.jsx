@@ -234,7 +234,7 @@ export default function UserDialog({ children, user, onSuccess, mode = "edit" })
                                     <SelectContent>
                                         <SelectItem value="active">ใช้งานปกติ</SelectItem>
                                         <SelectItem value="inactive">ระงับการใช้งาน</SelectItem>
-                                        <SelectItem value="suspended">แบน</SelectItem>
+                                        <SelectItem value="suspended">ปิดการใช้งาน</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
