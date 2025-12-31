@@ -43,16 +43,16 @@ export default async function Page({ params }) {
 
       {/* Top meta + title */}
       <div className="space-y-3">
-        {/* meta row (wrap on mobile) */}
-        <div className="flex flex-wrap gap-x-3 gap-y-2 items-center">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-y-1 sm:gap-x-3">
           <div className="flex gap-1 text-sm items-center text-[#F06FAA]">
-            <User className="h-4" /> <span className="break-words">{article.author}</span>
+            <User className="h-4 shrink-0" />
+            <span className="break-words">{article.author}</span>
           </div>
-
           <div className="hidden sm:flex text-sm items-center text-[#D1D5DC]">|</div>
 
           <div className="flex gap-1 text-sm items-center text-[#F06FAA]">
-            <Calendar className="h-4" /> <span>{article.date}</span>
+            <Calendar className="h-4 shrink-0" />
+            <span>{article.date}</span>
           </div>
         </div>
 
