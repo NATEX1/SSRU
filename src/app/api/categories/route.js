@@ -1,109 +1,131 @@
-import prisma from "@/lib/prisma";
+
 import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
-async function generateUniqueSlug(title) {
-  const baseSlug = title.trim().replace(/\s+/g, "-");
-  let slug = baseSlug;
-  let counter = 1;
-
-  while (true) {
-    const exists = await prisma.category.findUnique({
-      where: { slug },
-    });
-
-    if (!exists) break;
-
-    slug = `${baseSlug}-${counter}`;
-    counter++;
-  }
-
-  return slug;
+// Helper to generate slug from name
+function generateSlug(name) {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "") // Remove non-word chars
+    .replace(/[\s_-]+/g, "-") // Replace spaces with -
+    .replace(/^-+|-+$/g, ""); // Remove leading/trailing -
 }
 
-export async function GET(req) {
+export async function GET(request) {
   try {
-    const { searchParams } = new URL(req.url);
-
-    const q = searchParams.get("q") || "";
-    const page = parseInt(searchParams.get("page") || "1", 10);
-    const limit = parseInt(searchParams.get("limit") || "10", 10);
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const search = searchParams.get("search") || "";
+    const filter = searchParams.get("filter") || "all";
 
     const skip = (page - 1) * limit;
 
-    const where = q
-      ? {
-          name: {
-            contains: q,
-            mode: "insensitive",
-          },
-        }
-      : {};
+    const where = {
+      AND: [
+        search
+          ? {
+            OR: [
+              { name: { contains: search, mode: "insensitive" } },
+              { nameEn: { contains: search, mode: "insensitive" } },
+              { nameCn: { contains: search, mode: "insensitive" } },
+            ],
+          }
+          : {},
+        filter === "missing_en"
+          ? { OR: [{ nameEn: null }, { nameEn: "" }] }
+          : filter === "missing_cn"
+            ? { OR: [{ nameCn: null }, { nameCn: "" }] }
+            : {},
+      ],
+    };
 
     const [categories, total] = await Promise.all([
       prisma.category.findMany({
         where,
-        orderBy: { id: "desc" },
         skip,
         take: limit,
+        orderBy: { id: "desc" },
       }),
       prisma.category.count({ where }),
     ]);
 
     return NextResponse.json({
       success: true,
-      categories,
+      data: categories,
       pagination: {
+        total,
         page,
         limit,
-        total,
         totalPages: Math.ceil(total / limit),
       },
     });
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      {
-        success: false,
-        message: "Failed to fetch categories",
-        error: error.message,
-      },
+      { success: false, message: error.message },
       { status: 500 }
     );
   }
 }
 
-export async function POST(req) {
+export async function POST(request) {
   try {
-    const { name } = await req.json();
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const { name, nameEn, nameCn } = await request.json();
 
     if (!name) {
       return NextResponse.json(
-        { success: false, message: "Name are required" },
+        { success: false, message: "Name is required" },
         { status: 400 }
       );
     }
 
-    const slug = await generateUniqueSlug(name)
-    // สร้าง Category ใหม่
-    const newCategory = await prisma.category.create({
+    // Generate slug from English name if available, otherwise Thai Name
+    // If Thai, we might just use random ID or timestamp if we want to avoid Thai chars in URL
+    // For now, let's try to use English name or fallback to a safe random string if EN is missing
+    let slug = "";
+    if (nameEn) {
+      slug = generateSlug(nameEn);
+    } else {
+      // Fallback: Use 'cat-' + timestamp
+      slug = `cat-${Date.now()}`;
+    }
+
+    // Ensure slug is unique
+    let uniqueSlug = slug;
+    let counter = 1;
+    while (await prisma.category.findUnique({ where: { slug: uniqueSlug } })) {
+      uniqueSlug = `${slug}-${counter}`;
+      counter++;
+    }
+
+    const category = await prisma.category.create({
       data: {
         name,
-        slug,
+        nameEn,
+        nameCn,
+        slug: uniqueSlug,
       },
     });
 
-    return NextResponse.json(
-      { success: true, category: newCategory },
-      { status: 201 }
-    );
+    return NextResponse.json({
+      success: true,
+      message: "Category created successfully",
+      data: category,
+    });
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      {
-        success: false,
-        message: "Error creating category",
-        error: error.message,
-      },
+      { success: false, message: error.message },
       { status: 500 }
     );
   }

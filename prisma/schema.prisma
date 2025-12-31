@@ -53,6 +53,8 @@ model User {
 model Category {
   id       Int       @id @default(autoincrement()) @map("id")
   name     String    @map("name")
+  nameEn   String?   @map("name_en")
+  nameCn   String?   @map("name_cn")
   slug     String    @unique @map("slug")
   articles Article[]
 

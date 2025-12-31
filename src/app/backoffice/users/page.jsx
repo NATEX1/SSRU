@@ -53,7 +53,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import DeleteDialog from "@/components/delete-dialog";
 
 import DeleteDialog from "@/components/delete-dialog";
 import UserDialog from "@/components/backoffice/user-dialog";
@@ -225,7 +224,7 @@ export default function page() {
         <h2 className="text-4xl font-bold">จัดการผู้ใช้ในระบบ</h2>
         <UserDialog mode="create" onSuccess={fetchData}>
           <Button>
-            <UserPlus className="mr-2 h-4 w-4" /> เพิ่มผู้ใช้
+            เพิ่มผู้ใช้
           </Button>
         </UserDialog>
       </div >

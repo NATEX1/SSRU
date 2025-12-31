@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { BookPlus } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -24,31 +24,21 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import {
-  NativeSelect,
-  NativeSelectOption,
-} from "@/components/ui/native-select";
-import {
-  Archive,
-  BadgeCheck,
-  FilePlus,
   Filter,
   Pencil,
+  Plus,
   Search,
   Trash,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -64,85 +54,92 @@ import {
 } from "@/components/ui/select";
 import DeleteDialog from "@/components/delete-dialog";
 
-export default function page() {
+import CategoryDialog from "@/components/backoffice/category-dialog";
+
+export default function CategoriesPage() {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
-  const [totalPages, setTotalPages] = useState(1);
+  const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [loading, setLoading] = useState(false);
 
-  const fetchCategories = async () => {
+  const fetchData = async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams();
-      params.append("page", page);
-      params.append("limit", limit);
-      if (search) params.append("q", search);
-
-      const res = await fetch(`/api/categories?${params.toString()}`);
+      const res = await fetch(
+        `/api/categories?page=${page}&limit=${limit}&search=${search}&filter=${filter}`
+      );
       const json = await res.json();
-
       if (json.success) {
-        setData(json.categories);
-        setTotalPages(json.pagination.totalPages);
-        setTotal(json.pagination.total);
+        setData(json.data);
+        setTotal(json.pagination?.total || 0);
       }
     } catch (error) {
-      console.error("Failed to fetch categories", error);
+      console.error("Failed to fetch data:", error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      fetchCategories();
-    }, 500);
-
-    return () => clearTimeout(handler);
-  }, [search, page, limit]);
+    fetchData();
+  }, [page, limit, search, filter]);
 
   const handleDelete = async (id) => {
     try {
       const res = await fetch(`/api/categories/${id}`, {
         method: "DELETE",
       });
-
       const json = await res.json();
 
       if (!res.ok) {
         throw new Error(json.message || "ลบข้อมูลไม่สำเร็จ");
       }
+      fetchData(); // Reload data
 
-      await fetchCategories();
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
+      alert("เกิดข้อผิดพลาดในการลบข้อมูล");
     }
   };
 
   const columns = [
     {
       accessorKey: "name",
-      header: "ชื่อหมวดหมู่",
-    },
-    {
-      accessorKey: "slug",
-      header: "Slug",
+      header: "ชื่อหมวดหมู่ (TH / EN / CN)",
+      cell: ({ row }) => {
+        const { name, nameEn, nameCn } = row.original;
+        return (
+          <div className="flex flex-col">
+            <span className="font-semibold text-base">{name}</span>
+            <span className="text-gray-500 text-sm">
+              {nameEn || "-"} / {nameCn || "-"}
+            </span>
+          </div>
+        );
+      },
     },
     {
       id: "actions",
+      header: "",
       cell: ({ row }) => (
         <div className="flex gap-1">
-          <Button variant={"ghost"} className={"cursor-pointer underline"}>
-            <Pencil className="size-4" /> แก้ไข
-          </Button>
+          <CategoryDialog
+            category={row.original}
+            mode="edit"
+            onSuccess={fetchData}
+          >
+            <Button variant={"ghost"} className={"cursor-pointer underline"}>
+              <Pencil className="size-4" /> แก้ไข
+            </Button>
+          </CategoryDialog>
 
-          <DeleteDialog onConfirm={() => handleDelete(row.original.slug)}>
+          <DeleteDialog onConfirm={() => handleDelete(row.original.id)}>
             <Button
               variant={"ghost"}
-              className={"cursor-pointer underline text-red-500"}
+              className={"cursor-pointer underline text-red-500 hover:text-red-600 hover:bg-red-500/10"}
             >
               <Trash className="size-4" /> ลบ
             </Button>
@@ -156,28 +153,37 @@ export default function page() {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    manualPagination: true,
+    pageCount: Math.ceil(total / limit),
   });
 
   return (
     <div>
       <div className="flex justify-between mb-8">
-        <h1 className="text-4xl font-bold">จัดการหมวดหมู่</h1>
-
-        <Button>เพิ่มหมวดหมู่</Button>
+        <h2 className="text-4xl font-bold">จัดการหมวดหมู่</h2>
+        <CategoryDialog mode="create" onSuccess={fetchData}>
+          <Button>
+            เพิ่มหมวดหมู่
+          </Button>
+        </CategoryDialog>
       </div>
 
-      <div className="overflow-hidden rounded-2xl shadow border bg-white">
-        <div className="p-4 flex gap-1 justify-between">
-          <Select value={limit} onValueChange={setLimit}>
+      {/* Table Section (White Card) */}
+      <div className="overflow-hidden border rounded-2xl shadow bg-white">
+        <div className="flex gap-4 justify-between p-4">
+          <Select value={limit.toString()} onValueChange={(val) => {
+            setLimit(Number(val));
+            setPage(1);
+          }}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={5}>5</SelectItem>
-              <SelectItem value={10}>10</SelectItem>
-              <SelectItem value={25}>25</SelectItem>
-              <SelectItem value={50}>50</SelectItem>
-              <SelectItem value={100}>100</SelectItem>
+              <SelectItem value="5">5</SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="25">25</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>
             </SelectContent>
           </Select>
 
@@ -189,9 +195,38 @@ export default function page() {
               <InputGroupInput
                 placeholder="ค้นหา..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setPage(1);
+                }}
               />
             </InputGroup>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant={"ghost"}>
+                  <Filter />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>สถานะการแปล</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuRadioGroup
+                  value={filter}
+                  onValueChange={setFilter}
+                >
+                  <DropdownMenuRadioItem value="all">
+                    ทั้งหมด
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="missing_en">
+                    ขาดชื่อภาษาอังกฤษ
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="missing_cn">
+                    ขาดชื่อภาษาจีน
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
@@ -219,11 +254,11 @@ export default function page() {
               ))}
             </TableHeader>
             <TableBody>
-              {data.length > 0 ? (
+              {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id}>
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell key={cell.id} className={cell.column.id === "name" ? "text-left pl-10" : "text-center"}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -236,7 +271,7 @@ export default function page() {
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center text-muted-foreground"
+                    className="h-24 text-center"
                   >
                     ไม่พบข้อมูล
                   </TableCell>
@@ -246,13 +281,14 @@ export default function page() {
           </Table>
         )}
 
+        {/* Pagination */}
         <Pagination className="p-4 justify-between items-center">
           <div className="text-sm text-muted-foreground">
             {data.length > 0
               ? `แสดง ${(page - 1) * limit + 1} - ${Math.min(
-                  page * limit,
-                  total
-                )} จากทั้งหมด ${total}`
+                page * limit,
+                total
+              )} จากทั้งหมด ${total}`
               : ""}
           </div>
 
@@ -270,7 +306,7 @@ export default function page() {
             </PaginationItem>
 
             {/* Page numbers */}
-            {Array.from({ length: totalPages }).map((_, i) => {
+            {Array.from({ length: Math.ceil(total / limit) }).map((_, i) => {
               const pageNumber = i + 1;
               return (
                 <PaginationItem key={pageNumber}>
@@ -288,9 +324,9 @@ export default function page() {
             {/* Next */}
             <PaginationItem>
               <PaginationNext
-                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                onClick={() => setPage((p) => Math.min(Math.ceil(total / limit), p + 1))}
                 className={
-                  page === totalPages
+                  page * limit >= total
                     ? "pointer-events-none opacity-50"
                     : "cursor-pointer"
                 }
@@ -302,3 +338,4 @@ export default function page() {
     </div>
   );
 }
+

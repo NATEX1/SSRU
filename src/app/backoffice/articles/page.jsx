@@ -210,7 +210,7 @@ export default function Page() {
         const json = await res.json();
 
         if (json.success) {
-          setCategories(json.categories);
+          setCategories(json.data || []);
         }
       } catch (error) {
         console.error("Failed to fetch categories", error);
@@ -342,9 +342,9 @@ export default function Page() {
           <div className="text-sm text-muted-foreground">
             {data.length > 0
               ? `แสดง ${(page - 1) * limit + 1} - ${Math.min(
-                  page * limit,
-                  total
-                )} จากทั้งหมด ${total}`
+                page * limit,
+                total
+              )} จากทั้งหมด ${total}`
               : ""}
           </div>
 
