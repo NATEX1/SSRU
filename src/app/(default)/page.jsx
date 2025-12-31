@@ -264,9 +264,9 @@ export default function Home() {
                               {post.excerpt}
                             </p>
 
-                            <div className="mt-2 text-xs text-[#99A1AF]">
+                            {/* <div className="mt-2 text-xs text-[#99A1AF]">
                               {post.date} • อ่าน {post.readCount}
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </a>
@@ -348,7 +348,7 @@ export default function Home() {
         </div>
 
         
-        <br /><br />
+        <br />
         <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-6 rounded-2xl shadow mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="p-6 md:p-8">
