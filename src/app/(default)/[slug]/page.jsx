@@ -1,4 +1,4 @@
-import { ArrowLeft, Calendar, Eye, LinkIcon, Share2, User } from "lucide-react";
+import { ArrowLeft, Calendar, Eye, Share2, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/markdown";
@@ -35,46 +35,46 @@ export default async function Page({ params }) {
     <div className="container mx-auto px-4 py-6">
       <Link
         href="/"
-        className="flex items-center text-sm text-[#6A7282] mb-8 hover:underline"
+        className="inline-flex items-center gap-2 text-sm text-[#6A7282] mb-6 hover:underline"
       >
-        <ArrowLeft className="h-3" />
+        <ArrowLeft className="h-4" />
         กลับหน้ารวมรายการ
       </Link>
 
-      <div className="space-y-4">
-        <div className="flex gap-2 items-center">
+      {/* Top meta + title */}
+      <div className="space-y-3">
+        {/* meta row (wrap on mobile) */}
+        <div className="flex flex-wrap gap-x-3 gap-y-2 items-center">
           <div className="flex gap-1 text-sm items-center text-[#F06FAA]">
-            <User className="h-3" /> <span>{article.author}</span>
+            <User className="h-4" /> <span className="break-words">{article.author}</span>
           </div>
-          <div className="flex text-sm items-center text-[#D1D5DC]">|</div>
+
+          <div className="hidden sm:flex text-sm items-center text-[#D1D5DC]">|</div>
+
           <div className="flex gap-1 text-sm items-center text-[#F06FAA]">
-            <Calendar className="h-3" /> <span>{article.date}</span>
+            <Calendar className="h-4" /> <span>{article.date}</span>
           </div>
         </div>
 
-        <h1 className="text-4xl font-bold text-[#3F458D]">{article.title}</h1>
+        <h1 className="text-2xl sm:text-4xl font-bold text-[#3F458D] leading-snug">
+          {article.title}
+        </h1>
 
-        <div className="gap-6 flex">
-          <div className="text-[#6A7282] text-sm flex items-center">
-            <Eye className="h-3" />
-            <span>{article.readCount.toLocaleString()} อ่าน</span>
+        {/* stats row (stack on mobile if tight) */}
+        <div className="flex flex-wrap gap-4">
+          <div className="text-[#6A7282] text-sm flex items-center gap-1">
+            <Eye className="h-4" />
+            <span>{Number(article.readCount || 0).toLocaleString()} อ่าน</span>
           </div>
-          <div className="text-[#6A7282] text-sm flex items-center">
-            <Share2 className="h-3" />
-            <span>{article.shareCount.toLocaleString()} แชร์</span>
+          <div className="text-[#6A7282] text-sm flex items-center gap-1">
+            <Share2 className="h-4" />
+            <span>{Number(article.shareCount || 0).toLocaleString()} แชร์</span>
           </div>
         </div>
       </div>
 
-      {/* {article.thumbnail && (
-        <img
-          src={article.thumbnail}
-          alt={article.title}
-          className="w-[800px] h-[450px] rounded-2xl mx-auto my-8"
-        />
-      )} */}
-
-      <article className="prose prose-lg max-w-none">
+      {/* Content */}
+      <article className="prose prose-base sm:prose-lg max-w-none mt-6">
         <ReactMarkdown
           children={article.content}
           remarkPlugins={[remarkGfm]}
@@ -82,37 +82,48 @@ export default async function Page({ params }) {
         />
       </article>
 
-      <div className="flex gap-4 bg-[#F9FAFB] rounded-2xl border border-[#F3F4F6] p-6 my-8">
-        <div className="border-2 border-white shadow size-[60px] rounded-full overflow-hidden">
-          <img
-            src={article.authorImage || "/assets/images/user.png"}
-            className="w-full h-full object-cover"
-            alt={article.author}
-          />
-        </div>
-        <div>
-          <p className="text-xs text-[#6A7282]">ผู้เขียนบทความ</p>
-          <p className="text-[#3F458D] text-lg font-bold">{article.author}</p>
-          <p className="text-[#4A5565] text-sm">
-            {article.authotPosition}
-          </p>
+      {/* Author box (responsive) */}
+      <div className="mt-8 bg-[#F9FAFB] rounded-2xl border border-[#F3F4F6] p-5 sm:p-6">
+        <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
+          <div className="border-2 border-white shadow size-[56px] sm:size-[60px] rounded-full overflow-hidden shrink-0">
+            <img
+              src={article.authorImage || "/assets/images/user.png"}
+              className="w-full h-full object-cover"
+              alt={article.author}
+            />
+          </div>
+
+          <div className="min-w-0">
+            <p className="text-xs text-[#6A7282]">ผู้เขียนบทความ</p>
+            <p className="text-[#3F458D] text-lg font-bold break-words">
+              {article.author}
+            </p>
+            <p className="text-[#4A5565] text-sm break-words">
+              {article.authorPosition || article.authotPosition}
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="border-t border-[#E5E7EB] py-6 flex justify-between items-center">
-        <div>
-          <p className="text-[#6A7282]">
-            <strong className="text-black">คำค้นหา</strong>:{" "}
-            {article.keywords.map((keyword, index) => (
+      {/* Keywords + Share (responsive) */}
+      <div className="mt-8 border-t border-[#E5E7EB] pt-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <div className="text-[#6A7282] text-sm">
+          <strong className="text-black">คำค้นหา</strong>:{" "}
+          {Array.isArray(article.keywords) && article.keywords.length > 0 ? (
+            article.keywords.map((keyword, index) => (
               <span key={index}>
                 {keyword}
                 {index < article.keywords.length - 1 && ", "}
               </span>
-            ))}
-          </p>
+            ))
+          ) : (
+            <span>-</span>
+          )}
         </div>
 
-        <ShareButtons title={article.title} />
+        <div className="sm:shrink-0">
+          <ShareButtons title={article.title} />
+        </div>
       </div>
     </div>
   );
