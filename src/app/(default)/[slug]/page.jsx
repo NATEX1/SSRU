@@ -20,6 +20,9 @@ export async function generateMetadata({ params }) {
   return {
     title: post.title,
     description: post.excerpt,
+    links_category: post.links_category,
+    authorImage: post.authorImage,
+    authotPosition: post.authotPosition,
   };
 }
 
