@@ -12,7 +12,7 @@ readCount: 1250
 shareCount: 125
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
 links_category: "/categories/hall-of-fame"
-order: 3
+order: 1
 ---
 
 **เนาวรัตน์..แซ่ย่าง**

@@ -80,7 +80,7 @@ export default function Home() {
         <ArticleSlider />
 
         <div className="flex items-start gap-4">
-          <div className="relative overflow-hidden rounded-2xl w-full">
+          <div className="relative overflow-hidden w-full">
             <div>
               {/* Desktop */}
               <div className="hidden lg:block">

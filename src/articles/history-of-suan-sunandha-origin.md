@@ -12,7 +12,7 @@ readCount: 1250
 shareCount: 125
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
 links_category: "/categories/ssru-muea-wan"
-order: 7
+order: 4
 ---
 
 **ปฐมบทแห่งสวนสุนันทา**

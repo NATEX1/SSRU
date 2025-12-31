@@ -12,7 +12,7 @@ readCount: 1250
 shareCount: 125
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
 links_category: "/categories/career-path-conversations"
-order: 7
+order: 6
 ---
 
 **วิทยาลัยการเมืองและการปกครอง**

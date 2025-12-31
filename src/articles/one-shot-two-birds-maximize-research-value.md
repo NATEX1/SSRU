@@ -12,7 +12,7 @@ readCount: 160
 shareCount: 1
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
 links_category: "/categories/featured-research"
-order: 4
+order: 3
 ---
 
 

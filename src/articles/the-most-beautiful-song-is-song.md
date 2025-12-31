@@ -12,7 +12,7 @@ readCount: 95
 shareCount: 0
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
 links_category: "/categories/documentary-knowledge"
-order: 6
+order: 8
 ---
 **เพลงที่เพราะที่สุดคือเพลง ?**
 ผู้ช่วยศาสตราจารย์ วิโรจน์ ศรีหิรัญ
