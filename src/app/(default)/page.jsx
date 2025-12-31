@@ -187,7 +187,7 @@ export default function Home() {
                             <div className="flex items-center gap-2 flex-wrap text-[10px] text-gray-600">
                               <div className="flex items-center gap-1">
                                 <Calendar className="h-2.5 shrink-0" />
-                                <span>28/11/2568</span>
+                                <span>{post.date}</span>
                               </div>
                               <div className="flex items-center gap-1">
                                 <Eye className="h-2.5 shrink-0" />
@@ -228,31 +228,78 @@ export default function Home() {
             </div>
           </div>
           <div className="sticky top-20 pt-2 w-[362px] max-[1024px]:hidden space-y-8">
-            <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-xl">
+            {/* Desktop */}
+            <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-xl hidden lg:block">
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-1.5 h-6 bg-[#F06FAA] rounded" />
                 <h4 className="text-2xl font-bold">ยอดนิยม</h4>
               </div>
 
               <ul className="flex flex-col gap-4">
-                {Array.from({ length: 7 }).map((_, i) => (
-                  <li key={i}>
-                    <a href="#" className="flex gap-4 group">
+                {(catPost || []).slice(0, 7).map((post, i) => (
+                  <li key={post?.slug || i}>
+                    <a href={`/${post.slug}`} className="flex gap-4 group">
                       <div className="text-[#E5E7EB] text-3xl font-bold group-hover:text-[#3F458D] transition">
-                        0{i + 1}
+                        {String(i + 1).padStart(2, "0")}
                       </div>
 
-                      <div>
-                        <p className="group-hover:text-[#F06FAA] transition">
-                          บทความยอดนิยมประจำสัปดาห์ เรื่องที่ {i + 1}
+                      <div className="min-w-0">
+                        <p className="group-hover:text-[#F06FAA] transition line-clamp-2 break-words">
+                          {post.title}
                         </p>
-                        <p className="text-[#99A1AF] text-sm">10 นาทีที่แล้ว</p>
+                        <p className="text-[#99A1AF] text-sm">{post.date}</p>
                       </div>
                     </a>
                   </li>
                 ))}
               </ul>
             </div>
+
+            {/* Mobile */}
+            <div className="lg:hidden bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-2xl shadow mb-8">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-1.5 h-6 bg-[#F06FAA] rounded" />
+                <h4 className="text-xl font-bold text-[#101828]">ยอดนิยม</h4>
+              </div>
+
+              <div className="space-y-3">
+                {(catPost || []).slice(0, 7).map((post, i) => (
+                  <a
+                    key={post?.slug || i}
+                    href={`/${post.slug}`}
+                    className="block bg-white border border-[#F3F4F6] rounded-xl overflow-hidden hover:shadow-sm transition"
+                  >
+                    <div className="flex gap-3 p-3">
+                      {/* image left */}
+                      <div className="w-24 h-20 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                        <img
+                          src={post.thumbnail}
+                          alt={post.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+
+                      {/* text right */}
+                      <div className="min-w-0 flex-1">
+                        <h2 className="card-title line-clamp-1 break-words">
+                          {post.title}
+                        </h2>
+
+                        <p className="line-clamp-2 break-words text-sm text-[#475467] mt-1">
+                          {post.excerpt}
+                        </p>
+
+                        <div className="mt-2 text-xs text-[#99A1AF]">
+                          {post.date}
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
             <div> <br /></div>
             <div>
               <h4 className="text-2xl font-bold text-[#F06FAA] mb-4">อ่านข่าวย้อนหลัง</h4>
@@ -272,7 +319,6 @@ export default function Home() {
                       </h6>
 
                       <div className="flex gap-2 items-center text-[#99A1AF]">
-                        {/* เผื่ออยากใส่คำอธิบาย/จำนวนบทความ/อัปเดตล่าสุดในอนาคต */}
                       </div>
                     </div>
                   </li>

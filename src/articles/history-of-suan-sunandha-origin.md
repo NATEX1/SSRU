@@ -7,7 +7,7 @@ excerpt: "สวนสุนันทา” นามแห่งนี้เป
 author: "ผู้ช่วยศาสตราจารย์ วีระ โชติธรรมาภรณ์"
 authorImage: ""
 authotPosition: ""
-date: "2023-11-28"
+date: "2025-11-28"
 readCount: 1250
 shareCount: 125
 keywords: ["การศึกษา", "นวัตกรรม", "เทคโนโลยี", "มหาวิทยาลัยดิจิทัล", "SWITCH"]
