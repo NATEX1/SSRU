@@ -12,17 +12,17 @@ import "swiper/css/pagination";
 
 const shortClips = [
   {
-    id: "qqBm0GBcTgs",
-    title: "“ เป็นผู้นำต้องมีความพราว สง่างาม” รศ.พล.ต.ท.ดร.สัณฐาน ชยนนท์ #ssru",
-    views: "405",
-    url: "https://youtube.com/shorts/qqBm0GBcTgs?si=Mf5tpNuescDAAYUE",
-  },
-  {
     id: "a9ml5nZen5Y",
     title:
       "“จากการเปลี่ยนผ่านผู้นำ สู่บทบาทอธิการบดีหญิง” รศ.ดร.ชุติกาญจน์ ศรีวิบูลย์ #ssru",
     views: "896",
     url: "https://youtube.com/shorts/a9ml5nZen5Y?si=_fzaQAMa57RggcHB",
+  },
+  {
+    id: "qqBm0GBcTgs",
+    title: "“ เป็นผู้นำต้องมีความพราว สง่างาม” รศ.พล.ต.ท.ดร.สัณฐาน ชยนนท์ #ssru",
+    views: "405",
+    url: "https://youtube.com/shorts/qqBm0GBcTgs?si=Mf5tpNuescDAAYUE",
   },
   {
     id: "V5TMKwpSbkc",

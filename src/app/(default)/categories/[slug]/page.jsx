@@ -79,13 +79,13 @@ export default async function CategoryPage({ params }) {
       </div>
 
       <div className="text-center flex flex-col items-center gap-2">
-        <h1 className="text-[#3F458D] text-5xl font-semibold">
+        <h2 className="text-[#3F458D] text-5xl font-semibold">
           {category.name}
-        </h1>
-        <p className="text-[#4A5565]">
+        </h2>
+        {/* <p className="text-[#4A5565]">
           รวบรวมผลงานวิจัยที่โดดเด่นและน่าสนใจจากคณาจารย์และนักศึกษา <br />
           มหาวิทยาลัยราชภัฏสวนสุนันทา
-        </p>
+        </p> */}
         <div className=" rounded bg-[#F06FAA] w-24 h-1 mt-8"></div>
       </div>
 
