@@ -39,7 +39,7 @@ export async function generateMetadata({ params }) {
       description: article.excerpt || "อ่านบทความคุณภาพจาก KCC",
       images: article.thumbnail ? [{ url: article.thumbnail }] : [],
       type: "article",
-      publishedTime: article.createdAt,
+      publishedTime: new Date(article.createdAt).toISOString(),
     },
   };
 }
@@ -74,7 +74,13 @@ export default async function page({ params }) {
 
           <div className="flex gap-1 text-sm items-center text-[#F06FAA]">
             <Calendar className="h-4 shrink-0" />
-            <span>{article.date}</span>
+            <span>
+              {new Date(article.createdAt).toLocaleDateString("th-TH", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
           </div>
         </div>
 

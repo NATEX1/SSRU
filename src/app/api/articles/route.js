@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 async function generateUniqueSlug(title) {
-  const baseSlug = title.trim().replace(/\s+/g, "-");
+  const baseSlug = title.trim().replace(/\s+/g, "-").toLowerCase();
   let slug = baseSlug;
   let counter = 1;
 

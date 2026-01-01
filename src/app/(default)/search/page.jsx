@@ -65,7 +65,7 @@ export default async function page({ searchParams }) {
               </a>
             </figure>
 
-            <div className="card-body">
+            <div className="card-body wrap-break-word">
               <p className="text-xs text-[#99A1AF]">
                 <span className="text-[#F06FAA]">
                   {item.authorType == "penname"
