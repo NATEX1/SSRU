@@ -21,6 +21,12 @@ export async function GET(req, { params }) {
             createdAt: true,
           },
         },
+        approvedBy: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
         category: true,
         tags: {
           include: { tag: true },

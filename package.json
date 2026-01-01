@@ -37,6 +37,7 @@
     "clsx": "^2.1.1",
     "daisyui": "^5.5.8",
     "dotenv": "^17.2.3",
+    "editorjs-html": "^4.0.5",
     "editorjs-text-alignment-blocktune": "^1.0.3",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.556.0",
@@ -51,6 +52,8 @@
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
     "slick-carousel": "^1.8.1",
+    "slugify": "^1.6.6",
+    "sonner": "^2.0.7",
     "swiper": "^12.0.3",
     "tailwind-merge": "^3.4.0"
   },

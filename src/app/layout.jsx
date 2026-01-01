@@ -3,6 +3,7 @@ import "./globals.css";
 import SessionProvider from '@/components/session-provider'
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default async function RootLayout({ children }) {
         }}
       >
         <SessionProvider session={session}>
+          <Toaster position="top-right" expand={true} richColors />
           {children}
         </SessionProvider>
       </body>

@@ -1,11 +1,22 @@
 "use client";
 
 import { Search, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 export default function AppHeader() {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const inputRef = useRef(null);
+
+  const router = useRouter();
+  const [keyword, setKeyword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!keyword.trim()) return;
+
+    router.push(`/search?q=${encodeURIComponent(keyword)}`);
+  };
 
   useEffect(() => {
     if (mobileSearchOpen) {
@@ -16,16 +27,17 @@ export default function AppHeader() {
   return (
     <header className="fixed top-0 w-full border-b border-[#F3F4F6] bg-white z-40">
       <div className="relative container mx-auto h-20 px-4 flex items-center justify-between">
-        
         {/* Left: Search (Desktop only) */}
-        <div className="hidden lg:flex w-72 h-9 px-3 py-2 items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full focus-within:border-[#F06FAA]">
+        <form onSubmit={handleSubmit} className="hidden lg:flex w-72 h-9 px-3 py-2 items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full focus-within:border-[#F06FAA]">
           <Search className="h-[1em] text-[#99A1AF]" />
           <input
             type="text"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
             placeholder="ค้นหา..."
             className="w-full outline-none bg-transparent"
           />
-        </div>
+        </form>
 
         {/* Center Logo */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -85,7 +97,6 @@ export default function AppHeader() {
             </li>
           ))}
         </ul>
-
       </div>
     </header>
   );

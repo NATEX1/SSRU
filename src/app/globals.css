@@ -186,6 +186,11 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+article img{
+  @apply max-h-[800px] max-w-[800px] h-full w-full object-contain mx-auto;
+}
+
 /* 
 .ce-block__content{
   @apply max-w-7xl;

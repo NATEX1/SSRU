@@ -35,11 +35,15 @@ import {
 import {
   Archive,
   BadgeCheck,
+  Check,
+  Clock,
   FilePlus,
   Filter,
   Pencil,
   Search,
   Trash,
+  X,
+  XCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -62,6 +66,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import DeleteDialog from "@/components/delete-dialog";
+import ApproveDialog from "@/components/backoffice/approve-dialog";
+import RejectDialog from "@/components/backoffice/reject-dialog";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Page() {
   const [data, setData] = useState([]);
@@ -73,6 +81,58 @@ export default function Page() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [categories, setCategories] = useState([]);
+
+  const router = useRouter();
+
+  const handleApprove = async (slug) => {
+    try {
+      const res = await fetch(`/api/articles/${slug}/approve`, {
+        method: "POST",
+      });
+
+      const json = await res.json();
+
+      if (!res.ok || !json.success) {
+        throw new Error(json.message || "Approve failed");
+      }
+
+      toast.success("สำเร็จ", {
+        description: "อนุมัติบทความเรียบร้อยแล้ว",
+      });
+
+      await fetchArticles();
+    } catch (error) {
+      toast.error("เกิดข้อผิดพลาด", {
+        description: error.message || "ไม่สามารถอนุมัติได้",
+      });
+    }
+  };
+
+  const handleReject = async (slug, comment) => {
+    try {
+      const res = await fetch(`/api/articles/${slug}/reject`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ comment }),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok || !json.success) {
+        throw new Error(json.message || "Reject failed");
+      }
+
+      toast.success("สำเร็จ", { description: "ไม่อนุมัติบทความเรียบร้อยแล้ว" });
+
+      await fetchArticles();
+    } catch (error) {
+      toast.error("เกิดข้อผิดพลาด", {
+        description: error.message || "ไม่สามารถไม่อนุมัติได้",
+      });
+    }
+  };
 
   const columns = [
     {
@@ -107,34 +167,44 @@ export default function Page() {
     },
     {
       accessorKey: "category.name",
-      header: 'หมวดหมู่'
+      header: "หมวดหมู่",
     },
     {
       accessorKey: "status",
       header: "Status",
       cell: ({ row }) => {
+        const statusConfig = {
+          pending: {
+            label: "รออนุมัติ",
+            class: "bg-yellow-100 text-yellow-800 border-yellow-800",
+            icon: Clock,
+          },
+          approved: {
+            label: "อนุมัติแล้ว",
+            class: "bg-green-100 text-green-800 border-green-800",
+            icon: BadgeCheck,
+          },
+          rejected: {
+            label: "ไม่อนุมัติ",
+            class: "bg-red-100 text-red-800 border-red-800",
+            icon: XCircle,
+          },
+          draft: {
+            label: "ฉบับร่าง",
+            class: "bg-gray-100 text-gray-600 border-gray-600",
+            icon: Pencil,
+          },
+        };
+
         const status = row.original.status;
-
-        const statusColor =
-          {
-            draft: "bg-yellow-100 text-yellow-800 border border-yellow-800",
-            published: "bg-green-100 text-green-800 border border-green-800",
-            archived: "bg-gray-100 text-gray-600 border border-gray-600",
-          }[status] || "bg-gray-100 text-gray-600 border border-gray-600";
-
-        const Icon =
-          {
-            draft: Pencil,
-            published: BadgeCheck,
-            archived: Archive,
-          }[status] || Pencil;
+        const cfg = statusConfig[status];
 
         return (
           <span
-            className={`px-2 py-0.5 rounded-full text-xs font-semibold inline-flex items-center gap-1 ${statusColor}`}
+            className={`px-2 py-0.5 rounded-full text-xs font-semibold inline-flex items-center gap-1 border ${cfg.class}`}
           >
-            <Icon className="h-3 w-3" />
-            {status?.charAt(0).toUpperCase() + status?.slice(1)}
+            <cfg.icon className="h-3 w-3" />
+            {cfg.label}
           </span>
         );
       },
@@ -153,53 +223,110 @@ export default function Page() {
       },
     },
     {
+      id: "approval",
+      header: "การอนุมัติ",
+      cell: ({ row }) => {
+        const { status, approvedBy, approvedAt, rejectReason } = row.original;
+
+        if (status === "approved") {
+          return (
+            <div className="text-xs">
+              <p className="font-medium text-green-700">
+                อนุมัติโดย {approvedBy?.name}
+              </p>
+              <p className="text-muted-foreground">
+                {new Date(approvedAt).toLocaleDateString("th-TH", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </p>
+            </div>
+          );
+        }
+
+        if (status === "rejected") {
+          return (
+            <div className="text-xs text-red-700">
+              <p className="font-medium">ไม่อนุมัติ</p>
+              <p className="italic line-clamp-2">{rejectReason}</p>
+            </div>
+          );
+        }
+
+        return <span className="text-muted-foreground text-xs">—</span>;
+      },
+    },
+    {
       id: "actions",
       enableHiding: false,
-      cell: ({ row }) => (
-        <div className="flex gap-2">
-          <Button variant={"ghost"} className={"cursor-pointer underline"}>
-            <Pencil className="size-4" /> แก้ไข
-          </Button>
-          <DeleteDialog onConfirm={() => console.log("ลบแล้วนะจ๊ะ")}>
-            <Button
-              variant={"ghost"}
-              className={"cursor-pointer underline text-red-500"}
+      cell: ({ row }) => {
+        const article = row.original;
+
+        return (
+          <div className="flex gap-2">
+            {/* Approve */}
+            <ApproveDialog onApprove={() => handleApprove(article.slug)}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className=" underline"
+                disabled={article.status == "draft"}
+              >
+                <Check className="size-4" />
+                อนุมัติ
+              </Button>
+            </ApproveDialog>
+
+            <RejectDialog
+              onSubmit={(comment) => handleReject(article.slug, comment)}
             >
-              <Trash className="size-4" /> ลบ
-            </Button>
-          </DeleteDialog>
-        </div>
-      ),
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-red-600 underline"
+                disabled={article.status == "draft"}
+              >
+                <X className="size-4" />
+                ไม่อนุมัติ
+              </Button>
+            </RejectDialog>
+          </div>
+        );
+      },
     },
   ];
 
-  useEffect(() => {
-    const handler = setTimeout(async () => {
-      setLoading(true);
-      try {
-        const params = new URLSearchParams();
-        params.append("page", page);
-        params.append("limit", limit);
-        if (search) params.append("q", search);
-        if (selectedCategory !== "all")
-          params.append("category", selectedCategory);
+  const fetchArticles = async () => {
+    setLoading(true);
 
-        const res = await fetch(`/api/articles?${params.toString()}`);
-        const json = await res.json();
+    try {
+      const params = new URLSearchParams({
+        page: String(page),
+        limit: String(limit),
+      });
 
-        if (json.success) {
-          setData(json.articles);
-          setTotalPages(json.pagination.totalPages);
-          setTotal(json.pagination.total);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
+      if (search) params.append("q", search);
+      if (selectedCategory !== "all")
+        params.append("category", selectedCategory);
+
+      const res = await fetch(`/api/articles?${params.toString()}`);
+      const json = await res.json();
+
+      if (json.success) {
+        setData(json.articles);
+        setTotalPages(json.pagination.totalPages);
+        setTotal(json.pagination.total);
       }
-    }, 500);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    // cleanup ก่อน next effect
+  useEffect(() => {
+    const handler = setTimeout(fetchArticles, 500);
     return () => clearTimeout(handler);
   }, [page, search, selectedCategory]);
 
@@ -342,9 +469,9 @@ export default function Page() {
           <div className="text-sm text-muted-foreground">
             {data.length > 0
               ? `แสดง ${(page - 1) * limit + 1} - ${Math.min(
-                page * limit,
-                total
-              )} จากทั้งหมด ${total}`
+                  page * limit,
+                  total
+                )} จากทั้งหมด ${total}`
               : ""}
           </div>
 

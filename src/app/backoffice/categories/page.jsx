@@ -29,13 +29,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  Filter,
-  Pencil,
-  Plus,
-  Search,
-  Trash,
-} from "lucide-react";
+import { Filter, Pencil, Plus, Search, Trash } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -68,13 +62,19 @@ export default function CategoriesPage() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await fetch(
-        `/api/categories?page=${page}&limit=${limit}&search=${search}&filter=${filter}`
-      );
+      const params = new URLSearchParams();
+
+      params.set("page", page);
+      params.set("limit", limit);
+      if (search) params.set("q", search);
+      if (filter !== "all") params.set("filter", filter);
+
+      const res = await fetch(`/api/categories?${params.toString()}`);
       const json = await res.json();
+
       if (json.success) {
-        setData(json.data);
-        setTotal(json.pagination?.total || 0);
+        setData(json.categories);
+        setTotal(json.pagination.total);
       }
     } catch (error) {
       console.error("Failed to fetch data:", error);
@@ -84,7 +84,9 @@ export default function CategoriesPage() {
   };
 
   useEffect(() => {
-    fetchData();
+    const handler = setTimeout(fetchData, 500);
+
+    return () => clearTimeout(handler);
   }, [page, limit, search, filter]);
 
   const handleDelete = async (id) => {
@@ -92,13 +94,12 @@ export default function CategoriesPage() {
       const res = await fetch(`/api/categories/${id}`, {
         method: "DELETE",
       });
-      const json = await res.json();
+      const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(json.message || "ลบข้อมูลไม่สำเร็จ");
+        throw new Error(data.message || "ลบข้อมูลไม่สำเร็จ");
       }
       fetchData(); // Reload data
-
     } catch (err) {
       console.error(err);
       alert("เกิดข้อผิดพลาดในการลบข้อมูล");
@@ -107,20 +108,21 @@ export default function CategoriesPage() {
 
   const columns = [
     {
-      accessorKey: "name",
-      header: "ชื่อหมวดหมู่ (TH / EN / CN)",
+      id: "name",
+      header: "ชื่อหมวดหมู่",
       cell: ({ row }) => {
         const { name, nameEn, nameCn } = row.original;
         return (
           <div className="flex flex-col">
-            <span className="font-semibold text-base">{name}</span>
-            <span className="text-gray-500 text-sm">
-              {nameEn || "-"} / {nameCn || "-"}
+            <span className="font-medium">{name}</span>
+            <span className="text-xs text-muted-foreground">
+              EN: {nameEn || "-"} | CN: {nameCn || "-"}
             </span>
           </div>
         );
       },
     },
+
     {
       id: "actions",
       header: "",
@@ -139,7 +141,9 @@ export default function CategoriesPage() {
           <DeleteDialog onConfirm={() => handleDelete(row.original.id)}>
             <Button
               variant={"ghost"}
-              className={"cursor-pointer underline text-red-500 hover:text-red-600 hover:bg-red-500/10"}
+              className={
+                "cursor-pointer underline text-red-500 hover:text-red-600 hover:bg-red-500/10"
+              }
             >
               <Trash className="size-4" /> ลบ
             </Button>
@@ -162,19 +166,20 @@ export default function CategoriesPage() {
       <div className="flex justify-between mb-8">
         <h2 className="text-4xl font-bold">จัดการหมวดหมู่</h2>
         <CategoryDialog mode="create" onSuccess={fetchData}>
-          <Button>
-            เพิ่มหมวดหมู่
-          </Button>
+          <Button>เพิ่มหมวดหมู่</Button>
         </CategoryDialog>
       </div>
 
       {/* Table Section (White Card) */}
       <div className="overflow-hidden border rounded-2xl shadow bg-white">
         <div className="flex gap-4 justify-between p-4">
-          <Select value={limit.toString()} onValueChange={(val) => {
-            setLimit(Number(val));
-            setPage(1);
-          }}>
+          <Select
+            value={limit.toString()}
+            onValueChange={(val) => {
+              setLimit(Number(val));
+              setPage(1);
+            }}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -258,7 +263,14 @@ export default function CategoriesPage() {
                 table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id}>
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className={cell.column.id === "name" ? "text-left pl-10" : "text-center"}>
+                      <TableCell
+                        key={cell.id}
+                        className={
+                          cell.column.id === "name"
+                            ? "text-left pl-10"
+                            : "text-center"
+                        }
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -286,9 +298,9 @@ export default function CategoriesPage() {
           <div className="text-sm text-muted-foreground">
             {data.length > 0
               ? `แสดง ${(page - 1) * limit + 1} - ${Math.min(
-                page * limit,
-                total
-              )} จากทั้งหมด ${total}`
+                  page * limit,
+                  total
+                )} จากทั้งหมด ${total}`
               : ""}
           </div>
 
@@ -324,7 +336,9 @@ export default function CategoriesPage() {
             {/* Next */}
             <PaginationItem>
               <PaginationNext
-                onClick={() => setPage((p) => Math.min(Math.ceil(total / limit), p + 1))}
+                onClick={() =>
+                  setPage((p) => Math.min(Math.ceil(total / limit), p + 1))
+                }
                 className={
                   page * limit >= total
                     ? "pointer-events-none opacity-50"
@@ -338,4 +352,3 @@ export default function CategoriesPage() {
     </div>
   );
 }
-

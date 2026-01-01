@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Upload, X } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const Editor = dynamic(() => import("@/components/editor"), {
   ssr: false,
@@ -11,16 +14,20 @@ const Editor = dynamic(() => import("@/components/editor"), {
 
 export default function Page() {
   const [title, setTitle] = useState("");
-  const [excerpt, setExcerpt] = useState("")
+  const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [preview, setPreview] = useState(null);
   const [tags, setTags] = useState([]);
+  const [keywords, setKeywords] = useState([]);
+  const [inputKeyword, setInputKeyword] = useState("");
   const [inputTag, setInputTag] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
   const [authorMode, setAuthorMode] = useState("user"); // user | penname
   const [penName, setPenName] = useState("");
+  const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -37,24 +44,23 @@ export default function Page() {
     fetchCategories();
   }, []);
 
-  const addTag = () => {
-    const trimmed = inputTag.trim();
-    if (trimmed && !tags.includes(trimmed)) {
-      setTags([...tags, trimmed]);
+  const addKeyword = () => {
+    const trimmed = inputKeyword.trim();
+    if (trimmed && !keywords.includes(trimmed)) {
+      setKeywords([...keywords, trimmed]);
     }
-
-    setInputTag("");
+    setInputKeyword(""); // ล้าง input
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      addTag();
+      addKeyword();
     }
   };
 
-  const handleRemoveTag = (tagToRemove) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
+  const handleRemoveKeyword = (keywordToRemove) => {
+    setKeywords(keywords.filter((keyword) => keyword !== keywordToRemove));
   };
 
   const handleThumbnailChange = (e) => {
@@ -67,18 +73,19 @@ export default function Page() {
 
   const handleSave = async (status = "draft") => {
     if (!title || !content || !selectedCategory) {
-      alert("Please fill in title, content, and category.");
+      toast.error("บันทึกไม่สำเร็จ", {
+        description: "กรุณากรอก หัวข้อ, เนื้อหา และ หมวดหมู่",
+      });
       return;
     }
 
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("slug", title.toLowerCase().replace(/\s+/g, "-")); // simple slug
     formData.append("content", JSON.stringify(content));
-    formData.append("categoryId", selectedCategory); // หรือ ID จริง
-    formData.append("authorId", "1"); // ใส่ authorId ตามระบบ
+    formData.append("categoryId", selectedCategory);
     formData.append("status", status);
-    formData.append("tags", JSON.stringify(tags));
+    formData.append("keywords", keywords.join(","));
+    formData.append("excerpt", excerpt);
 
     if (thumbnail) {
       formData.append("thumbnail", thumbnail);
@@ -86,28 +93,44 @@ export default function Page() {
 
     if (authorMode === "user") {
       formData.append("authorType", "user");
-      formData.append("authorId", user.id);
+      formData.append("authorId", session.user.id);
     } else {
       formData.append("authorType", "penname");
       formData.append("penName", penName.trim());
     }
 
+    const toastId = toast.loading("กำลังบันทึก...");
+
     try {
       const res = await fetch("/api/articles", {
         method: "POST",
-        body: formData, // ไม่ต้อง set Content-Type เอง
+        body: formData,
       });
 
       const data = await res.json();
-      if (res.ok) {
-        alert("Content saved!");
-        console.log(data);
-      } else {
-        alert("Error saving content: " + data.error);
+      if (!res.ok) {
+        toast.error("บันทึกไม่สำเร็จ", {
+          id: toastId,
+          description: data.message,
+        });
+        return;
       }
+
+      toast.success("บันทึกเรียบร้อยแล้ว", { id: toastId });
+      setTitle("");
+      setExcerpt("");
+      setContent(null);
+      setSelectedCategory(null);
+      setTags([]);
+      setAuthorMode("user");
+      setPenName("");
+      setThumbnail(null);
+      setPreview("");
+
+      router.replace("/");
     } catch (err) {
       console.error(err);
-      alert("Failed to save content.");
+      toast.error("เกิดข้อผิดพลาดในการบันทึก", { id: toastId });
     }
   };
 
@@ -160,12 +183,16 @@ export default function Page() {
             />
           </div>
 
-            <div>
-                <label htmlFor="">เนื้อหาย่อ</label>
+          <div>
+            <label htmlFor="">เนื้อหาย่อ</label>
 
-                <textarea rows={3} value={excerpt} onChange={(e) => setExcerpt(e.target.value)} className="w-full outline-none rounded-lg border px-4 py-2 focus-within:border-black"></textarea>
-            </div>
-
+            <textarea
+              rows={3}
+              value={excerpt}
+              onChange={(e) => setExcerpt(e.target.value)}
+              className="w-full outline-none rounded-lg border px-4 py-2 focus-within:border-black"
+            ></textarea>
+          </div>
 
           {/* Editor */}
           <div>
@@ -202,25 +229,27 @@ export default function Page() {
 
             {/* Tags */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-600">Tags</label>
+              <label className="text-sm font-medium text-gray-600">
+                คำค้นหา
+              </label>
 
               <input
                 type="text"
-                placeholder="Press Enter to add tag"
+                placeholder="Press Enter to add keywords"
                 className="w-full border rounded-lg px-3 py-2"
-                value={inputTag}
-                onChange={(e) => setInputTag(e.target.value)}
+                value={inputKeyword}
+                onChange={(e) => setInputKeyword(e.target.value)}
                 onKeyDown={handleKeyDown}
               />
 
               <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
+                {keywords.map((keyword) => (
                   <span
-                    key={tag}
+                    key={keyword}
                     className="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-full text-sm"
                   >
-                    {tag}
-                    <button onClick={() => handleRemoveTag(tag)}>
+                    {keyword}
+                    <button onClick={() => handleRemoveKeyword(keyword)}>
                       <X size={12} />
                     </button>
                   </span>
@@ -291,10 +320,10 @@ export default function Page() {
                 Save draft
               </button>
               <button
-                onClick={() => handleSave("published")}
+                onClick={() => handleSave("pending")}
                 className="w-full bg-black text-white rounded-xl py-2 font-medium hover:bg-black/90"
               >
-                Publish article
+                Submit
               </button>
             </div>
           </div>

@@ -38,7 +38,8 @@ export async function POST(req) {
     const content = formData.get("content");
     const categoryId = parseInt(formData.get("categoryId") || "0");
     const status = formData.get("status") || "draft";
-    const tagsArray = JSON.parse(formData.get("tags") || "[]");
+    const excerpt = formData.get("excerpt") || ""
+    const keywords = formData.get("keywords") || ""
 
     const authorType = formData.get("authorType") || "user";
     const penName = formData.get("penName");
@@ -81,8 +82,9 @@ export async function POST(req) {
       categoryId,
       thumbnail: thumbnailPath,
       status,
-
+      excerpt,
       authorType,
+      keywords,
       authorId: authorType === "user" ? session.user.id : null,
       penName: authorType === "penname" ? penName : null,
     };
@@ -92,25 +94,6 @@ export async function POST(req) {
       data: articleData,
     });
 
-    // handle tags
-    for (const tagName of tagsArray) {
-      let tag = await prisma.tag.findUnique({
-        where: { name: tagName },
-      });
-
-      if (!tag) {
-        tag = await prisma.tag.create({
-          data: { name: tagName },
-        });
-      }
-
-      await prisma.articleTag.create({
-        data: {
-          articleId: article.id,
-          tagId: tag.id,
-        },
-      });
-    }
 
     return NextResponse.json({ success: true, article }, { status: 201 });
   } catch (err) {
@@ -177,6 +160,12 @@ export async function GET(req) {
             status: true,
           },
         },
+        approvedBy: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
       },
     });
 
