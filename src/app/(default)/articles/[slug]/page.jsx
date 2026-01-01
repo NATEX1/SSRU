@@ -7,7 +7,7 @@ import ShareButtons from "../../[slug]/ShareButtons";
 import { render } from "@/lib/render";
 import BackButton from "../back-button";
 
-async function getArtcleBySlug(rawSlug) {
+async function getArticleBySlug(rawSlug) {
   const slug = decodeURIComponent(rawSlug);
   const article = await prisma.article.findUnique({
     where: {
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }) {
 export default async function page({ params }) {
   const { slug } = await params;
 
-  const article = await getArtcleBySlug(slug);
+  const article = await getArticleBySlug(slug);
 
   if (!article) return notFound();
 
