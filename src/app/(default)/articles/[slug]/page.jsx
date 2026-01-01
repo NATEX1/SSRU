@@ -28,7 +28,7 @@ async function getArticleBySlug(rawSlug) {
 }
 
 export async function generateMetadata({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const article = await getArticleBySlug(slug);
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://kcc-uat.ssru.ac.th";
