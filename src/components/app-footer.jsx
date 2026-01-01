@@ -62,7 +62,7 @@ export default function AppFooter() {
               <a href={link}>
                 <img
                   src={`/assets/images/${img}`}
-                  className="rounded-full h-8 w-8 hover:opacity-80 transition"
+                  className="rounded-full h-6 w-6 hover:opacity-80 transition"
                   alt=""
                 />
               </a>

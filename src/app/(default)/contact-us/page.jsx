@@ -44,8 +44,7 @@ export default function Page() {
             </div>
             <h3 className="font-bold text-[#3F458D]">เบอร์โทรศัพท์</h3>
             <p className="text-[#4A5565] text-sm sm:text-base leading-relaxed">
-              02 160 1000 <br />
-              094 498 5317
+              02 160 1023
             </p>
           </div>
 
