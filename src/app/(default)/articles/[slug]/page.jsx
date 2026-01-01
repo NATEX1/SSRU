@@ -28,8 +28,10 @@ async function getArtcleBySlug(rawSlug) {
 }
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
-  const article = await getArtcleBySlug(slug);
+  const { slug } = params;
+  const article = await getArticleBySlug(slug);
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://kcc-uat.ssru.ac.th";
 
   return {
     title: `KCC - ${article.title}`,
@@ -37,12 +39,15 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: article.title,
       description: article.excerpt || "อ่านบทความคุณภาพจาก KCC",
-      images: article.thumbnail ? [{ url: article.thumbnail }] : [],
+      images: article.thumbnail
+        ? [{ url: `${baseUrl}${article.thumbnail}` }]
+        : [{ url: `${baseUrl}/default-thumbnail.jpg` }], // กำหนด default ถ้าไม่มี thumbnail
       type: "article",
       publishedTime: new Date(article.createdAt).toISOString(),
     },
   };
 }
+
 
 export default async function page({ params }) {
   const { slug } = await params;
@@ -64,7 +69,7 @@ export default async function page({ params }) {
         <div className="flex flex-col sm:flex-row sm:items-center gap-y-1 sm:gap-x-3">
           <div className="flex gap-1 text-sm items-center text-[#F06FAA]">
             <User className="h-4 shrink-0" />
-            <span className="break-words">
+            <span className="wrap-break-word">
               {article.penName || article.author.name}
             </span>
           </div>
