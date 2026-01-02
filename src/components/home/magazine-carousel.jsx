@@ -10,7 +10,7 @@ import "swiper/css/pagination";
 
 export default function MagazineCarousel({ data }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl w-full">
+    <div className="relative overflow-hidden w-full">
       <p className="text-[#F06FAA]">E-BOOK</p>
 
       <div className="flex justify-between items-end mb-4">

@@ -108,7 +108,7 @@ export default function AppSidebar() {
       <button
         type="button"
         onClick={() => setMobileOpen((v) => !v)}
-        className="lg:hidden fixed top-4 left-4 z-[90] p-2 bg-white border border-[#F3F4F6] rounded-full shadow-sm hover:bg-gray-50"
+        className="lg:hidden fixed top-4 left-4 z-90 p-2 bg-white border border-[#F3F4F6] rounded-full shadow-sm hover:bg-gray-50"
         aria-label={mobileOpen ? "Close menu" : "Open menu"}
       >
         {mobileOpen ? (
@@ -153,7 +153,7 @@ export default function AppSidebar() {
       {/* Mobile Drawer + overlay */}
       {mobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-[80]"
+          className="lg:hidden fixed inset-0 z-80"
           onClick={() => setMobileOpen(false)}
         >
           {/* overlay */}

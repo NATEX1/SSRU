@@ -3,39 +3,45 @@ import { getAllCategories, getPostsByCategory } from "@/lib/markdown";
 import { Eye, Share2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import prisma from "@/lib/prisma";
 
-// ===== Static Generation =====
-export async function generateStaticParams() {
-  const categories = getAllCategories();
-  return categories.map((category) => ({
-    slug: category.slug,
-  }));
+async function getCategoryBySlug(rawSlug, page = 1, limit = 9) {
+  const slug = decodeURIComponent(rawSlug);
+  const skip = (page - 1) * limit;
+
+  const category = await prisma.category.findUnique({
+    where: { slug },
+    include: {
+      articles: {
+        skip,
+        take: limit,
+        orderBy: { createdAt: "desc" },
+        include: {
+          author: {
+            select: { name: true },
+          },
+        },
+      },
+      _count: {
+        select: { articles: true },
+      },
+    },
+  });
+
+  return category;
 }
 
-// ===== Metadata =====
-export async function generateMetadata({ params }) {
+export default async function CategoryPage({ params, searchParams }) {
   const { slug } = await params;
-  const categories = getAllCategories();
-  const category = categories.find((cat) => cat.slug === slug);
+  const sp = await searchParams;
+  const page = sp?.page || 1;
+  const limit = 9;
 
-  return {
-    title: category ? `${category.name} - งานวิจัย` : "หมวดหมู่",
-    description: `ผลงานวิจัยและบทความในหมวดหมู่ ${
-      category?.name || ""
-    } จากมหาวิทยาลัยราชภัฏสวนสุนันทา`,
-  };
-}
+  const category = await getCategoryBySlug(slug, page, limit);
 
-export default async function CategoryPage({ params }) {
-  const { slug } = await params;
-
-  const categories = getAllCategories();
-  const posts = getPostsByCategory(slug);
-
-  const category = categories.find((cat) => cat.slug === slug);
+  const totalPages = Math.ceil(category._count.articles / limit);
 
   // console.log(posts);
-  
 
   // ถ้าไม่พบหมวดหมู่
   if (!category) {
@@ -52,17 +58,6 @@ export default async function CategoryPage({ params }) {
       </div>
     );
   }
-
-  // Format วันที่
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    return date.toLocaleDateString("th-TH", options);
-  };
 
   return (
     <div>
@@ -89,39 +84,51 @@ export default async function CategoryPage({ params }) {
         <div className=" rounded bg-[#F06FAA] w-24 h-1 mt-8"></div>
       </div>
 
-      {posts.length > 0 ? (
+      {category.articles.length > 0 ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto px-4 mt-8">
-            {posts.map((post, i) => (
+            {category.articles.map((article, i) => (
               <div className="card shadow-sm group" key={i}>
                 <figure className="h-40">
-                  <a href={`/${post.slug}`}>
+                  <a href={`/articles/${article.slug}`}>
                     <img
-                      src={post.thumbnail}
-                      alt={post.title}
+                      src={article.thumbnail}
+                      alt={article.title}
                       className="group-hover:scale-105 transition duration-150 h-full w-full object-cover"
                     />
                   </a>
                 </figure>
                 <div className="card-body">
                   <p className="text-xs text-[#99A1AF] flex gap-1">
-                    <span className="text-[#F06FAA]">{post.author}</span>
+                    <span className="text-[#F06FAA]">
+                      {article.author.name}
+                    </span>
                     <span>|</span>
-                    <span>{post.date}</span>
+                    <span>
+                      {new Date(article.createdAt).toLocaleDateString("th-TH", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
                   </p>
-                  <a href={`/${post.slug}`}>
-                    <h2 className="card-title line-clamp-2 hover:underline">{post.title}</h2>
+                  <a href={`/articles/${article.slug}`}>
+                    <h2 className="card-title line-clamp-2 hover:underline">
+                      {article.title}
+                    </h2>
                   </a>
-                  <p className="text-[#4A5565] line-clamp-3">{post.excerpt}</p>
+                  <p className="text-[#4A5565] line-clamp-2">
+                    {article.excerpt}
+                  </p>
                   <div className="card-actions">
                     <div className="flex gap-2">
                       <p className="text-[#99A1AF] flex items-center gap-1">
-                        <Eye className="h-[1em]" />
-                        <span>{post.readCount} อ่าน</span>
+                        <Eye className="size-[1em]" />
+                        <span>1230 อ่าน</span>
                       </p>
                       <p className="text-[#99A1AF] flex items-center gap-1">
-                        <Share2 className="h-[1em]" />
-                        <span>{post.shareCount} แชร์</span>
+                        <Share2 className="size-[1em]" />
+                        <span>445 แชร์</span>
                       </p>
                     </div>
                   </div>
@@ -130,11 +137,9 @@ export default async function CategoryPage({ params }) {
             ))}
           </div>
 
-          {posts.length > 9 && (
-            <div className="max-w-6xl mx-auto px-4">
-              <Pagination />
-            </div>
-          )}
+          <div className="max-w-6xl mx-auto px-4">
+             <Pagination page={page} totalPages={totalPages} />
+          </div>
         </>
       ) : (
         // Empty State

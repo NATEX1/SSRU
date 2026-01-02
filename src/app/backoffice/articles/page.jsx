@@ -75,7 +75,7 @@ export default function Page() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState("");
@@ -138,6 +138,11 @@ export default function Page() {
     {
       accessorKey: "title",
       header: "หัวข้อ",
+      cell: ({ getValue }) => {
+        const value = getValue();
+        // จำกัดความยาว 30 ตัวอักษร และเติม "..." ถ้ายาวเกิน
+        return value.length > 30 ? value.slice(0, 30) + "..." : value;
+      },
     },
     {
       id: "author",
@@ -328,7 +333,7 @@ export default function Page() {
   useEffect(() => {
     const handler = setTimeout(fetchArticles, 500);
     return () => clearTimeout(handler);
-  }, [page, search, selectedCategory]);
+  }, [page, search, selectedCategory, limit]);
 
   useEffect(() => {
     const fetchCategories = async () => {

@@ -108,21 +108,17 @@ export default function CategoriesPage() {
 
   const columns = [
     {
-      id: "name",
+      accessorKey: "name",
       header: "ชื่อหมวดหมู่",
-      cell: ({ row }) => {
-        const { name, nameEn, nameCn } = row.original;
-        return (
-          <div className="flex flex-col">
-            <span className="font-medium">{name}</span>
-            <span className="text-xs text-muted-foreground">
-              EN: {nameEn || "-"} | CN: {nameCn || "-"}
-            </span>
-          </div>
-        );
-      },
     },
-
+    {
+      accessorKey: "nameEn",
+      header: "ชื่อหมวดหมู่ (EN)",
+    },
+    {
+      accessorKey: "nameCh",
+      header: "ชื่อหมวดหมู่ (CH)",
+    },
     {
       id: "actions",
       header: "",
@@ -259,18 +255,11 @@ export default function CategoriesPage() {
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
+              {data.length > 0 ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id}>
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        className={
-                          cell.column.id === "name"
-                            ? "text-left pl-10"
-                            : "text-center"
-                        }
-                      >
+                      <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -283,7 +272,7 @@ export default function CategoriesPage() {
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center"
+                    className="h-24 text-center text-muted-foreground"
                   >
                     ไม่พบข้อมูล
                   </TableCell>

@@ -3,6 +3,7 @@ import ClipCarousel from "@/components/home/clip-carousel";
 import CommentForm from "@/components/home/comment-form";
 import MagazineCarousel from "@/components/home/magazine-carousel";
 import { getOnePostEachOtherCategory, getCategoryName } from "@/lib/markdown";
+import prisma from "@/lib/prisma";
 import { ArrowRight, Calendar, Eye, Share2 } from "lucide-react";
 
 const magazines = [
@@ -58,7 +59,10 @@ const clips = [
 ];
 const archiveCategories = [
   { category: "มองการไกลกับผู้บริหาร", href: "/categories/executive-thoughts" },
-  { category: "สนทนาบนเส้นทางงาน", href: "/categories/career-path-conversations" },
+  {
+    category: "สนทนาบนเส้นทางงาน",
+    href: "/categories/career-path-conversations",
+  },
   { category: "งานวิจัยแนะนำ", href: "/categories/featured-research" },
   { category: "สวนสุนันทาเมื่อวันวาน", href: "/categories/ssru-muea-wan" },
   { category: "มุมคิดวันนี้", href: "/categories/thoughts-today" },
@@ -66,13 +70,35 @@ const archiveCategories = [
   { category: "Hall of fame", href: "/categories/hall-of-fame" },
 ];
 
-export default function Home() {
+async function getCategoriesWithOneArticle() {
+  const cats = await prisma.category.findMany({
+    include: {
+      articles: {
+        take: 1, // เอา article แค่ 1 ตัว
+        orderBy: { createdAt: "desc" }, // ตัวล่าสุด
+      },
+    },
+  });
+
+  // แปลง articles array ให้เป็น object เดียว
+  return cats.map((c) => ({
+    ...c,
+    article: c.articles[0] || null,
+    articles: undefined,
+  }));
+}
+
+export default async function Home() {
   const catPost = getOnePostEachOtherCategory();
 
+  const cats = await getCategoriesWithOneArticle();
+
+  // console.log(cats);
+
   const popularPosts = [...(catPost || [])]
-  .filter(p => typeof p.readCount === "number")
-  .sort((a, b) => b.readCount - a.readCount)
-  .slice(0, 7);
+    .filter((p) => typeof p.readCount === "number")
+    .sort((a, b) => b.readCount - a.readCount)
+    .slice(0, 7);
 
   return (
     <div className="p-6 mb-8">
@@ -85,56 +111,75 @@ export default function Home() {
               {/* Desktop */}
               <div className="hidden lg:block">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {catPost.map((post, i) => {
+                  {cats.map((cat, i) => {
+                    if (!cat.article) return;
+
                     if (i == 0) {
                       return (
-                        <div key={i} className="col-span-1 md:col-span-2 max-w-full overflow-hidden">
+                        <div
+                          key={i}
+                          className="col-span-1 md:col-span-2 max-w-full overflow-hidden"
+                        >
                           <div className="flex items-center gap-2 mb-4 max-w-full">
                             <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
-                            <h4 className="text-lg sm:text-xl lg:text-2xl font-bold break-words">
+                            <h4 className="text-lg sm:text-xl lg:text-2xl font-bold wrap-break-word">
                               <a
-                                href={`/categories/${post.category}`}
+                                href={`/categories/${cat.slug}`}
                                 className="hover:text-[#F06FAA] transition"
                               >
-                                {getCategoryName(post.category)}
+                                {cat.name}
                               </a>
                             </h4>
                           </div>
 
-                          <div className="relative overflow-hidden rounded-2xl lg:max-w-full sm:max-w-[350px]">
-                            <a href={`/${post.slug}`} className="block max-w-full">
+                          <div className="relative overflow-hidden rounded-2xl max-h-[284px]">
+                            <a
+                              href={`/articles/${cat.article.slug}`}
+                              className="block max-w-full"
+                            >
                               <img
-                                src={post.thumbnail}
+                                src={cat.article.thumbnail}
                                 alt=""
                                 className="w-full max-w-full h-56 sm:h-64 md:h-full object-cover opacity-80 block"
                               />
                             </a>
 
                             <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-20 max-w-full">
-                              <h6 className="text-white text-sm sm:text-lg font-semibold leading-snug line-clamp-2 break-words">
-                                {post.title}
+                              <h6 className="text-white text-sm sm:text-lg font-semibold leading-snug line-clamp-2 wrap-break-word">
+                                {cat.article.title}
                               </h6>
 
-                              <p className="mt-1 line-clamp-2 text-white/80 text-[11px] sm:text-sm mb-3 sm:mb-4 break-words">
-                                {post.excerpt}
+                              <p className="mt-1 line-clamp-2 text-white/80 text-[11px] sm:text-sm mb-3 sm:mb-4 wrap-break-word">
+                                {cat.article.excerpt}
                               </p>
 
                               <div className="flex items-center justify-between gap-2 flex-wrap">
                                 <div className="flex gap-3 flex-wrap text-[10px] sm:text-xs text-white">
                                   <div className="flex items-center gap-1">
-                                    <Calendar className="h-3 shrink-0" /> {post.date}
+                                    <Calendar className="h-3 shrink-0" />{" "}
+                                    {new Date(
+                                      cat.article.createdAt
+                                    ).toLocaleDateString("th-Th", {
+                                      day: "numeric",
+                                      month: "long",
+                                      year: "numeric",
+                                    })}
                                   </div>
                                   <div className="flex items-center gap-1">
-                                    <Eye className="h-3 shrink-0" /> {post.readCount}
+                                    <Eye className="h-3 shrink-0" /> 1220
                                   </div>
                                   <div className="flex items-center gap-1">
-                                    <Share2 className="h-3 shrink-0" /> {post.shareCount}
+                                    <Share2 className="h-3 shrink-0" /> 200
                                   </div>
                                 </div>
 
-                                <a href={`/${post.slug}`} className="shrink-0">
+                                <a
+                                  href={`/articles/${cat.article.slug}`}
+                                  className="shrink-0"
+                                >
                                   <span className="text-[#F06FAA] text-xs flex items-center whitespace-nowrap">
-                                    อ่านต่อ <ArrowRight className="h-3 ml-0.5" />
+                                    อ่านต่อ{" "}
+                                    <ArrowRight className="h-3 ml-0.5" />
                                   </span>
                                 </a>
                               </div>
@@ -154,58 +199,76 @@ export default function Home() {
                     }
 
                     return (
-                      <div key={i} className="flex flex-col max-w-full overflow-hidden">
+                      <div
+                        key={i}
+                        className="flex flex-col max-w-full overflow-hidden"
+                      >
                         <div className="flex items-center gap-2 mb-4">
                           <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
                           <a
-                            href={`/categories/${post.category}`}
+                            href={`/categories/${cat.slug}`}
                             className="hover:text-[#F06FAA] transition"
                           >
-                            <h4 className="text-lg sm:text-xl lg:text-2xl font-bold break-words">
-                              {getCategoryName(post.category)}
+                            <h4 className="text-lg sm:text-xl lg:text-2xl font-bold wrap-break-word">
+                              {cat.name}
                             </h4>
                           </a>
                         </div>
 
-                        <div className="card overflow-hidden max-w-full">
-                          <a href={`/${post.slug}`} className="block">
+                        <div className="card border h-full overflow-hidden">
+                          <a
+                            href={`/articles/${cat.article.slug}`}
+                            className="block"
+                          >
                             <figure className="max-w-full overflow-hidden">
                               <img
-                                src={post.thumbnail}
-                                alt={post.slug}
+                                src={cat.article.thumbnail}
+                                alt={cat.article.title}
                                 className="h-40 w-full max-w-full object-cover block"
                               />
                             </figure>
                           </a>
 
                           <div className="card-body p-2 sm:p-3 max-w-full">
-                            <h2 className="card-title line-clamp-1 break-words">
-                              {post.title}
+                            <h2 className="card-title line-clamp-1 wrap-break-word">
+                              {cat.article.title}
                             </h2>
 
-                            <p className="line-clamp-2 break-words text-sm">
-                              {post.excerpt}
+                            <p className="line-clamp-2 wrap-break-word text-sm">
+                              {cat.article.excerpt}
                             </p>
 
                             <div className="flex items-center justify-between gap-2 flex-wrap">
                               <div className="flex items-center gap-2 flex-wrap text-[10px] text-gray-600">
                                 <div className="flex items-center gap-1">
-                                  <Calendar className="h-2.5 shrink-0" />
-                                  <span>{post.date}</span>
+                                  <Calendar className="size-2.5 shrink-0" />
+                                  <span>
+                                    {new Date(
+                                      cat.article.createdAt
+                                    ).toLocaleDateString("th-TH", {
+                                      day: "numeric",
+                                      month: "short",
+                                      year: "numeric",
+                                    })}
+                                  </span>
                                 </div>
                                 <div className="flex items-center gap-1">
-                                  <Eye className="h-2.5 shrink-0" />
-                                  <span>{post.readCount}</span>
+                                  <Eye className="size-2.5 shrink-0" />
+                                  <span>1220</span>
                                 </div>
                                 <div className="flex items-center gap-1">
-                                  <Share2 className="h-2.5 shrink-0" />
-                                  <span>{post.shareCount}</span>
+                                  <Share2 className="size-2.5 shrink-0" />
+                                  <span>200</span>
                                 </div>
                               </div>
 
-                              <a href={`/${post.slug}`} className="shrink-0">
+                              <a
+                                href={`/articles/${cat.article.slug}`}
+                                className="shrink-0"
+                              >
                                 <span className="text-[#3F458D] text-xs flex items-center cursor-pointer whitespace-nowrap">
-                                  อ่านต่อ <ArrowRight className="h-2.5 ml-0.5" />
+                                  อ่านต่อ{" "}
+                                  <ArrowRight className="h-2.5 ml-0.5" />
                                 </span>
                               </a>
                             </div>
@@ -221,14 +284,17 @@ export default function Home() {
               <div className="lg:hidden">
                 <div className="grid grid-cols-1 gap-4">
                   {catPost.map((post, i) => (
-                    <div key={i} className="flex flex-col max-w-full overflow-hidden">
+                    <div
+                      key={i}
+                      className="flex flex-col max-w-full overflow-hidden"
+                    >
                       <div className="flex items-center gap-2 mb-4">
                         <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
                         <a
                           href={`/categories/${post.category}`}
                           className="hover:text-[#F06FAA] transition"
                         >
-                          <h4 className="text-lg font-bold break-words">
+                          <h4 className="text-lg font-bold wrap-break-word">
                             {getCategoryName(post.category)}
                           </h4>
                         </a>
@@ -246,11 +312,11 @@ export default function Home() {
                         </a>
 
                         <div className="card-body p-3 max-w-full">
-                          <h2 className="card-title line-clamp-1 break-words">
+                          <h2 className="card-title line-clamp-1 wrap-break-word">
                             {post.title}
                           </h2>
 
-                          <p className="line-clamp-2 break-words text-sm">
+                          <p className="line-clamp-2 wrap-break-word text-sm">
                             {post.excerpt}
                           </p>
 
@@ -282,9 +348,9 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-
             </div>
-            <br /><br />
+            <br />
+            <br />
             <div className="flex flex-col lg:flex-row gap-8 flex-1 mb-8">
               <div className="max-w-[563px] min-w-0 bg-[#F9FAFB] py-10 lg:py-16 px-5 lg:px-8 rounded-4xl w-full">
                 <MagazineCarousel data={magazines} />
@@ -299,7 +365,9 @@ export default function Home() {
                 <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-2xl shadow">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-1.5 h-6 bg-[#F06FAA] rounded" />
-                    <h4 className="text-xl font-bold text-[#101828]">ยอดนิยม</h4>
+                    <h4 className="text-xl font-bold text-[#101828]">
+                      ยอดนิยม
+                    </h4>
                   </div>
 
                   <div className="space-y-3">
@@ -322,11 +390,11 @@ export default function Home() {
 
                           {/* text */}
                           <div className="min-w-0 flex-1">
-                            <h2 className="card-title line-clamp-1 break-words">
+                            <h2 className="card-title line-clamp-1 wrap-break-word">
                               {post.title}
                             </h2>
 
-                            <p className="line-clamp-2 break-words text-sm text-[#475467] mt-1">
+                            <p className="line-clamp-2 wrap-break-word text-sm text-[#475467] mt-1">
                               {post.excerpt}
                             </p>
 
@@ -345,11 +413,8 @@ export default function Home() {
               <div className="lg:hidden mb-8">
                 <CommentForm />
               </div>
-
             </div>
-            <div className="flex flex-col lg:flex-row gap-8 flex-1 mb-8">
-
-            </div>
+            <div className="flex flex-col lg:flex-row gap-8 flex-1 mb-8"></div>
           </div>
           <div className="sticky top-20 pt-2 w-[362px] max-[1024px]:hidden space-y-8">
             {/* Desktop */}
@@ -368,12 +433,10 @@ export default function Home() {
                       </div>
 
                       <div className="min-w-0">
-                        <p className="group-hover:text-[#F06FAA] transition line-clamp-2 break-words">
+                        <p className="group-hover:text-[#F06FAA] transition line-clamp-2 wrap-break-word">
                           {post.title}
                         </p>
-                        <p className="text-[#99A1AF] text-sm">
-                          {post.date}
-                        </p>
+                        <p className="text-[#99A1AF] text-sm">{post.date}</p>
                       </div>
                     </a>
                   </li>
@@ -381,9 +444,14 @@ export default function Home() {
               </ul>
             </div>
 
-            <div> <br /></div>
             <div>
-              <h4 className="text-2xl font-bold text-[#F06FAA] mb-4">อ่านข่าวย้อนหลัง</h4>
+              {" "}
+              <br />
+            </div>
+            <div>
+              <h4 className="text-2xl font-bold text-[#F06FAA] mb-4">
+                อ่านข่าวย้อนหลัง
+              </h4>
               <hr className="mb-4" />
 
               <ul className="space-y-4">
@@ -399,8 +467,7 @@ export default function Home() {
                         </a>
                       </h6>
 
-                      <div className="flex gap-2 items-center text-[#99A1AF]">
-                      </div>
+                      <div className="flex gap-2 items-center text-[#99A1AF]"></div>
                     </div>
                   </li>
                 ))}
@@ -413,12 +480,10 @@ export default function Home() {
               </div> */}
             </div>
 
-
             <CommentForm />
           </div>
         </div>
 
-        
         <br />
         <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-6 rounded-2xl shadow mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2">
@@ -440,9 +505,15 @@ export default function Home() {
                 </div>
 
                 <p className="text-[#475467] leading-relaxed text-sm md:text-base">
-                  &nbsp;&nbsp;&nbsp;&nbsp;เว็บไซต์ข่าวแห่งนี้เป็นหนึ่งในช่องทางการสื่อสารของมหาวิทยาลัยราชภัฏสวนสุนันทา มุ่งมั่นนำเสนอข่าวสารและเรื่องราวที่น่าสนใจด้วยความรับผิดชอบต่อสังคม โดยยึดหลักความถูกต้อง ทันสมัย และเหมาะสมต่อบริบทของสังคมไทย
+                  &nbsp;&nbsp;&nbsp;&nbsp;เว็บไซต์ข่าวแห่งนี้เป็นหนึ่งในช่องทางการสื่อสารของมหาวิทยาลัยราชภัฏสวนสุนันทา
+                  มุ่งมั่นนำเสนอข่าวสารและเรื่องราวที่น่าสนใจด้วยความรับผิดชอบต่อสังคม
+                  โดยยึดหลักความถูกต้อง ทันสมัย และเหมาะสมต่อบริบทของสังคมไทย
                   <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;กองบรรณาธิการให้ความสำคัญกับการนำเสนอข้อมูลอย่างสร้างสรรค์ รอบด้าน และคำนึงถึงจริยธรรมด้านการสื่อสาร เพื่อทำหน้าที่เป็นสื่อกลางในการถ่ายทอดข้อมูลข่าวสาร เสริมสร้างความเข้าใจ และสร้างการรับรู้ร่วมกันในสังคมอย่างยั่งยืน
+                  &nbsp;&nbsp;&nbsp;&nbsp;กองบรรณาธิการให้ความสำคัญกับการนำเสนอข้อมูลอย่างสร้างสรรค์
+                  รอบด้าน และคำนึงถึงจริยธรรมด้านการสื่อสาร
+                  เพื่อทำหน้าที่เป็นสื่อกลางในการถ่ายทอดข้อมูลข่าวสาร
+                  เสริมสร้างความเข้าใจ
+                  และสร้างการรับรู้ร่วมกันในสังคมอย่างยั่งยืน
                 </p>
               </div>
             </div>
@@ -457,13 +528,36 @@ export default function Home() {
 
               <div className="text-[#475467] leading-relaxed text-sm md:text-base">
                 <ol className="list-decimal list-inside space-y-3 text-sm md:text-base">
-                  <li>บทความต้องเคารพต่อสถาบันพระมหากษัตริย์อย่างสูงสุด ห้ามพาดพิง วิพากษ์วิจารณ์ หรือสื่อสารในลักษณะที่อาจก่อให้เกิดการลดทอนพระเกียรติหรือความน่าเชื่อถือของสถาบัน อันอาจเข้าข่ายการกระทำที่ขัดต่อกฎหมาย โดยเฉพาะประมวลกฎหมายอาญา มาตรา 112</li>
-                  <li>บทความต้องไม่เปิดเผยข้อมูลส่วนบุคคลที่สามารถระบุตัวตนของบุคคลหรือแหล่งข้อมูลได้ โดยเฉพาะในประเด็นที่มีความละเอียดอ่อน ประเด็นข้อกล่าวหา การทุจริต หรือการกระทำที่เกี่ยวข้องกับอาชญากรรม ทั้งนี้เพื่อคุ้มครองสิทธิส่วนบุคคลและหลีกเลี่ยงความเสียหายที่อาจเกิดขึ้น</li>
-                  <li>การนำเสนอเนื้อหาที่เกี่ยวข้องกับการเมือง ทั้งในประเทศและต่างประเทศ โดยเฉพาะกรณีที่อาจส่งผลกระทบหรือถูกตีความเชื่อมโยงมายังประเทศไทย หรือสถาบันสำคัญของชาติ ต้องดำเนินการด้วยความรอบคอบ ใช้ถ้อยคำที่เป็นกลาง และตั้งอยู่บนพื้นฐานของข้อเท็จจริงที่เหมาะสม</li>
-                  <li>ผู้เขียนควรตระหนักถึงจริยธรรมด้านการสื่อสารและบทบาทของสื่อในสังคม โดยใช้ดุลยพินิจอย่างเหมาะสมในการนำเสนอเนื้อหา อาจมีการพิจารณาจำกัดขอบเขตการนำเสนอ (Self-Censorship) เพื่อหลีกเลี่ยงผลกระทบทางกฎหมาย และเพื่อคงไว้ซึ่งภาพลักษณ์ ความน่าเชื่อถือ และความเหมาะสมของวารสารและองค์กร</li>
+                  <li>
+                    บทความต้องเคารพต่อสถาบันพระมหากษัตริย์อย่างสูงสุด ห้ามพาดพิง
+                    วิพากษ์วิจารณ์
+                    หรือสื่อสารในลักษณะที่อาจก่อให้เกิดการลดทอนพระเกียรติหรือความน่าเชื่อถือของสถาบัน
+                    อันอาจเข้าข่ายการกระทำที่ขัดต่อกฎหมาย
+                    โดยเฉพาะประมวลกฎหมายอาญา มาตรา 112
+                  </li>
+                  <li>
+                    บทความต้องไม่เปิดเผยข้อมูลส่วนบุคคลที่สามารถระบุตัวตนของบุคคลหรือแหล่งข้อมูลได้
+                    โดยเฉพาะในประเด็นที่มีความละเอียดอ่อน ประเด็นข้อกล่าวหา
+                    การทุจริต หรือการกระทำที่เกี่ยวข้องกับอาชญากรรม
+                    ทั้งนี้เพื่อคุ้มครองสิทธิส่วนบุคคลและหลีกเลี่ยงความเสียหายที่อาจเกิดขึ้น
+                  </li>
+                  <li>
+                    การนำเสนอเนื้อหาที่เกี่ยวข้องกับการเมือง
+                    ทั้งในประเทศและต่างประเทศ
+                    โดยเฉพาะกรณีที่อาจส่งผลกระทบหรือถูกตีความเชื่อมโยงมายังประเทศไทย
+                    หรือสถาบันสำคัญของชาติ ต้องดำเนินการด้วยความรอบคอบ
+                    ใช้ถ้อยคำที่เป็นกลาง
+                    และตั้งอยู่บนพื้นฐานของข้อเท็จจริงที่เหมาะสม
+                  </li>
+                  <li>
+                    ผู้เขียนควรตระหนักถึงจริยธรรมด้านการสื่อสารและบทบาทของสื่อในสังคม
+                    โดยใช้ดุลยพินิจอย่างเหมาะสมในการนำเสนอเนื้อหา
+                    อาจมีการพิจารณาจำกัดขอบเขตการนำเสนอ (Self-Censorship)
+                    เพื่อหลีกเลี่ยงผลกระทบทางกฎหมาย และเพื่อคงไว้ซึ่งภาพลักษณ์
+                    ความน่าเชื่อถือ และความเหมาะสมของวารสารและองค์กร
+                  </li>
                 </ol>
               </div>
-
             </div>
           </div>
         </div>
