@@ -3,9 +3,10 @@ import { ArrowLeft, Calendar, Eye, Share2, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
-import ShareButtons from "../../[slug]/ShareButtons";
 import { render } from "@/lib/render";
 import BackButton from "../back-button";
+import ViewCounter from "../view-couter";
+import ShareButtons from "../share-buttons";
 
 async function getArticleBySlug(rawSlug) {
   const slug = decodeURIComponent(rawSlug);
@@ -31,37 +32,49 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://kcc-uat.ssru.ac.th";
+  if (!article) {
+    return {
+      title: "ไม่พบบทความ",
+    };
+  }
 
   return {
-    title: `KCC - ${article.title}`,
-    description: article.excerpt || "อ่านบทความคุณภาพจาก KCC",
+    title: article.title,
+    description: article.excerpt,
     openGraph: {
       title: article.title,
-      description: article.excerpt || "อ่านบทความคุณภาพจาก KCC",
-      images: article.thumbnail
-        ? [{ url: `${baseUrl}${article.thumbnail}` }]
-        : [{ url: `${baseUrl}/default-thumbnail.jpg` }], // กำหนด default ถ้าไม่มี thumbnail
+      description: article.excerpt,
+      url: `https://kcc-uat.ssru.ac.th/${article.slug}`,
+      siteName: "SSRU",
+      images: [
+        {
+          url: article.thumbnail,
+          width: 1200,
+          height: 630,
+        },
+      ],
       type: "article",
-      publishedTime: new Date(article.createdAt).toISOString(),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt,
+      images: [article.thumbnail],
     },
   };
 }
 
-
 export default async function page({ params }) {
   const { slug } = await params;
-
   const article = await getArticleBySlug(slug);
 
   if (!article) return notFound();
 
   const html = render(article.content);
 
-  console.log(article);
-
   return (
     <div className="max-w-7xl text-wrap mx-auto px-4 py-6">
+      <ViewCounter slug={slug} />
       <BackButton />
 
       {/* Top meta + title */}
@@ -97,11 +110,11 @@ export default async function page({ params }) {
         <div className="flex flex-wrap gap-4">
           <div className="text-[#6A7282] text-sm flex items-center gap-1">
             <Eye className="h-4" />
-            <span>123 อ่าน</span>
+            <span>{article.views} อ่าน</span>
           </div>
           <div className="text-[#6A7282] text-sm flex items-center gap-1">
             <Share2 className="h-4" />
-            <span>4 แชร์</span>
+            <span>{article.shareCount} แชร์</span>
           </div>
         </div>
       </div>
@@ -129,7 +142,7 @@ export default async function page({ params }) {
               {article.penName || article.author?.name}
             </p>
             <p className="text-[#4A5565] text-sm wrap-break-word">
-              {article.author?.position || ""}
+              {article.position || article.author?.position}
             </p>
           </div>
         </div>
@@ -152,7 +165,7 @@ export default async function page({ params }) {
         </div>
 
         <div className="sm:shrink-0">
-          <ShareButtons title={article.title} />
+          <ShareButtons title={article.title} slug={article.slug} />
         </div>
       </div>
     </div>

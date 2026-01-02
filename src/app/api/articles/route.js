@@ -42,7 +42,8 @@ export async function POST(req) {
     const keywords = formData.get("keywords") || ""
 
     const authorType = formData.get("authorType") || "user";
-    const penName = formData.get("penName");
+    const penName = formData.get("penName") || "";
+    const position = formData.get("position") || ""
 
     if (!title || !content || !categoryId) {
       return NextResponse.json(
@@ -87,6 +88,7 @@ export async function POST(req) {
       keywords,
       authorId: authorType === "user" ? session.user.id : null,
       penName: authorType === "penname" ? penName : null,
+      position: authorType === "penname" ? position : null,
     };
 
     // create article

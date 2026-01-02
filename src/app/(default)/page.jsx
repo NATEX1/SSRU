@@ -74,6 +74,16 @@ async function getCategoriesWithOneArticle() {
   const cats = await prisma.category.findMany({
     include: {
       articles: {
+        where: {
+          status: "approved",
+        },
+        include: {
+          author: {
+            select: {
+              name: true,
+            },
+          },
+        },
         take: 1, // เอา article แค่ 1 ตัว
         orderBy: { createdAt: "desc" }, // ตัวล่าสุด
       },
@@ -89,21 +99,29 @@ async function getCategoriesWithOneArticle() {
 }
 
 export default async function Home() {
-  const catPost = getOnePostEachOtherCategory();
-
   const cats = await getCategoriesWithOneArticle();
 
-  // console.log(cats);
-
-  const popularPosts = [...(catPost || [])]
-    .filter((p) => typeof p.readCount === "number")
-    .sort((a, b) => b.readCount - a.readCount)
-    .slice(0, 7);
+  const popularArticles = await prisma.article.findMany({
+    where: {
+      status: "approved",
+    },
+    orderBy: {
+      views: "desc",
+    },
+    take: 7,
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      createdAt: true,
+      views: true,
+    },
+  });
 
   return (
     <div className="p-6 mb-8">
       <div className="overflow-hidden">
-        <ArticleSlider />
+        <ArticleSlider data={cats} />
 
         <div className="flex items-start gap-4">
           <div className="relative overflow-hidden w-full">
@@ -283,69 +301,85 @@ export default async function Home() {
               {/* Mobile */}
               <div className="lg:hidden">
                 <div className="grid grid-cols-1 gap-4">
-                  {catPost.map((post, i) => (
-                    <div
-                      key={i}
-                      className="flex flex-col max-w-full overflow-hidden"
-                    >
-                      <div className="flex items-center gap-2 mb-4">
-                        <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
-                        <a
-                          href={`/categories/${post.category}`}
-                          className="hover:text-[#F06FAA] transition"
-                        >
-                          <h4 className="text-lg font-bold wrap-break-word">
-                            {getCategoryName(post.category)}
-                          </h4>
-                        </a>
-                      </div>
+                  {cats.map((category, i) => {
+                    if (!category.article) return;
 
-                      <div className="card overflow-hidden max-w-full">
-                        <a href={`/${post.slug}`} className="block">
-                          <figure className="max-w-full overflow-hidden">
-                            <img
-                              src={post.thumbnail}
-                              alt={post.slug}
-                              className="h-44 w-full max-w-full object-cover block"
-                            />
-                          </figure>
-                        </a>
+                    return (
+                      <div
+                        key={i}
+                        className="flex flex-col max-w-full overflow-hidden"
+                      >
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
+                          <a
+                            href={`/categories/${category.slug}`}
+                            className="hover:text-[#F06FAA] transition"
+                          >
+                            <h4 className="text-lg font-bold wrap-break-word">
+                              {category.name}
+                            </h4>
+                          </a>
+                        </div>
 
-                        <div className="card-body p-3 max-w-full">
-                          <h2 className="card-title line-clamp-1 wrap-break-word">
-                            {post.title}
-                          </h2>
+                        <div className="card overflow-hidden max-w-full">
+                          <a href={`/${category.slug}`} className="block">
+                            <figure className="max-w-full overflow-hidden">
+                              <img
+                                src={category.article.thumbnail}
+                                alt={category.article.title}
+                                className="h-44 w-full max-w-full object-cover block"
+                              />
+                            </figure>
+                          </a>
 
-                          <p className="line-clamp-2 wrap-break-word text-sm">
-                            {post.excerpt}
-                          </p>
+                          <div className="card-body p-3 max-w-full">
+                            <h2 className="card-title line-clamp-1 wrap-break-word">
+                              {category.article.title}
+                            </h2>
 
-                          <div className="flex items-center justify-between gap-2 flex-wrap">
-                            <div className="flex items-center gap-2 flex-wrap text-[10px] text-gray-600">
-                              <div className="flex items-center gap-1">
-                                <Calendar className="h-2.5 shrink-0" />
-                                <span>{post.date}</span>
+                            <p className="line-clamp-2 wrap-break-word text-sm">
+                              {category.article.excerpt}
+                            </p>
+
+                            <div className="flex items-center justify-between gap-2 flex-wrap">
+                              <div className="flex items-center gap-2 flex-wrap text-[10px] text-gray-600">
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="h-2.5 shrink-0" />
+                                  <span>
+                                    {new Date(
+                                      category.article.createdAt
+                                    ).toLocaleDateString("th-TH", {
+                                      day: "numeric",
+                                      month: "long",
+                                      year: "numeric",
+                                    })}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Eye className="h-2.5 shrink-0" />
+                                  <span>{category.article.views}</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Share2 className="h-2.5 shrink-0" />
+                                  <span>122</span>
+                                </div>
                               </div>
-                              <div className="flex items-center gap-1">
-                                <Eye className="h-2.5 shrink-0" />
-                                <span>{post.readCount}</span>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <Share2 className="h-2.5 shrink-0" />
-                                <span>{post.shareCount}</span>
-                              </div>
+
+                              <a
+                                href={`/${category.slug}`}
+                                className="shrink-0"
+                              >
+                                <span className="text-[#3F458D] text-xs flex items-center cursor-pointer whitespace-nowrap">
+                                  อ่านต่อ{" "}
+                                  <ArrowRight className="h-2.5 ml-0.5" />
+                                </span>
+                              </a>
                             </div>
-
-                            <a href={`/${post.slug}`} className="shrink-0">
-                              <span className="text-[#3F458D] text-xs flex items-center cursor-pointer whitespace-nowrap">
-                                อ่านต่อ <ArrowRight className="h-2.5 ml-0.5" />
-                              </span>
-                            </a>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -371,18 +405,18 @@ export default async function Home() {
                   </div>
 
                   <div className="space-y-3">
-                    {popularPosts.map((post) => (
+                    {popularArticles.map((article) => (
                       <a
-                        key={post.slug}
-                        href={`/${post.slug}`}
+                        key={article.slug}
+                        href={`/${article.slug}`}
                         className="block bg-white border border-[#F3F4F6] rounded-xl overflow-hidden hover:shadow-sm transition"
                       >
                         <div className="flex gap-3 p-3">
                           {/* image */}
                           <div className="w-24 h-20 shrink-0 overflow-hidden rounded-lg bg-gray-100">
                             <img
-                              src={post.thumbnail}
-                              alt={post.title}
+                              src={article.thumbnail}
+                              alt={article.title}
                               className="w-full h-full object-cover"
                               loading="lazy"
                             />
@@ -391,15 +425,15 @@ export default async function Home() {
                           {/* text */}
                           <div className="min-w-0 flex-1">
                             <h2 className="card-title line-clamp-1 wrap-break-word">
-                              {post.title}
+                              {article.title}
                             </h2>
 
                             <p className="line-clamp-2 wrap-break-word text-sm text-[#475467] mt-1">
-                              {post.excerpt}
+                              {article.excerpt}
                             </p>
 
                             <div className="mt-2 text-xs text-[#99A1AF]">
-                              {post.date}
+                              {article.date}
                             </div>
                           </div>
                         </div>
@@ -425,18 +459,30 @@ export default async function Home() {
               </div>
 
               <ul className="flex flex-col gap-4">
-                {popularPosts.map((post, i) => (
-                  <li key={post.slug}>
-                    <a href={`/${post.slug}`} className="flex gap-4 group">
-                      <div className="text-[#E5E7EB] text-3xl font-bold group-hover:text-[#3F458D] transition">
+                {popularArticles.map((article, i) => (
+                  <li key={article.slug}>
+                    <a
+                      href={`/articles/${article.slug}`}
+                      className="flex gap-4 group"
+                    >
+                      <div className="text-[#E5E7EB] text-3xl font-bold group-hover:text-[#3F458D] transition w-10">
                         {String(i + 1).padStart(2, "0")}
                       </div>
 
-                      <div className="min-w-0">
-                        <p className="group-hover:text-[#F06FAA] transition line-clamp-2 wrap-break-word">
-                          {post.title}
+                      <div className="flex-1">
+                        <p className="group-hover:text-[#F06FAA] transition line-clamp-1">
+                          {article.title}
                         </p>
-                        <p className="text-[#99A1AF] text-sm">{post.date}</p>
+                        <p className="text-[#99A1AF] text-sm">
+                          {new Date(article.createdAt).toLocaleDateString(
+                            "th-TH",
+                            {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            }
+                          )}
+                        </p>
                       </div>
                     </a>
                   </li>

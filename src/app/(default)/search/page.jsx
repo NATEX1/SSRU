@@ -2,11 +2,11 @@ import prisma from "@/lib/prisma";
 import { Eye, Share2 } from "lucide-react";
 import React from "react";
 
-async function fetchArticlesWithKeyword(q) {
-  if (!q) return [];
-
-  return await prisma.article.findMany({
+export default async function page({ searchParams }) {
+  const { q } = await searchParams;
+  const articles = await await prisma.article.findMany({
     where: {
+      status: "approved",
       OR: [
         {
           title: {
@@ -34,13 +34,8 @@ async function fetchArticlesWithKeyword(q) {
       },
     },
   });
-}
 
-export default async function page({ searchParams }) {
-  const { q } = await searchParams;
-  const articles = await fetchArticlesWithKeyword(q);
-
-//   console.log(articles);
+  //   console.log(articles);
 
   return (
     <div className="p-6 min-h-screen">

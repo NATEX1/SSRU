@@ -18,14 +18,13 @@ export default function Page() {
   const [content, setContent] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [tags, setTags] = useState([]);
   const [keywords, setKeywords] = useState([]);
   const [inputKeyword, setInputKeyword] = useState("");
-  const [inputTag, setInputTag] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
   const [authorMode, setAuthorMode] = useState("user"); // user | penname
   const [penName, setPenName] = useState("");
+  const [position, setPosition] = useState("")
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -97,6 +96,7 @@ export default function Page() {
     } else {
       formData.append("authorType", "penname");
       formData.append("penName", penName.trim());
+      formData.append("position", position)
     }
 
     const toastId = toast.loading("กำลังบันทึก...");
@@ -121,7 +121,7 @@ export default function Page() {
       setExcerpt("");
       setContent(null);
       setSelectedCategory(null);
-      setTags([]);
+      setKeywords([]);
       setAuthorMode("user");
       setPenName("");
       setThumbnail(null);
@@ -153,7 +153,7 @@ export default function Page() {
                     setThumbnail(null);
                     setPreview(null);
                   }}
-                  className="absolute top-4 right-4 bg-black/60 text-white p-2 rounded-full"
+                  className="absolute top-4 right-4 bg-black/60 text-white p-2 rounded-full z-50"
                 >
                   <X size={16} />
                 </button>
@@ -293,13 +293,22 @@ export default function Page() {
 
               {/* Pen name input */}
               {authorMode === "penname" && (
+               <>
                 <input
                   type="text"
-                  placeholder="Enter pen name"
+                  placeholder="pen name"
                   className="w-full border rounded-lg px-3 py-2"
                   value={penName}
                   onChange={(e) => setPenName(e.target.value)}
                 />
+                <input
+                  type="text"
+                  placeholder="position"
+                  className="w-full border rounded-lg px-3 py-2"
+                  value={position}
+                  onChange={(e) => setPosition(e.target.value)}
+                />
+                </>
               )}
 
               {/* Preview */}

@@ -1,203 +1,94 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Eye, Share2 } from "lucide-react";
 
-const articles = [
-  {
-    id: 1,
-    category: "มองไกลกับผู้บริหาร",
-    title: "ผู้นำการสร้างมืออาชีพ: วิสัยทัศน์ที่สะท้อนหัวใจของการพัฒนาคน",
-    excerpt:
-      "ในวันที่การศึกษาแข่งขันกันด้วยความเร็วของเทคโนโลยีและการแข่งขันของตลาดแรงงาน หน้าที่ของสถาบันอุดมศึกษาไม่ใช่เพียง “ผลิตบัณฑิต” แต่คือ “สร้างมือ...",
-    image: "/contents/banner-1.jpg",
-    author: "รศ.ดร.ชุติกาญจน์ ศรีวิบูลย์",
-    dateText: "28 พ.ย. 2025",
-    slug: "vision-for-human-development",
-  },
-  {
-    id: 2,
-    category: "สนทนาบนเส้นทางงาน",
-    title: 'วิทยาลัยการเมืองและการปกครองวิทยาลัยยอดนิยมอันดับ 1 สวนสุนันทาใต้ร่มเงา “สัณฐาน ชยนนท์”',
-    excerpt:
-      "วิทยาลัยการเมืองและการปกครอง จัดตั้งขึ้นเมื่อปี 2564 โดยแยกตัวมาจากวิทยาลัยนวัตกรรมและการจัดการ ขณะนั้น มีสาขาวิชาที่เปิดสอนประกอบด้วย รัฐศาสตร์...",
-    image: "/contents/banner-2.jpg",
-    author: "ผศ. พล.ต.ท.ดร. สัณฐาน ชยนนท์",
-    dateText: "12 ม.ค. 2025",
-    slug: "top-college-suan-sunandha",
-  },
-  {
-    id: 3,
-    category: "แนะนำงานวิจัย",
-    title: "บทสรุปสำหรับผู้บริหาร: กลยุทธ์และแนวคิดในการวิจัย การตีพิมพ์ และนวัตกรรม จากมุมมองของผู้ช่วยศาสตราจารย์ ดร.วนิดา วอนสวัสดิ์",
-    excerpt:
-      "เอกสารฉบับนี้เป็นการสังเคราะห์แก่นความคิด กลยุทธ์ และผลลัพธ์จากการทำงานวิจัยของ ผู้ช่วยศาสตราจารย์ ดร.วนิดา วอนสวัสดิ์ สาขาวิชาเคมี คณะวิทยาศาส...",
-    image: "/contents/banner-3.jpg",
-    author: "ผศ. ดร.วนิดา วอนสวัสดิ์",
-    dateText: "03 มี.ค. 2025",
-    slug: "one-shot-two-birds-maximize-research-value",
-  },
-  {
-    id: 4,
-    category: "สวนสุนันทาเมื่อวันวาน",
-    title: "ปฐมบทแห่งสวนสุนันทา",
-    excerpt:
-      "“สวนสุนันทา” นามแห่งนี้เป็นสถานที่ที่มีเสน่ห์เฉพาะตัว เสน่ห์ที่มิได้เกิดจากเพียงความสงบร่มรื่น อาคารตำหนักอันสวยงามหรือกำแพงสีแดงโบราณที่ตั้งตระหง่านอยู่...",
-    image: "/contents/banner-4.jpg",
-    author: "ผศ. วีระ โชติธรรมาภรณ์",
-    dateText: "18 เม.ย. 2025",
-    slug: "history-of-suan-sunandha-origin",
-  },
-  {
-    id: 5,
-    category: "มุมคิดวันนี้",
-    title: "คิดแล้ว คิดอีก",
-    excerpt:
-      "ผมเป็นคนที่ได้ชื่อว่าทำข้อสอบแบบเลือกคำตอบ ประเภท ก. ข. ค. ง. หรือที่เราเรียกกันว่าข้อสอบปรนัยได้รวดเร็วมาก ในเวลา 2 ชั่วโมงที่กำหนดไว้ ผมไม่เคย...",
-    image: "/contents/banner-5.jpg",
-    author: "รศ.ฤๅเดช เกิดวิชัย",
-    dateText: "09 พ.ค. 2025",
-    slug: "think-again-and-again",
-  },
-  {
-    id: 6,
-    category: "สารคดีความรู้",
-    title: "เพลงที่เพราะที่สุดคือเพลง?",
-    excerpt:
-      "หากมีคนถามเราว่า เพลงที่เพราะ ไพเราะ หรือเพลงที่เราชอบมากที่สุดคือเพลงอะไร? คงเป็นคำถามที่ตอบได้ยากมากคำถามหนึ่งในชีวิตเลยทีเดียว คำถามนี้อาจใช้...",
-    image: "/contents/banner-6.jpg",
-    author: "ผศ.วิโรจน์ ศรีหิรัญ",
-    dateText: "09 มิ.ย. 2025",
-    slug: "natural-therapy-replace-medicine",
-  },
-  {
-    id: 7,
-    category: "Hall of fame",
-    title: "เนาวรัตน์..แซ่ย่าง สาวคหกรรมศาสตร์ที่มีพรสวรรค์กีฬาวูซู",
-    excerpt:
-      "นักศึกษาสาวจากคณะวิทยาศาสตร์และเทคโนโลยี มาจากแม่แจ่ม จังหวัดเชียงใหม่ เรียนด้านคหกรรมศาสตร์ แต่ความสามารถของเธอโดดเด่นยิ่งในด้านกีฬา เนาวรัตน์...",
-    image: "/contents/banner-7.jpg",
-    author: "เนาวรัตน์ แซ่ย่าง",
-    dateText: "21 ก.ค. 2025",
-    slug: "home-economics-student-wushu-talent",
-  },
-];
+export default function ArticleSlider({ data }) {
+  const articles = data
+    .filter((c) => c.article) // ✅ ตัด null ออก
+    .map((c) => ({
+      id: c.article.id,
+      title: c.article.title,
+      slug: c.article.slug,
+      excerpt: c.article.excerpt,
+      image: c.article.thumbnail,
+      author: c.article.penName ?? c.article.author?.name ,
+      dateText: new Date(c.article.createdAt).toLocaleDateString("th-TH", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }),
+    }));
 
-export default function ArticleSlider() {
+  // console.log(articles);
+
   const [slideIndex, setSlideIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-
-  const nextSlide = () => {
-    setDirection(1);
-    setSlideIndex((prev) => (prev + 1) % articles.length);
-  };
-
-  const prevSlide = () => {
-    setDirection(-1);
-    setSlideIndex((prev) => (prev - 1 + articles.length) % articles.length);
-  };
-
-  const goToSlide = (index) => {
-    setDirection(index > slideIndex ? 1 : -1);
-    setSlideIndex(index);
-  };
-
-  const slideVariants = {
-    enter: (direction) => ({
-      x: direction > 0 ? 100 : -100,
-      opacity: 0,
-      scale: 0.98,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.3 },
-    },
-    exit: (direction) => ({
-      x: direction > 0 ? -100 : 100,
-      opacity: 0,
-      scale: 0.98,
-      transition: { duration: 0.2 },
-    }),
-  };
+  const [direction, setDirection] = useState(1);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    if (articles.length <= 1) return;
+
+    const timer = setInterval(() => {
       setDirection(1);
-      setSlideIndex((prev) => (prev + 1) % articles.length);
+      setSlideIndex((i) => (i + 1) % articles.length);
     }, 5000);
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(timer);
+  }, [articles.length]);
+
+  if (!articles.length) return null;
 
   const current = articles[slideIndex];
 
   return (
-    <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-6 rounded-2xl shadow mb-8">
-      <div className="overflow-hidden">
-        <div className="grid md:grid-cols-2">
-          <div className="relative aspect-video bg-gray-100 overflow-hidden rounded-lg">
-            <a
-              href={`/${current.slug}`}
-              className="col-span-2 block"
-            >
-              <AnimatePresence custom={direction} mode="popLayout" initial={false}>
-                <motion.img
-                  key={current.id}
-                  src={current.image}
-                  alt={current.title}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              </AnimatePresence>
+    <div className="bg-[#F9FAFB] border p-6 rounded-2xl shadow mb-8">
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* image */}
+        <div className="relative aspect-video overflow-hidden rounded-lg">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={current.id}
+              src={current.image}
+              alt={current.title}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </AnimatePresence>
+        </div>
+
+        {/* content */}
+        <div className="flex flex-col justify-between">
+          <div>
+            <p className="text-sm text-gray-500 mb-2">
+              <span className="text-[#F06FAA]">{current.author}</span> | {current.dateText}
+            </p>
+
+            <a href={`/${current.slug}`}>
+              <h2 className="text-3xl font-bold mb-4 line-clamp-2 wrap-break-word">
+                {current.title}
+              </h2>
             </a>
+
+            <p className="text-gray-600 line-clamp-3 wrap-break-word">{current.excerpt}</p>
           </div>
 
-          <div className="p-8 flex flex-col justify-between">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={current.id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.25 }}
-              >
-                <p className="text-xs lg:text-sm text-[#99A1AF] mb-2">
-                  <span className="text-[#F06FAA]">{current.author}</span>{" "}
-                  <span>|</span> <span>{current.dateText}</span>
-                </p>
-
-                <a
-                  href={`/${current.slug}`}
-                  className="col-span-2 block"
-                >
-                  <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">
-                    {current.title}
-                  </h2>
-                </a>
-
-                <p className="text-gray-600 text-base lg:text-lg leading-relaxed line-clamp-3 lg:line-clamp-4">
-                  {current.excerpt}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-
-            <div className="flex justify-end gap-2 mt-6">
-              {articles.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => goToSlide(i)}
-                  className={`h-3 rounded-full transition-all cursor-pointer ${
-                    i === slideIndex ? "bg-purple-600 w-8" : "bg-gray-300 w-3"
-                  }`}
-                />
-              ))}
-            </div>
+          {/* dots */}
+          <div className="flex gap-2 justify-end mt-6">
+            {articles.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  setDirection(i > slideIndex ? 1 : -1);
+                  setSlideIndex(i);
+                }}
+                className={`h-3 rounded-full transition-all ${
+                  i === slideIndex ? "bg-purple-600 w-8" : "bg-gray-300 w-3"
+                }`}
+              />
+            ))}
           </div>
         </div>
       </div>

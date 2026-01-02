@@ -70,6 +70,7 @@ model Article {
   authorType   AuthorType    @default(user) @map("author_type")
   authorId     Int?          @map("author_id")
   penName      String?       @map("pen_name")
+  position     String?       @map("position")
   title        String        @map("title")
   slug         String        @unique @map("slug")
   excerpt      String?
@@ -86,6 +87,8 @@ model Article {
   approvedBy   User?         @relation("ArticleApprover", fields: [approvedById], references: [id])
   category     Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   tags         ArticleTag[]
+  views        Int           @default(0)
+  shareCount   Int           @default(0) @map("share_count")
 
   @@map("articles")
 }
