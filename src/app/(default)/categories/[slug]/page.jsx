@@ -101,7 +101,7 @@ export default async function CategoryPage({ params, searchParams }) {
                 <div className="card-body">
                   <p className="text-xs text-[#99A1AF] flex gap-1">
                     <span className="text-[#F06FAA]">
-                      {article.author.name}
+                      {article.penName || article.author.name}
                     </span>
                     <span>|</span>
                     <span>
