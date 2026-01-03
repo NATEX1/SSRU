@@ -13,6 +13,9 @@ async function getCategoryBySlug(rawSlug, page = 1, limit = 9) {
     where: { slug },
     include: {
       articles: {
+        where: {
+          status: 'approved'
+        },
         skip,
         take: limit,
         orderBy: { createdAt: "desc" },
@@ -124,11 +127,11 @@ export default async function CategoryPage({ params, searchParams }) {
                     <div className="flex gap-2">
                       <p className="text-[#99A1AF] flex items-center gap-1">
                         <Eye className="size-[1em]" />
-                        <span>1230 อ่าน</span>
+                        <span>{article.views} อ่าน</span>
                       </p>
                       <p className="text-[#99A1AF] flex items-center gap-1">
                         <Share2 className="size-[1em]" />
-                        <span>445 แชร์</span>
+                        <span>{article.shareCount} แชร์</span>
                       </p>
                     </div>
                   </div>
@@ -138,7 +141,7 @@ export default async function CategoryPage({ params, searchParams }) {
           </div>
 
           <div className="max-w-6xl mx-auto px-4">
-             <Pagination page={page} totalPages={totalPages} />
+            <Pagination page={page} totalPages={totalPages} />
           </div>
         </>
       ) : (

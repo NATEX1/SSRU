@@ -365,7 +365,7 @@ export default function Page() {
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-2xl shadow border bg-white">
+      <div className="rounded-2xl shadow border bg-white">
         <div className="p-4 flex gap-1 justify-between">
           <Select value={limit} onValueChange={setLimit}>
             <SelectTrigger>

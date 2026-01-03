@@ -23,20 +23,20 @@ const magazines = [
 export default function page() {
   return (
     <div className="space-y-8">
-      <div className="relative w-full h-96 rounded-2xl overflow-hidden mb-8">
+      {/* <div className="relative w-full h-96 rounded-2xl overflow-hidden mb-8">
         <img
           src="/assets/images/category-banner.jpg"
           alt=""
           className="w-full h-full object-cover"
         />
-      </div>
+      </div> */}
 
-      <div className="text-center flex flex-col items-center">
+      <div className="text-center flex flex-col items-center mt-8">
         <h1 className="text-[#3F458D] text-5xl font-bold">SSRU Around</h1>
-        <p className="text-[#4A5565]">
+        {/* <p className="text-[#4A5565]">
           รวบรวมผลงานวิจัยที่โดดเด่นและน่าสนใจจากคณาจารย์และนักศึกษา <br />
           มหาวิทยาลัยราชภัฏสวนสุนันทา
-        </p>
+        </p> */}
         <div className=" rounded bg-[#F06FAA] w-24 h-1 mt-8"></div>
       </div>
 

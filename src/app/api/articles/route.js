@@ -81,7 +81,6 @@ export async function POST(req) {
 
     const slug = await generateUniqueSlug(title);
 
-    // 🧠 author logic
     const articleData = {
       title,
       slug,
