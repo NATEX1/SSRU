@@ -64,19 +64,19 @@ export default async function CategoryPage({ params, searchParams }) {
 
   return (
     <div>
-      <div className="relative w-full h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden mb-8">
+      {/* <div className="relative w-full h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden mb-8">
         <div className="absolute inset-0">
-          {/* <Image
+          <Image
             src="/assets/images/category-banner.jpg"
             alt={`Banner ${category.name}`}
             fill
             className="object-cover"
             priority
-          /> */}
+          />
         </div>
-      </div>
+      </div> */}
 
-      <div className="text-center flex flex-col items-center gap-2">
+      <div className="text-center flex flex-col items-center gap-2 mt-8">
         <h2 className="text-[#3F458D] text-5xl font-semibold">
           {category.name}
         </h2>
