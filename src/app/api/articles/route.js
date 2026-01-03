@@ -6,7 +6,13 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 async function generateUniqueSlug(title) {
-  const baseSlug = title.trim().replace(/\s+/g, "-").toLowerCase();
+  const baseSlug = title
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s-]/gu, "") // ลบอักขระพิเศษ (รองรับภาษาไทย)
+    .replace(/\s+/g, "-") // เว้นวรรค → -
+    .replace(/-+/g, "-"); // กัน -- ซ้อน
+
   let slug = baseSlug;
   let counter = 1;
 
@@ -38,12 +44,12 @@ export async function POST(req) {
     const content = formData.get("content");
     const categoryId = parseInt(formData.get("categoryId") || "0");
     const status = formData.get("status") || "draft";
-    const excerpt = formData.get("excerpt") || ""
-    const keywords = formData.get("keywords") || ""
+    const excerpt = formData.get("excerpt") || "";
+    const keywords = formData.get("keywords") || "";
 
     const authorType = formData.get("authorType") || "user";
     const penName = formData.get("penName") || "";
-    const position = formData.get("position") || ""
+    const position = formData.get("position") || "";
 
     if (!title || !content || !categoryId) {
       return NextResponse.json(
@@ -95,7 +101,6 @@ export async function POST(req) {
     const article = await prisma.article.create({
       data: articleData,
     });
-
 
     return NextResponse.json({ success: true, article }, { status: 201 });
   } catch (err) {
@@ -165,15 +170,15 @@ export async function GET(req) {
         approvedBy: {
           select: {
             id: true,
-            name: true
-          }
-        }
+            name: true,
+          },
+        },
       },
     });
 
     // นับจำนวนทั้งหมด
     const total = await prisma.article.count();
-    
+
     return NextResponse.json({
       success: true,
       articles,

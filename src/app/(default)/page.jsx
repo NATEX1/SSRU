@@ -184,10 +184,10 @@ export default async function Home() {
                                     })}
                                   </div>
                                   <div className="flex items-center gap-1">
-                                    <Eye className="h-3 shrink-0" /> 1220
+                                    <Eye className="h-3 shrink-0" /> {cat.article.views}
                                   </div>
                                   <div className="flex items-center gap-1">
-                                    <Share2 className="h-3 shrink-0" /> 200
+                                    <Share2 className="h-3 shrink-0" /> {cat.article.shareCount}
                                   </div>
                                 </div>
 
@@ -272,11 +272,11 @@ export default async function Home() {
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <Eye className="size-2.5 shrink-0" />
-                                  <span>1220</span>
+                                  <span>{cat.article.views}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <Share2 className="size-2.5 shrink-0" />
-                                  <span>200</span>
+                                  <span>{cat.article.shareCount}</span>
                                 </div>
                               </div>
 
@@ -361,7 +361,7 @@ export default async function Home() {
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <Share2 className="h-2.5 shrink-0" />
-                                  <span>122</span>
+                                  <span>{category.article.shareCount}</span>
                                 </div>
                               </div>
 

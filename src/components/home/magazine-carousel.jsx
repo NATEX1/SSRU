@@ -16,7 +16,7 @@ export default function MagazineCarousel({ data }) {
       <div className="flex justify-between items-end mb-4">
         <h2 className="text-[#101828] text-2xl font-bold">SSRU Around</h2>
 
-        <a href="#" className="hover:underline">
+        <a href="/ssru-around" className="hover:underline">
           <div className="text-[#6A7282] flex text-xs items-center gap-1">
             <span>ดูทั้งหมด</span>
             <ArrowRight className="h-3" />
