@@ -163,9 +163,14 @@ export default async function Home() {
                             </a>
 
                             <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-20 max-w-full">
-                              <h6 className="text-white text-sm sm:text-lg font-semibold leading-snug line-clamp-2 wrap-break-word">
-                                {cat.article.title}
-                              </h6>
+                              <a
+                                href={`/articles/${cat.article.slug}`}
+                                className="shrink-0"
+                              >
+                                <h6 className="text-white text-sm sm:text-lg font-semibold leading-snug line-clamp-2 wrap-break-word">
+                                  {cat.article.title}
+                                </h6>
+                              </a>
 
                               <p className="mt-1 line-clamp-2 text-white/80 text-[11px] sm:text-sm mb-3 sm:mb-4 wrap-break-word">
                                 {cat.article.excerpt}
@@ -184,10 +189,12 @@ export default async function Home() {
                                     })}
                                   </div>
                                   <div className="flex items-center gap-1">
-                                    <Eye className="h-3 shrink-0" /> {cat.article.views}
+                                    <Eye className="h-3 shrink-0" />{" "}
+                                    {cat.article.views}
                                   </div>
                                   <div className="flex items-center gap-1">
-                                    <Share2 className="h-3 shrink-0" /> {cat.article.shareCount}
+                                    <Share2 className="h-3 shrink-0" />{" "}
+                                    {cat.article.shareCount}
                                   </div>
                                 </div>
 
@@ -248,9 +255,14 @@ export default async function Home() {
                           </a>
 
                           <div className="card-body p-2 sm:p-3 max-w-full">
-                            <h2 className="card-title line-clamp-1 wrap-break-word">
-                              {cat.article.title}
-                            </h2>
+                            <a
+                              href={`/articles/${cat.article.slug}`}
+                              className="shrink-0"
+                            >
+                              <h2 className="card-title line-clamp-1 wrap-break-word">
+                                {cat.article.title}
+                              </h2>
+                            </a>
 
                             <p className="line-clamp-2 wrap-break-word text-sm">
                               {cat.article.excerpt}
