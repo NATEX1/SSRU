@@ -45,18 +45,20 @@ export default function ArticleSlider({ data }) {
       <div className="grid md:grid-cols-2 gap-6">
         {/* image */}
         <div className="relative aspect-video overflow-hidden rounded-lg">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={current.id}
-              src={current.image}
-              alt={current.title}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </AnimatePresence>
+          <a href={`/articles/${current.slug}`}>
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={current.id}
+                src={current.image}
+                alt={current.title}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </AnimatePresence>
+          </a>
         </div>
 
         {/* content */}
@@ -66,7 +68,7 @@ export default function ArticleSlider({ data }) {
               <span className="text-[#F06FAA]">{current.author}</span> | {current.dateText}
             </p>
 
-            <a href={`/${current.slug}`}>
+            <a href={`/articles/${current.slug}`}>
               <h2 className="text-3xl font-bold mb-4 line-clamp-2 wrap-break-word">
                 {current.title}
               </h2>
