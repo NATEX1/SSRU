@@ -253,9 +253,14 @@ export default async function Home() {
                           </a>
 
                           <div className="card-body p-2 sm:p-3 max-w-full">
-                            <h2 className="card-title line-clamp-1 wrap-break-word">
-                              {cat.article.title}
-                            </h2>
+                            <a
+                                  href={`/articles/${cat.article.slug}`}
+                                  className="shrink-0"
+                              >
+                              <h2 className="card-title line-clamp-1 wrap-break-word">
+                                {cat.article.title}
+                              </h2>
+                            </a>
 
                             <p className="line-clamp-2 wrap-break-word text-sm">
                               {cat.article.excerpt}
