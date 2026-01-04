@@ -45,8 +45,8 @@ export default function ArticleSlider({ data }) {
       <div className="grid md:grid-cols-2 gap-6">
         {/* image */}
         <div className="relative aspect-video overflow-hidden rounded-lg">
-          <a href={`/articles/${current.slug}`}>
             <AnimatePresence mode="wait">
+              <a href={`/articles/${current.slug}`}>
               <motion.img
                 key={current.id}
                 src={current.image}
@@ -57,8 +57,8 @@ export default function ArticleSlider({ data }) {
                 transition={{ duration: 0.3 }}
                 className="absolute inset-0 w-full h-full object-cover"
               />
+              </a>
             </AnimatePresence>
-          </a>
         </div>
 
         {/* content */}
