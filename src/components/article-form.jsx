@@ -181,7 +181,7 @@ export default function ArticleForm({
                   setThumbnail(null);
                   setPreview(null);
                 }}
-                className="absolute top-4 right-4 bg-black/60 text-white p-2 rounded-full z-50"
+                className="absolute top-4 right-4 bg-black/60 text-white p-2 rounded-full z-20"
               >
                 <X size={16} />
               </button>

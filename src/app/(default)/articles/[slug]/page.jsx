@@ -102,9 +102,12 @@ export default async function page({ params }) {
           </div>
         </div>
 
-        <h1 className="text-2xl sm:text-4xl font-bold text-[#3F458D] leading-snug">
-          {article.title}
-        </h1>
+        <div className="flex justify-between">
+          <h1 className="text-2xl sm:text-4xl font-bold text-[#3F458D] leading-snug">
+            {article.title}
+          </h1>
+
+        </div>
 
         {/* stats row (stack on mobile if tight) */}
         <div className="flex flex-wrap gap-4">
