@@ -59,14 +59,30 @@ export default function ClipCarousel() {
         </a>
       </div>
 
-      {/* Mobile: slide (1 row) */}
+      {/* Mobile + iPad */}
       <div className="xl:hidden">
         <Swiper
           modules={[Pagination]}
-          spaceBetween={12}
-          slidesPerView={1.15}
           pagination={{ clickable: true }}
           className="w-full !pb-8"
+          breakpoints={{
+            0: {
+              slidesPerView: 1.15,
+              spaceBetween: 12,
+            },
+            640: {
+              slidesPerView: 1.4,
+              spaceBetween: 12,
+            },
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 16,
+            },
+            1024: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+          }}
         >
           {shortClips.map((item) => (
             <SwiperSlide key={item.id} className="h-auto">
@@ -80,7 +96,7 @@ export default function ClipCarousel() {
                   <img
                     src={`https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`}
                     alt={item.title}
-                    className="xl:h-[300px] w-full object-cover"
+                    className="w-full object-cover h-[200px] md:h-[220px]"
                     loading="lazy"
                   />
 
@@ -105,10 +121,7 @@ export default function ClipCarousel() {
           modules={[Grid, Navigation]}
           spaceBetween={16}
           slidesPerView={2}
-          grid={{
-            rows: 2,
-            fill: "row",
-          }}
+          grid={{ rows: 2, fill: "row" }}
           navigation
           className="w-full"
         >

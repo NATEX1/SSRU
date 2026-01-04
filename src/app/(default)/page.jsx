@@ -404,11 +404,11 @@ export default async function Home() {
             <br />
             <br />
             <div className="flex flex-col xl:flex-row gap-8 flex-1 mb-8">
-              <div className="max-w-[700px] min-w-0 bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
+              <div className="max-w-full min-w-0 bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
                 <MagazineCarousel data={magazines} />
               </div>
 
-              <div className="max-w-[700px] min-w-0 bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
+              <div className="max-w-full min-w-0 bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
                 <ClipCarousel data={clips} />
               </div>
 
