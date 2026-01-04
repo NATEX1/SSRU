@@ -416,7 +416,7 @@ export default async function Home() {
                     {popularArticles.map((article) => (
                       <a
                         key={article.slug}
-                        href={`/${article.slug}`}
+                        href={`/articles/${article.slug}`}
                         className="block bg-white border border-[#F3F4F6] rounded-xl overflow-hidden hover:shadow-sm transition"
                       >
                         <div className="flex gap-3 p-3">
