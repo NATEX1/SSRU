@@ -104,7 +104,7 @@ export function getCategoryName(slug) {
   const categoryMap = {
     "executive-thoughts": "มองไกลกับผู้บริหาร",
     "career-path-conversations": "สนทนาบนเส้นทางงาน",
-    "featured-research": "งานวิจัยแนะนำ",
+    "featured-research": "แนะนำงานวิจัย",
     "hall-of-fame": "Hall of fame",
     "thoughts-today": "มุมคิดวันนี้",
     "documentary-knowledge": "สารคดีความรู้",

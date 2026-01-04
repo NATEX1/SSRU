@@ -63,7 +63,7 @@ const archiveCategories = [
     category: "สนทนาบนเส้นทางงาน",
     href: "/categories/career-path-conversations",
   },
-  { category: "งานวิจัยแนะนำ", href: "/categories/featured-research" },
+  { category: "แนะนำงานวิจัย", href: "/categories/featured-research" },
   { category: "สวนสุนันทาเมื่อวันวาน", href: "/categories/ssru-muea-wan" },
   { category: "มุมคิดวันนี้", href: "/categories/thoughts-today" },
   { category: "สารคดีความรู้", href: "/categories/documentary-knowledge" },
