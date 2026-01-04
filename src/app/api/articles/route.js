@@ -9,7 +9,7 @@ async function generateUniqueSlug(title, excludeId = null) {
   const baseSlug = title
     .trim()
     .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s-]/gu, "")
+    .replace(/[^\p{L}\p{M}\p{N}\s-]/gu, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-+|-+$/g, "");
@@ -32,6 +32,7 @@ async function generateUniqueSlug(title, excludeId = null) {
 
   return slug;
 }
+
 
 export async function POST(req) {
   try {

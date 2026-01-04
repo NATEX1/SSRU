@@ -4,11 +4,12 @@ import { writeFile } from "fs/promises";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import path from 'path'
+
 async function generateUniqueSlug(title, excludeId = null) {
   const baseSlug = title
     .trim()
     .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s-]/gu, "")
+    .replace(/[^\p{L}\p{M}\p{N}\s-]/gu, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-+|-+$/g, "");

@@ -7,6 +7,8 @@ import List from "@editorjs/list";
 import Paragraph from "@editorjs/paragraph";
 import ImageTool from "@editorjs/image";
 import Quote from "@editorjs/quote";
+import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
+import { createRoot } from "react-dom/client";
 
 const DEFAULT_INITIAL_DATA = {
   time: new Date().getTime(),
@@ -34,21 +36,26 @@ class AlignmentTune {
     wrapper.classList.add("ce-tune-alignment");
 
     const alignments = [
-      { name: "left", icon: "⬅️" },
-      { name: "center", icon: "↔️" },
-      { name: "right", icon: "➡️" },
+      { name: "left", Icon: AlignLeft },
+      { name: "center", Icon: AlignCenter },
+      { name: "right", Icon: AlignRight },
     ];
 
     alignments.forEach((align) => {
       const button = document.createElement("button");
       button.type = "button";
       button.classList.add("ce-tune-alignment__button");
-      button.innerHTML = align.icon;
       button.title = `Align ${align.name}`;
 
       if (this.data.alignment === align.name) {
         button.classList.add("ce-tune-alignment__button--active");
       }
+
+      // Render Lucide icon using React
+      const iconContainer = document.createElement("span");
+      const root = createRoot(iconContainer);
+      root.render(<align.Icon size={16} />);
+      button.appendChild(iconContainer);
 
       button.addEventListener("click", () => {
         this.setAlignment(align.name);
@@ -68,12 +75,16 @@ class AlignmentTune {
   setAlignment(alignment) {
     this.data.alignment = alignment;
     
-    // Apply CSS to block
-    const blockElement = this.api.blocks.getBlockByIndex(
-      this.api.blocks.getCurrentBlockIndex()
-    ).holder;
-
-    blockElement.style.textAlign = alignment;
+    // Apply CSS to block holder
+    const currentIndex = this.api.blocks.getCurrentBlockIndex();
+    const block = this.api.blocks.getBlockByIndex(currentIndex);
+    
+    if (block && block.holder) {
+      const contentDiv = block.holder.querySelector('.ce-block__content');
+      if (contentDiv) {
+        contentDiv.style.textAlign = alignment;
+      }
+    }
   }
 
   save() {
@@ -83,6 +94,7 @@ class AlignmentTune {
   wrap(blockContent) {
     const wrapper = document.createElement("div");
     wrapper.style.textAlign = this.data.alignment || "left";
+    wrapper.classList.add("alignment-wrapper");
     wrapper.appendChild(blockContent);
     return wrapper;
   }
@@ -191,13 +203,22 @@ export default function Editor({ data, onChange, holder }) {
         isInitializedRef.current = true;
         
         // Apply alignment to existing blocks
-        const blocks = document.querySelectorAll(".ce-block");
-        blocks.forEach((block, index) => {
-          const blockData = editorData.blocks[index];
-          if (blockData?.tunes?.alignmentTune?.alignment) {
-            block.style.textAlign = blockData.tunes.alignmentTune.alignment;
+        setTimeout(() => {
+          if (editorData && editorData.blocks) {
+            editorData.blocks.forEach((blockData, index) => {
+              const alignment = blockData?.tunes?.alignmentTune?.alignment;
+              if (alignment) {
+                const block = editor.blocks.getBlockByIndex(index);
+                if (block && block.holder) {
+                  const contentDiv = block.holder.querySelector('.ce-block__content');
+                  if (contentDiv) {
+                    contentDiv.style.textAlign = alignment;
+                  }
+                }
+              }
+            });
           }
-        });
+        }, 200);
       },
     });
 
@@ -234,16 +255,20 @@ export default function Editor({ data, onChange, holder }) {
         }
         
         .ce-tune-alignment__button {
-          padding: 4px 8px;
+          padding: 6px 8px;
           border: 1px solid #e5e7eb;
           background: white;
           border-radius: 4px;
           cursor: pointer;
-          font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.15s ease;
         }
         
         .ce-tune-alignment__button:hover {
           background: #f3f4f6;
+          border-color: #d1d5db;
         }
         
         .ce-tune-alignment__button--active {
@@ -251,14 +276,57 @@ export default function Editor({ data, onChange, holder }) {
           color: white;
           border-color: #3b82f6;
         }
+
+        .ce-tune-alignment__button--active svg {
+          color: white;
+        }
+
+        .ce-tune-alignment__button--active:hover svg {
+          color: black;
+        }
         
-        .ce-block[style*="text-align: center"] .ce-paragraph,
-        .ce-block[style*="text-align: center"] .ce-header {
+        /* Force alignment for all block types */
+        .alignment-wrapper {
+          width: 100%;
+        }
+        
+        .alignment-wrapper[style*="text-align: center"] * {
           text-align: center !important;
         }
         
-        .ce-block[style*="text-align: right"] .ce-paragraph,
-        .ce-block[style*="text-align: right"] .ce-header {
+        .alignment-wrapper[style*="text-align: right"] * {
+          text-align: right !important;
+        }
+        
+        .alignment-wrapper[style*="text-align: left"] * {
+          text-align: left !important;
+        }
+        
+        /* Direct block content styling */
+        .ce-block__content[style*="text-align: center"] {
+          text-align: center !important;
+        }
+        
+        .ce-block__content[style*="text-align: right"] {
+          text-align: right !important;
+        }
+        
+        .ce-block__content[style*="text-align: left"] {
+          text-align: left !important;
+        }
+        
+        /* Specific element overrides */
+        .ce-block__content[style*="text-align: center"] .ce-paragraph,
+        .ce-block__content[style*="text-align: center"] .ce-header,
+        .ce-block__content[style*="text-align: center"] .cdx-list,
+        .ce-block__content[style*="text-align: center"] .cdx-quote {
+          text-align: center !important;
+        }
+        
+        .ce-block__content[style*="text-align: right"] .ce-paragraph,
+        .ce-block__content[style*="text-align: right"] .ce-header,
+        .ce-block__content[style*="text-align: right"] .cdx-list,
+        .ce-block__content[style*="text-align: right"] .cdx-quote {
           text-align: right !important;
         }
       `}</style>
