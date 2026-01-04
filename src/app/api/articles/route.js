@@ -5,13 +5,14 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
-async function generateUniqueSlug(title) {
+async function generateUniqueSlug(title, excludeId = null) {
   const baseSlug = title
     .trim()
     .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s-]/gu, "") // ลบอักขระพิเศษ (รองรับภาษาไทย)
-    .replace(/\s+/g, "-") // เว้นวรรค → -
-    .replace(/-+/g, "-"); // กัน -- ซ้อน
+    .replace(/[^\p{L}\p{N}\s-]/gu, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
 
   let slug = baseSlug;
   let counter = 1;
@@ -21,7 +22,9 @@ async function generateUniqueSlug(title) {
       where: { slug },
     });
 
-    if (!exists) break;
+    if (!exists || (excludeId && exists.id === excludeId)) {
+      break;
+    }
 
     slug = `${baseSlug}-${counter}`;
     counter++;

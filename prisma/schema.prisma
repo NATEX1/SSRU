@@ -120,3 +120,28 @@ model Comment {
 
   @@map("comments")
 }
+
+model SiteSetting {
+  id         Int      @id @default(1)
+  name       String
+  logo       String?
+  address    String?
+  phone      String?
+  email      String?
+  footerText String?  @map("footer_text")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  socialLinks SocialLink[]
+}
+
+model SocialLink {
+  id        Int         @id @default(autoincrement())
+  platform  String
+  url       String
+  icon      String?
+  order     Int         @default(0)
+  siteId    Int         @default(1) @map("site_id")
+  createdAt DateTime    @default(now()) @map("created_at")
+  site      SiteSetting @relation(fields: [siteId], references: [id])
+}
