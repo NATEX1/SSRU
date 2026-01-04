@@ -34,9 +34,9 @@ export default function AppSidebar() {
 
   const menus = [
     { icon: Home, label: "หน้าแรก", href: "/" },
-    { icon: Briefcase, label: "เปิดมุมคิดผู้บริหาร", href: "/categories/executive-thoughts" },
+    { icon: Briefcase, label: "มองไกลกับผู้บริหาร", href: "/categories/executive-thoughts" },
     { icon: Users, label: "สนทนาบนเส้นทางงาน", href: "/categories/career-path-conversations" },
-    { icon: BookOpen, label: "งานวิจัยแนะนำ", href: "/categories/featured-research" },
+    { icon: BookOpen, label: "แนะนำงานวิจัย", href: "/categories/featured-research" },
     { icon: Clock, label: "สวนสุนันทาเมื่อวันวาน", href: "/categories/ssru-muea-wan" },
     { icon: Lightbulb, label: "มุมคิดวันนี้", href: "/categories/thoughts-today" },
     { icon: FileText, label: "สารคดีความรู้", href: "/categories/documentary-knowledge" },

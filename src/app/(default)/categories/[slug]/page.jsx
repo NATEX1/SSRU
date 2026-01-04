@@ -77,7 +77,7 @@ export default async function CategoryPage({ params, searchParams }) {
       </div> */}
 
       <div className="text-center flex flex-col items-center gap-2 mt-8">
-        <h2 className="text-[#3F458D] text-5xl font-semibold">
+        <h2 className="text-[#3F458D] text-4xl font-semibold">
           {category.name}
         </h2>
         {/* <p className="text-[#4A5565]">
