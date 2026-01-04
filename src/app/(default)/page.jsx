@@ -334,7 +334,7 @@ export default async function Home() {
                         </div>
 
                         <div className="card overflow-hidden max-w-full">
-                          <a href={`/articles/${category.article.thumbnail}`} className="block">
+                          <a href={`/articles/${category.article.slug}`}className="block">
                             <figure className="max-w-full overflow-hidden">
                               <img
                                 src={category.article.thumbnail}
@@ -345,7 +345,7 @@ export default async function Home() {
                           </a>
 
                           <div className="card-body p-3 max-w-full">
-                            <a href={`/articles/${category.article.thumbnail}`} className="block">
+                            <a href={`/articles/${category.article.slug}`} className="block">
                               <h2 className="card-title line-clamp-1 wrap-break-word">
                                 {category.article.title}
                               </h2>
