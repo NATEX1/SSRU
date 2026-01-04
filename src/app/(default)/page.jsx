@@ -72,11 +72,18 @@ const archiveCategories = [
 
 async function getCategoriesWithOneArticle() {
   const cats = await prisma.category.findMany({
+    orderBy: {
+      id: "asc", 
+    },
     include: {
       articles: {
         where: {
           status: "approved",
         },
+        orderBy: {
+          createdAt: "desc", 
+        },
+        take: 1,
         include: {
           author: {
             select: {
@@ -84,8 +91,6 @@ async function getCategoriesWithOneArticle() {
             },
           },
         },
-        take: 1, // เอา article แค่ 1 ตัว
-        orderBy: { createdAt: "desc" }, // ตัวล่าสุด
       },
     },
   });
@@ -109,7 +114,6 @@ export default async function Home() {
       views: "desc",
     },
     take: 7,
-   
   });
 
   return (
@@ -328,7 +332,10 @@ export default async function Home() {
                         </div>
 
                         <div className="card overflow-hidden max-w-full">
-                          <a href={`/articles/${category.article.slug}`}className="block">
+                          <a
+                            href={`/articles/${category.article.slug}`}
+                            className="block"
+                          >
                             <figure className="max-w-full overflow-hidden">
                               <img
                                 src={category.article.thumbnail}
@@ -339,7 +346,10 @@ export default async function Home() {
                           </a>
 
                           <div className="card-body p-3 max-w-full">
-                            <a href={`/articles/${category.article.slug}`} className="block">
+                            <a
+                              href={`/articles/${category.article.slug}`}
+                              className="block"
+                            >
                               <h2 className="card-title line-clamp-1 wrap-break-word">
                                 {category.article.title}
                               </h2>
