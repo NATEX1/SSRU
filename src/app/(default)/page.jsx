@@ -125,7 +125,7 @@ export default async function Home() {
           <div className="relative overflow-hidden w-full">
             <div>
               {/* Desktop */}
-              <div className="hidden lg:block">
+              <div className="hidden xl:block">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {cats.map((cat, i) => {
                     if (!cat.article) return;
@@ -309,7 +309,7 @@ export default async function Home() {
               </div>
 
               {/* Mobile */}
-              <div className="lg:hidden">
+              <div className="xl:hidden">
                 <div className="grid grid-cols-1 gap-4">
                   {cats.map((category, i) => {
                     if (!category.article) return;
@@ -413,7 +413,7 @@ export default async function Home() {
               </div>
 
               {/*  ยอดนิยม (Mobile)  */}
-              <div className="lg:hidden mb-8">
+              <div className="xl:hidden mb-8">
                 <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-2xl shadow">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-1.5 h-6 bg-[#F06FAA] rounded" />
@@ -462,15 +462,15 @@ export default async function Home() {
               </div>
 
               {/*  กล่องรับความเห็น (Mobile)  */}
-              <div className="lg:hidden mb-8">
+              <div className="xl:hidden mb-8">
                 <CommentForm />
               </div>
             </div>
             <div className="flex flex-col lg:flex-row gap-8 flex-1 mb-8"></div>
           </div>
-          <div className="sticky top-20 pt-2 w-[362px] max-[1024px]:hidden space-y-8">
+          <div className="sticky top-20 pt-2 w-[362px] hidden xl:block space-y-8">
             {/* Desktop */}
-            <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-xl hidden lg:block">
+            <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-xl hidden xl:block">
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-1.5 h-6 bg-[#F06FAA] rounded" />
                 <h4 className="text-2xl font-bold">ยอดนิยม</h4>

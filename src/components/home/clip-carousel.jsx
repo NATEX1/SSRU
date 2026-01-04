@@ -47,7 +47,7 @@ export default function ClipCarousel() {
         <h2 className="text-[#101828] text-2xl font-bold">Short Clips</h2>
 
         <a
-          href="https://www.youtube.com/@ssrutube/shorts"
+          href="https://www.youtube.com/playlist?list=PL9rBdn9yFjyvkR2D4qZIc5A1_or_CT_XL"
           target="_blank"
           rel="noreferrer"
           className="hover:underline"
@@ -60,7 +60,7 @@ export default function ClipCarousel() {
       </div>
 
       {/* Mobile: slide (1 row) */}
-      <div className="lg:hidden">
+      <div className="xl:hidden">
         <Swiper
           modules={[Pagination]}
           spaceBetween={12}
@@ -100,7 +100,7 @@ export default function ClipCarousel() {
       </div>
 
       {/* Desktop: keep original grid */}
-      <div className="hidden lg:block">
+      <div className="hidden xl:block">
         <Swiper
           modules={[Grid, Navigation]}
           spaceBetween={16}

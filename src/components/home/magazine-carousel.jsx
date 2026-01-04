@@ -25,7 +25,7 @@ export default function MagazineCarousel({ data }) {
       </div>
 
       {/* ================= Mobile ================= */}
-      <div className="lg:hidden w-full">
+      <div className="xl:hidden w-full">
         <Swiper
           modules={[Pagination]}
           spaceBetween={12}
@@ -76,7 +76,7 @@ export default function MagazineCarousel({ data }) {
       </div>
 
       {/* ================= Desktop ================= */}
-      <div className="hidden lg:block w-full overflow-hidden">
+      <div className="hidden xl:block w-full overflow-hidden">
         <Swiper
           modules={[Grid]}
           spaceBetween={16}

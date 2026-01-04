@@ -93,7 +93,7 @@ export default async function Page({ params }) {
             />
           </div>
 
-          <div className="min-w-0">
+          {/* <div className="min-w-0">
             <p className="text-xs text-[#6A7282]">ผู้เขียนบทความ</p>
             <p className="text-[#3F458D] text-sm font-bold break-words">
               {article.author}
@@ -101,7 +101,7 @@ export default async function Page({ params }) {
             <p className="text-[#4A5565] text-sm break-words">
               {article.authorPosition || article.authotPosition}
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
 

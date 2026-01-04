@@ -51,7 +51,7 @@ export default function AppFooter() {
         {/* Social */}
         <ul className="flex justify-center flex-wrap gap-4">
           {[
-            ["YouTube.webp", "https://www.youtube.com/@ssrutube/shorts"],
+            ["YouTube.webp", "https://www.youtube.com/playlist?list=PL9rBdn9yFjyvkR2D4qZIc5A1_or_CT_XL"],
             ["facebook.png", "https://www.facebook.com/kaewchaochomonline"],
             ["Instagram.webp", "https://www.instagram.com/ssru_official"],
             ["x.png", "https://x.com/official_ssru"],
