@@ -512,7 +512,7 @@ export default async function Home() {
               {" "}
               <br />
             </div>
-            <div>
+            <div className="hidden lg:block">
               <h4 className="text-2xl font-bold text-[#F06FAA] mb-4">
                 อ่านข่าวย้อนหลัง
               </h4>
@@ -543,8 +543,9 @@ export default async function Home() {
                 </a>
               </div> */}
             </div>
-
-            <CommentForm />
+            <div >
+            <CommentForm className="hidden lg:block"/>
+            </div>
           </div>
         </div>
 
