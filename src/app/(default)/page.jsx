@@ -138,7 +138,7 @@ export default async function Home() {
                         >
                           <div className="flex items-center gap-2 mb-4 max-w-full">
                             <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
-                            <h4 className="text-lg sm:text-xl lg:text-2xl font-bold wrap-break-word">
+                            <h4 className="text-lg sm:text-xl xl:text-2xl font-bold wrap-break-word">
                               <a
                                 href={`/categories/${cat.slug}`}
                                 className="hover:text-[#F06FAA] transition"
@@ -308,17 +308,14 @@ export default async function Home() {
                 </div>
               </div>
 
-              {/* Mobile */}
+              {/* Mobile + iPad */}
               <div className="lg:hidden">
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                   {cats.map((category, i) => {
                     if (!category.article) return;
 
                     return (
-                      <div
-                        key={i}
-                        className="flex flex-col max-w-full overflow-hidden"
-                      >
+                      <div key={i} className="flex flex-col max-w-full overflow-hidden">
                         <div className="flex items-center gap-2 mb-4">
                           <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
                           <a
@@ -331,11 +328,8 @@ export default async function Home() {
                           </a>
                         </div>
 
-                        <div className="card overflow-hidden max-w-full">
-                          <a
-                            href={`/articles/${category.article.slug}`}
-                            className="block"
-                          >
+                        <div className="card overflow-hidden max-w-full h-full">
+                          <a href={`/articles/${category.article.slug}`} className="block">
                             <figure className="max-w-full overflow-hidden">
                               <img
                                 src={category.article.thumbnail}
@@ -346,10 +340,7 @@ export default async function Home() {
                           </a>
 
                           <div className="card-body p-3 max-w-full">
-                            <a
-                              href={`/articles/${category.article.slug}`}
-                              className="block"
-                            >
+                            <a href={`/articles/${category.article.slug}`} className="block">
                               <h2 className="card-title line-clamp-1 wrap-break-word">
                                 {category.article.title}
                               </h2>
@@ -364,13 +355,10 @@ export default async function Home() {
                                 <div className="flex items-center gap-1">
                                   <Calendar className="h-2.5 shrink-0" />
                                   <span>
-                                    {new Date(
-                                      category.article.createdAt
-                                    ).toLocaleDateString("th-TH", {
-                                      day: "numeric",
-                                      month: "long",
-                                      year: "numeric",
-                                    })}
+                                    {new Date(category.article.createdAt).toLocaleDateString(
+                                      "th-TH",
+                                      { day: "numeric", month: "long", year: "numeric" }
+                                    )}
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-1">
@@ -383,13 +371,9 @@ export default async function Home() {
                                 </div>
                               </div>
 
-                              <a
-                                href={`/articles/${category.article.slug}`}
-                                className="shrink-0"
-                              >
+                              <a href={`/articles/${category.article.slug}`} className="shrink-0">
                                 <span className="text-[#3F458D] text-xs flex items-center cursor-pointer whitespace-nowrap">
-                                  อ่านต่อ{" "}
-                                  <ArrowRight className="h-2.5 ml-0.5" />
+                                  อ่านต่อ <ArrowRight className="h-2.5 ml-0.5" />
                                 </span>
                               </a>
                             </div>
@@ -400,6 +384,7 @@ export default async function Home() {
                   })}
                 </div>
               </div>
+
             </div>
             <br />
             <br />

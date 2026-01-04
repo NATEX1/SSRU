@@ -5,15 +5,15 @@ export default function AppFooter() {
     <footer className="bg-[#F9FAFB] border border-[#F3F4F6] mt-8">
       <div className="container mx-auto px-4 py-8
         flex flex-col gap-8
-        lg:flex-row lg:items-center lg:justify-between">
+        xl:flex-row xl:items-center xl:justify-between">
 
         {/* Logo + Info */}
         <div className="flex flex-col items-center gap-4
-          lg:flex-row lg:items-center lg:gap-8 lg:text-left text-center">
+          xl:flex-row xl:items-center xl:gap-8 xl:text-left text-center">
 
           <img
             src="/assets/images/logo_new.png"
-            className="h-[90px] lg:h-[125px]"
+            className="h-[90px] xl:h-[125px]"
             alt="logo"
           />
 
@@ -31,7 +31,7 @@ export default function AppFooter() {
 
         {/* Contact */}
         <ul className="flex flex-col items-center gap-2
-          lg:items-start lg:min-w-[220px]">
+          xl:items-start xl:min-w-[220px]">
 
           <p className="text-[#6A7282] mb-1">ติดต่อโฆษณา</p>
 
