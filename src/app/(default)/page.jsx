@@ -384,7 +384,7 @@ export default async function Home() {
                               </div>
 
                               <a
-                                href={`/${category.slug}`}
+                                href={`/articles/${category.article.slug}`}
                                 className="shrink-0"
                               >
                                 <span className="text-[#3F458D] text-xs flex items-center cursor-pointer whitespace-nowrap">
@@ -404,11 +404,11 @@ export default async function Home() {
             <br />
             <br />
             <div className="flex flex-col xl:flex-row gap-8 flex-1 mb-8">
-              <div className="max-w-[600px] min-w-0 bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
+              <div className="max-w-[700px] min-w-0 bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
                 <MagazineCarousel data={magazines} />
               </div>
 
-              <div className="max-w-[600px] min-w-0 bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
+              <div className="max-w-[700px] min-w-0 bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
                 <ClipCarousel data={clips} />
               </div>
 
