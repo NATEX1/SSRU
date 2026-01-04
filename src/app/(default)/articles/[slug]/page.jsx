@@ -126,7 +126,7 @@ export default async function page({ params }) {
       />
 
       {/* Author box (responsive) */}
-      <div className="mt-8 bg-[#F9FAFB] rounded-2xl border border-[#F3F4F6] p-5 sm:p-6">
+      {/* <div className="mt-8 bg-[#F9FAFB] rounded-2xl border border-[#F3F4F6] p-5 sm:p-6">
         <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
           <div className="border-2 border-white shadow size-14 sm:size-[60px] rounded-full overflow-hidden shrink-0">
             <img
@@ -136,7 +136,7 @@ export default async function page({ params }) {
             />
           </div>
 
-          {/* <div className="min-w-0">
+          <div className="min-w-0">
             <p className="text-xs text-[#6A7282]">ผู้เขียนบทความ</p>
             <p className="text-[#3F458D] text-sm font-bold wrap-break-word">
               {article.penName || article.author?.name}
@@ -144,9 +144,9 @@ export default async function page({ params }) {
             <p className="text-[#4A5565] text-sm wrap-break-word">
               {article.position || article.author?.position}
             </p>
-          </div> */}
+          </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Keywords + Share (responsive) */}
       <div className="mt-8 border-t border-[#E5E7EB] pt-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
