@@ -96,7 +96,7 @@ export default function ClipCarousel() {
                   <img
                     src={`https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`}
                     alt={item.title}
-                    className="w-full object-cover h-[200px] md:h-[220px]"
+                    className="w-full object-contain h-[360px] md:h-[360px]"
                     loading="lazy"
                   />
 

@@ -63,7 +63,7 @@ export default function MagazineCarousel({ data }) {
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-[220px] md:h-[260px] object-cover"
+                    className="w-full h-[360px] md:h-[360px] object-contain"
                     loading="lazy"
                   />
 
