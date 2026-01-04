@@ -232,7 +232,7 @@ export default async function Home() {
                             href={`/categories/${cat.slug}`}
                             className="hover:text-[#F06FAA] transition"
                           >
-                            <h4 className="text-lg sm:text-xl lg:text-2xl font-bold wrap-break-word">
+                            <h4 className="text-lg sm:text-xl xl:text-2xl font-bold wrap-break-word">
                               {cat.name}
                             </h4>
                           </a>
@@ -310,7 +310,7 @@ export default async function Home() {
 
               {/* Mobile + iPad */}
               <div className="lg:hidden">
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {cats.map((category, i) => {
                     if (!category.article) return;
 
@@ -534,7 +534,7 @@ export default async function Home() {
 
         <br />
         <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-6 rounded-2xl shadow mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="grid grid-cols-1 xl:grid-cols-2">
             <div className="p-6 md:p-8">
               <div className="flex items-start gap-3 mb-4">
                 <div className="w-2 h-7 rounded-full bg-[#F06FAA]" />
