@@ -109,13 +109,7 @@ export default async function Home() {
       views: "desc",
     },
     take: 7,
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      createdAt: true,
-      views: true,
-    },
+   
   });
 
   return (
