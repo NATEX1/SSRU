@@ -28,7 +28,7 @@ export default function AppHeader() {
     <header className="fixed top-0 w-full border-b border-[#F3F4F6] bg-white z-40">
       <div className="relative container mx-auto h-20 px-4 flex items-center justify-between">
         {/* Left: Search (Desktop only) */}
-        <form onSubmit={handleSubmit} className="hidden lg:flex w-72 h-9 px-3 py-2 items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full focus-within:border-[#F06FAA]">
+        <form onSubmit={handleSubmit} className="hidden xl:flex w-72 h-9 px-3 py-2 items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full focus-within:border-[#F06FAA]">
           <Search className="h-[1em] text-[#99A1AF]" />
           <input
             type="text"
@@ -44,12 +44,12 @@ export default function AppHeader() {
           <img
             src="/assets/images/logo_new.png"
             alt="logo"
-            className="h-20 w-20 lg:h-40 lg:w-40 object-contain"
+            className="h-20 w-20 lx:h-40 lx:w-40 object-contain"
           />
         </div>
 
         {/* Right: Language Switch (Desktop only) */}
-        {/* <div className="ml-auto hidden lg:flex items-center">
+        {/* <div className="ml-auto hidden xl:flex items-center">
           <div className="border border-[#E5E7EB] rounded-full flex p-0.5 bg-white">
             <button className="px-3 py-1 bg-[#F06FAA] text-white rounded-full text-sm">
               TH
@@ -62,7 +62,7 @@ export default function AppHeader() {
             </button>
           </div>
         </div> */}
-        <ul className="hidden lg:flex items-center gap-3">
+        <ul className="hidden xl:flex items-center gap-3">
           {[
             ["YouTube.webp", "https://www.youtube.com/playlist?list=PL9rBdn9yFjyvkR2D4qZIc5A1_or_CT_XL"],
             ["facebook.png", "https://www.facebook.com/kaewchaochomonline"],
