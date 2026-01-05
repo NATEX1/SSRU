@@ -7,7 +7,7 @@ export default function ShareButtons({ title, articleId }) {
   const [copied, setCopied] = useState(false);
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? window.location.origin;
-  const url = `${baseUrl}/articles/${id}`;
+  const url = `${baseUrl}/articles/${articleId}`;
 
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
