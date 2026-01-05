@@ -20,7 +20,7 @@ export default function ShareButtons({ title, articleId }) {
 
   /** 🔥 นับ share */
   const trackShare = () => {
-    fetch(`/api/articles/${id}/share`, {
+    fetch(`/api/articles/${articleId}/share`, {
       method: "POST",
     });
   };
