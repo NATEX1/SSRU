@@ -129,7 +129,7 @@ export default function ArticleForm({
     const toastId = toast.loading("กำลังบันทึก...");
 
     try {
-      const url = mode === "edit" ? `/api/articles/${initialData.slug}` : "/api/articles";
+      const url = mode === "edit" ? `/api/articles/${initialData.id}` : "/api/articles";
       const method = mode === "edit" ? "PUT" : "POST";
 
       const res = await fetch(url, {

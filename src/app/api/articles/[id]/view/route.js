@@ -3,11 +3,11 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(req, { params }) {
-  const { slug: rawSlug } = await params;
-  const slug = decodeURIComponent(rawSlug);
+  const { id } = await params;
+  // const slug = decodeURIComponent(rawSlug);
 
   const cookieStore = await cookies();
-  const key = `viewed_${slug}`;
+  const key = `viewed_${id}`;
 
   // already viewed
   if (cookieStore.get(key)) {
@@ -15,7 +15,7 @@ export async function POST(req, { params }) {
   }
 
   const article = await prisma.article.findUnique({
-    where: { slug },
+    where: { id: Number(id) },
     select: { id: true },
   });
 
@@ -24,7 +24,7 @@ export async function POST(req, { params }) {
   }
 
   await prisma.article.update({
-    where: { slug },
+    where: { id: Number(id) },
     data: {
       views: { increment: 1 },
     },

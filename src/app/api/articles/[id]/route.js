@@ -35,11 +35,11 @@ async function generateUniqueSlug(title, excludeId = null) {
 
 export async function GET(req, { params }) {
   try {
-    const { slug } = await params;
+    const { id } = await params;
 
     const article = await prisma.article.findUnique({
       where: {
-        slug,
+        id: Number(id),
       },
       include: {
         author: {
@@ -93,11 +93,11 @@ export async function PUT(req, { params }) {
       );
     }
 
-    const { slug } = await params;
+    const { id } = await params;
 
     // ตรวจสอบว่าบทความมีอยู่หรือไม่
     const existingArticle = await prisma.article.findUnique({
-      where: { slug },
+      where: { id: Number(id) },
     });
 
     if (!existingArticle) {
@@ -139,7 +139,7 @@ export async function PUT(req, { params }) {
     }
 
     // สร้าง slug ใหม่จาก title (ถ้า title เปลี่ยน)
-    let newSlug = slug;
+    // let newSlug = slug;
     if (title !== existingArticle.title) {
       newSlug = await generateUniqueSlug(title, existingArticle.id);
     }
@@ -169,7 +169,7 @@ export async function PUT(req, { params }) {
     // สร้าง update data
     const updateData = {
       title,
-      slug: newSlug,
+      // slug: newSlug,
       content,
       excerpt: excerpt || null,
       keywords: keywords || null,

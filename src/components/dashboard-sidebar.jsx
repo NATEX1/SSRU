@@ -82,22 +82,12 @@ export default function DashboardSidebar() {
           label: 'จัดการหมวดหมู่',
           icon: Layers,
           href: '/backoffice/categories'
-        }
-      ],
-    },
-    {
-      name: "ตั้งค่า",
-      items: [
-        {
-          label: "บัญชีของฉัน",
-          icon: UserCircle,
-          href: "/backoffice/account",
         },
         {
-          label: "ตั้งค่า",
+          label: 'ตั้งค่า',
           icon: Settings,
-          href: "/backoffice/settings",
-        },
+          href: '/backoffice/settings/account'
+        }
       ],
     },
   ];

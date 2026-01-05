@@ -150,7 +150,7 @@ export default async function Home() {
 
                           <div className="relative overflow-hidden rounded-2xl max-h-[284px]">
                             <a
-                              href={`/articles/${cat.article.slug}`}
+                              href={`/articles/${cat.article.id}`}
                               className="block max-w-full"
                             >
                               <img
@@ -162,7 +162,7 @@ export default async function Home() {
 
                             <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-20 max-w-full">
                               <a
-                                href={`/articles/${cat.article.slug}`}
+                                href={`/articles/${cat.article.id}`}
                                 className="shrink-0"
                               >
                                 <h6 className="text-white text-sm sm:text-lg font-semibold leading-snug line-clamp-2 wrap-break-word">
@@ -197,7 +197,7 @@ export default async function Home() {
                                 </div>
 
                                 <a
-                                  href={`/articles/${cat.article.slug}`}
+                                  href={`/articles/${cat.article.id}`}
                                   className="shrink-0"
                                 >
                                   <span className="text-[#F06FAA] text-xs flex items-center whitespace-nowrap">
@@ -240,7 +240,7 @@ export default async function Home() {
 
                         <div className="card border h-full overflow-hidden">
                           <a
-                            href={`/articles/${cat.article.slug}`}
+                            href={`/articles/${cat.article.id}`}
                             className="block"
                           >
                             <figure className="max-w-full overflow-hidden">
@@ -254,7 +254,7 @@ export default async function Home() {
 
                           <div className="card-body p-2 sm:p-3 max-w-full">
                             <a
-                              href={`/articles/${cat.article.slug}`}
+                              href={`/articles/${cat.article.id}`}
                               className="shrink-0"
                             >
                               <h2 className="card-title line-clamp-1 wrap-break-word">
@@ -291,7 +291,7 @@ export default async function Home() {
                               </div>
 
                               <a
-                                href={`/articles/${cat.article.slug}`}
+                                href={`/articles/${cat.article.id}`}
                                 className="shrink-0"
                               >
                                 <span className="text-[#3F458D] text-xs flex items-center cursor-pointer whitespace-nowrap">
@@ -328,8 +328,11 @@ export default async function Home() {
                           </a>
                         </div>
 
-                        <div className="card overflow-hidden max-w-full h-full">
-                          <a href={`/articles/${category.article.slug}`} className="block">
+                        <div className="card overflow-hidden max-w-full">
+                          <a
+                            href={`/articles/${category.article.id}`}
+                            className="block"
+                          >
                             <figure className="max-w-full overflow-hidden">
                               <img
                                 src={category.article.thumbnail}
@@ -340,7 +343,10 @@ export default async function Home() {
                           </a>
 
                           <div className="card-body p-3 max-w-full">
-                            <a href={`/articles/${category.article.slug}`} className="block">
+                            <a
+                              href={`/articles/${category.article.id}`}
+                              className="block"
+                            >
                               <h2 className="card-title line-clamp-1 wrap-break-word">
                                 {category.article.title}
                               </h2>
@@ -371,7 +377,10 @@ export default async function Home() {
                                 </div>
                               </div>
 
-                              <a href={`/articles/${category.article.slug}`} className="shrink-0">
+                              <a
+                                href={`/articles/${category.article.id}`}
+                                className="shrink-0"
+                              >
                                 <span className="text-[#3F458D] text-xs flex items-center cursor-pointer whitespace-nowrap">
                                   อ่านต่อ <ArrowRight className="h-2.5 ml-0.5" />
                                 </span>
@@ -410,8 +419,8 @@ export default async function Home() {
                   <div className="space-y-3">
                     {popularArticles.map((article) => (
                       <a
-                        key={article.slug}
-                        href={`/articles/${article.slug}`}
+                        key={article.id}
+                        href={`/articles/${article.id}`}
                         className="block bg-white border border-[#F3F4F6] rounded-xl overflow-hidden hover:shadow-sm transition"
                       >
                         <div className="flex gap-3 p-3">
@@ -463,9 +472,9 @@ export default async function Home() {
 
               <ul className="flex flex-col gap-4">
                 {popularArticles.map((article, i) => (
-                  <li key={article.slug}>
+                  <li key={article.id}>
                     <a
-                      href={`/articles/${article.slug}`}
+                      href={`/articles/${article.id}`}
                       className="flex gap-4 group"
                     >
                       <div className="text-[#E5E7EB] text-3xl font-bold group-hover:text-[#3F458D] transition w-10">

@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req, { params }) {
   try {
-    const { slug } = await params;
+    const { id } = await params;
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -20,7 +20,7 @@ export async function POST(req, { params }) {
     }
 
     await prisma.article.update({
-      where: { slug },
+      where: { id: Number(id) },
       data: {
         status: "approved",
         approvedAt: new Date(),

@@ -93,7 +93,7 @@ export default async function CategoryPage({ params, searchParams }) {
             {category.articles.map((article, i) => (
               <div className="card shadow-sm group" key={i}>
                 <figure className="h-40">
-                  <a href={`/articles/${article.slug}`}>
+                  <a href={`/articles/${article.id}`}>
                     <img
                       src={article.thumbnail}
                       alt={article.title}

@@ -6,7 +6,7 @@ import ArticleForm from "@/components/article-form";
 
 export default function page() {
   const params = useParams();
-  const { slug } = params;
+  const { id } = params;
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,7 +16,7 @@ export default function page() {
     const fetchArticle = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/articles/${slug}`);
+        const res = await fetch(`/api/articles/${id}`);
         const data = await res.json();
 
         if (!data.success) {
@@ -33,19 +33,19 @@ export default function page() {
       }
     };
 
-    if (slug) {
+    if (id) {
       fetchArticle();
     }
-  }, [slug]);
+  }, [id]);
 
   // จัดการหลังบันทึกสำเร็จ - ใช้ slug ใหม่จาก response
   const handleSubmitSuccess = (data) => {
     if (data?.article?.slug) {
       // ใช้ slug ใหม่จาก response (กรณี title เปลี่ยน slug จะเปลี่ยนตาม)
-      router.push(`/articles/${data.article.slug}`);
+      router.push(`/articles/${data.article.id}`);
     } else {
       // fallback ใช้ slug เดิม
-      router.push(`/articles/${slug}`);
+      router.push(`/articles/${id}`);
     }
   };
 

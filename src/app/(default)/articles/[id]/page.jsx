@@ -8,11 +8,11 @@ import BackButton from "../back-button";
 import ViewCounter from "../view-couter";
 import ShareButtons from "../share-buttons";
 
-async function getArticleBySlug(rawSlug) {
-  const slug = decodeURIComponent(rawSlug);
+async function getArticleById(id) {
+  // const id = Number(rawSlug);
   const article = await prisma.article.findUnique({
     where: {
-      slug,
+      id: Number(id),
     },
     include: {
       author: {
@@ -29,8 +29,8 @@ async function getArticleBySlug(rawSlug) {
 }
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+  const { id } = await params;
+  const article = await getArticleById(id);
 
   if (!article) {
     return {
@@ -65,8 +65,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function page({ params }) {
-  const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+  const { id } = await params;
+  const article = await getArticleById(id);
 
   if (!article) return notFound();
 
@@ -74,7 +74,7 @@ export default async function page({ params }) {
 
   return (
     <div className="max-w-7xl text-wrap mx-auto px-4 py-6">
-      <ViewCounter slug={slug} />
+      <ViewCounter articleID={article.id} />
       <BackButton />
 
       {/* Top meta + title */}

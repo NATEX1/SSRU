@@ -2,9 +2,9 @@
 
 import React, { useEffect } from "react";
 
-export default function ViewCounter({ slug }) {
+export default function ViewCounter({ articleId }) {
   useEffect(() => {
-    fetch(`/api/articles/${slug}/view`, { method: "POST" });
-  }, [slug]);
+    fetch(`/api/articles/${articleId}/view`, { method: "POST" });
+  }, [articleId]);
   return null;
 }
