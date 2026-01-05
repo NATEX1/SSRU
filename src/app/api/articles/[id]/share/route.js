@@ -2,12 +2,12 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req, { params }) {
-  const { slug: rawSlug } = await params;
-  const slug = decodeURIComponent(rawSlug);
+  const { id } = await params;
+  // const slug = decodeURIComponent(rawSlug);
 
   try {
     await prisma.article.update({
-      where: { slug },
+      where: { id: Number(id) },
       data: {
         shareCount: { increment: 1 },
       },

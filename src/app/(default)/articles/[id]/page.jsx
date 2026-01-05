@@ -74,7 +74,7 @@ export default async function page({ params }) {
 
   return (
     <div className="max-w-7xl text-wrap mx-auto px-4 py-6">
-      <ViewCounter articleID={article.id} />
+      <ViewCounter articleId={article.id} />
       <BackButton />
 
       {/* Top meta + title */}
@@ -168,7 +168,7 @@ export default async function page({ params }) {
         </div>
 
         <div className="sm:shrink-0">
-          <ShareButtons title={article.title} slug={article.slug} />
+          <ShareButtons title={article.title} articleId={article.id} />
         </div>
       </div>
     </div>

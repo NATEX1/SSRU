@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { Link as LinkIcon } from "lucide-react";
 
-export default function ShareButtons({ title, slug }) {
+export default function ShareButtons({ title, articleId }) {
   const [copied, setCopied] = useState(false);
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const url = `${baseUrl}/articles/${slug}`;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? window.location.origin;
+  const url = `${baseUrl}/articles/${id}`;
 
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
@@ -20,7 +20,7 @@ export default function ShareButtons({ title, slug }) {
 
   /** 🔥 นับ share */
   const trackShare = () => {
-    fetch(`/api/articles/${slug}/share`, {
+    fetch(`/api/articles/${id}/share`, {
       method: "POST",
     });
   };
