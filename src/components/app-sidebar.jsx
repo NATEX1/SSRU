@@ -42,7 +42,7 @@ export default function AppSidebar() {
     { icon: FileText, label: "สารคดีความรู้", href: "/categories/documentary-knowledge" },
     { icon: Star, label: "Hall of fame", href: "/categories/hall-of-fame" },
     { icon: Phone, label: "ติดต่อเรา", href: "/contact-us" },
-    { icon: SquarePen, label: "เขียนบทความ", href: "/write" },
+    { icon: SquarePen, label: "เขียนบทความ", href: "/account/articles" },
   ];
 
   const socials = [

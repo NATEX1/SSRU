@@ -19,67 +19,126 @@ export default function Layout({ children }) {
   const isActive = (path) => pathname === path;
 
   return (
-    <div className="flex items-start gap-8 max-w-5xl mx-auto">
-      <aside className="w-64 sticky top-24 space-y-2">
-        <ul className="space-y-1">
-          <li>
-            <Button
-              asChild
-              variant={isActive("/account") ? "secondary" : "ghost"}
-              className="w-full justify-start gap-2"
-            >
-              <a href="/account">
-                <UserCircle className="size-4" />
-                บัญชีของฉัน
-              </a>
-            </Button>
-          </li>
-
-          <li>
-            <Button
-              asChild
-              variant={isActive("/account/articles") ? "secondary" : "ghost"}
-              className="w-full justify-start gap-2"
-            >
-              <a href="/account/articles">
-                <FileText className="size-4" />
-                บทความ
-              </a>
-            </Button>
-          </li>
-        </ul>
-
-        <hr />
-
-        <ul className="space-y-1">
-          <li>
-            <Dialog>
-              <DialogTrigger asChild>
+    <div className="max-w-6xl mx-auto px-4 py-6 sm:py-10">
+      <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6 lg:gap-8 items-start">
+        <aside className="lg:sticky lg:top-24">
+          {/* Mobile/Tablet: Tabs */}
+          <div className="lg:hidden">
+            <div className="bg-white border rounded-2xl p-2 shadow-sm">
+              <div className="grid grid-cols-2 gap-2">
                 <Button
-                  className="w-full justify-start gap-2"
-                  variant="ghost"
-                //   onClick={() => signOut()}
+                  asChild
+                  variant={isActive("/account") ? "secondary" : "ghost"}
+                  className="justify-start gap-2 rounded-xl"
                 >
-                  <LogOut className="size-4" />
-                  ออกจากระบบ
+                  <a href="/account">
+                    <UserCircle className="size-4" />
+                    บัญชี
+                  </a>
                 </Button>
-              </DialogTrigger>
 
-              <DialogContent>
-                <DialogTitle className="text-sm mb-4">
-                  คุณต้องการออกจากระบบใช่หรือไม่?
-                </DialogTitle>
+                <Button
+                  asChild
+                  variant={isActive("/account/articles") ? "secondary" : "ghost"}
+                  className="justify-start gap-2 rounded-xl"
+                >
+                  <a href="/account/articles">
+                    <FileText className="size-4" />
+                    บทความ
+                  </a>
+                </Button>
+              </div>
 
-                <DialogFooter className="flex justify-end gap-2">
-                  <Button onClick={() => signOut()}>ออกจากระบบ</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </li>
-        </ul>
-      </aside>
+              <div className="mt-2">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start gap-2 rounded-xl text-red-600 hover:text-red-600"
+                    >
+                      <LogOut className="size-4" />
+                      ออกจากระบบ
+                    </Button>
+                  </DialogTrigger>
 
-      <main className="flex-1 min-h-screen">{children}</main>
+                  <DialogContent>
+                    <DialogTitle className="text-sm mb-4">
+                      คุณต้องการออกจากระบบใช่หรือไม่?
+                    </DialogTitle>
+                    <DialogFooter className="flex justify-end gap-2">
+                      <Button onClick={() => signOut()}>ออกจากระบบ</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop: Sidebar */}
+          <div className="hidden lg:block">
+            <div className="bg-white border rounded-2xl p-3 shadow-sm">
+              <div className="text-sm font-semibold text-[#101828] px-2 py-2">
+                เมนูบัญชี
+              </div>
+
+              <div className="space-y-1">
+                <Button
+                  asChild
+                  variant={isActive("/account") ? "secondary" : "ghost"}
+                  className="w-full justify-start gap-2 rounded-xl"
+                >
+                  <a href="/account">
+                    <UserCircle className="size-4" />
+                    บัญชีของฉัน
+                  </a>
+                </Button>
+
+                <Button
+                  asChild
+                  variant={isActive("/account/articles") ? "secondary" : "ghost"}
+                  className="w-full justify-start gap-2 rounded-xl"
+                >
+                  <a href="/account/articles">
+                    <FileText className="size-4" />
+                    บทความ
+                  </a>
+                </Button>
+              </div>
+
+              <div className="my-3 border-t" />
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start gap-2 rounded-xl text-red-600 hover:text-red-600"
+                  >
+                    <LogOut className="size-4" />
+                    ออกจากระบบ
+                  </Button>
+                </DialogTrigger>
+
+                <DialogContent>
+                  <DialogTitle className="text-sm mb-4">
+                    คุณต้องการออกจากระบบใช่หรือไม่?
+                  </DialogTitle>
+                  <DialogFooter className="flex justify-end gap-2">
+                    <Button onClick={() => signOut()}>ออกจากระบบ</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+        </aside>
+
+        {/* =================== CONTENT =================== */}
+        <main className="min-h-[calc(100vh-64px)]">
+          <div className="w-full">
+            {children}
+          </div>
+        </main>
+      </div>
     </div>
+
   );
 }
