@@ -37,6 +37,11 @@ enum AuthorType {
   penname
 }
 
+enum ClipType {
+  upload
+  youtube
+}
+
 model User {
   id               Int        @id @default(autoincrement()) @map("id")
   name             String     @map("name")
@@ -144,4 +149,20 @@ model SocialLink {
   siteId    Int         @default(1) @map("site_id")
   createdAt DateTime    @default(now()) @map("created_at")
   site      SiteSetting @relation(fields: [siteId], references: [id])
+}
+
+model ShortClip {
+  id           String   @id @default(cuid())
+  titleTh      String   @map("title_th")
+  titleEn      String   @map("title_en")
+  titleCn      String   @map("title_cn")
+  videoUrl     String?  @map("video_url")
+  thumbnailUrl String?  @map("thumbnail_url")
+  youtubeUrl   String?  @map("youtube_url")
+  youtubeId    String?  @map("youtube_id")
+  viewCount    Int      @default(0) @map("view_count")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("short_clips")
 }

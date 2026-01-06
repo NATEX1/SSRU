@@ -84,9 +84,9 @@ export default function Page() {
 
   const router = useRouter();
 
-  const handleApprove = async (slug) => {
+  const handleApprove = async (articleId) => {
     try {
-      const res = await fetch(`/api/articles/${slug}/approve`, {
+      const res = await fetch(`/api/articles/${articleId}/approve`, {
         method: "POST",
       });
 
@@ -108,9 +108,9 @@ export default function Page() {
     }
   };
 
-  const handleReject = async (slug, comment) => {
+  const handleReject = async (articleId, comment) => {
     try {
-      const res = await fetch(`/api/articles/${slug}/reject`, {
+      const res = await fetch(`/api/articles/${articleId}/reject`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -130,6 +130,33 @@ export default function Page() {
     } catch (error) {
       toast.error("เกิดข้อผิดพลาด", {
         description: error.message || "ไม่สามารถไม่อนุมัติได้",
+      });
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      // setDeleting(true)
+
+      const res = await fetch(`/api/articles/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Delete failed");
+      }
+
+      toast.success("สำเร็จ", { description: "ลบรายการเรียบร้อยแล้ว" });
+
+      // router.refresh()
+      await fetchArticles();
+    } catch (error) {
+      console.log(error);
+
+      toast.error("เกิดข้อผิดพลาด", {
+        description: error.message || "ลบไม่สำเร็จ",
       });
     }
   };
@@ -271,7 +298,7 @@ export default function Page() {
         return (
           <div className="flex gap-2">
             {/* Approve */}
-            <ApproveDialog onApprove={() => handleApprove(article.slug)}>
+            <ApproveDialog onApprove={() => handleApprove(article.id)}>
               <Button
                 variant="ghost"
                 size="sm"
@@ -284,18 +311,30 @@ export default function Page() {
             </ApproveDialog>
 
             <RejectDialog
-              onSubmit={(comment) => handleReject(article.slug, comment)}
+              onSubmit={(comment) => handleReject(article.id, comment)}
             >
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-red-600 underline"
+                className="text-yellow-600 underline"
                 disabled={article.status == "draft"}
               >
                 <X className="size-4" />
                 ไม่อนุมัติ
               </Button>
             </RejectDialog>
+
+            <DeleteDialog onConfirm={() => handleDelete(article.id)}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-red-600 underline"
+                // disabled={article.status == "draft"}
+              >
+                <Trash className="size-4" />
+                ลบ
+              </Button>
+            </DeleteDialog>
           </div>
         );
       },

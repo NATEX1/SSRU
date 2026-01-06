@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import {
   FileText,
+  Film,
   Group,
   Home,
   Layers,
@@ -25,6 +26,7 @@ import {
   User2,
   UserCircle,
   Users,
+  Video,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -82,6 +84,11 @@ export default function DashboardSidebar() {
           label: 'จัดการหมวดหมู่',
           icon: Layers,
           href: '/backoffice/categories'
+        },
+         {
+          label: 'Short Clips',
+          icon: Film,
+          href: '/backoffice/short-clips'
         },
         {
           label: 'ตั้งค่า',

@@ -12,7 +12,7 @@ export async function POST(req, { params }) {
     }
 
     const article = await prisma.article.findUnique({
-      where: { slug },
+      where: { id: Number(id) },
     });
 
     if (!article) {

@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { writeFile } from "fs/promises";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import path from 'path'
+import path from "path";
 
 async function generateUniqueSlug(title, excludeId = null) {
   const baseSlug = title
@@ -56,8 +56,8 @@ export async function GET(req, { params }) {
         approvedBy: {
           select: {
             id: true,
-            name: true
-          }
+            name: true,
+          },
         },
         category: true,
         tags: {
@@ -113,7 +113,10 @@ export async function PUT(req, { params }) {
 
     if (!isAuthor && !isAdmin) {
       return NextResponse.json(
-        { success: false, message: "Forbidden: You don't have permission to edit this article" },
+        {
+          success: false,
+          message: "Forbidden: You don't have permission to edit this article",
+        },
         { status: 403 }
       );
     }
@@ -158,7 +161,11 @@ export async function PUT(req, { params }) {
       // ลบ thumbnail เก่า (ถ้ามี)
       if (existingArticle.thumbnail) {
         try {
-          const oldPath = path.join(process.cwd(), "public", existingArticle.thumbnail);
+          const oldPath = path.join(
+            process.cwd(),
+            "public",
+            existingArticle.thumbnail
+          );
           await unlink(oldPath);
         } catch (error) {
           console.log("Old thumbnail not found or cannot delete");
@@ -223,6 +230,37 @@ export async function PUT(req, { params }) {
     console.error("Error updating article:", error);
     return NextResponse.json(
       { success: false, message: "Error updating article" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req, { params }) {
+  try {
+    const { id } = await params;
+
+    if (!id) {
+      return NextResponse.json(
+        { message: "Invalid article id" },
+        { status: 400 }
+      );
+    }
+
+    await prisma.article.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    return NextResponse.json(
+      { success: true, message: "Article deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      { success: false, message: "Failed to delete article" },
       { status: 500 }
     );
   }

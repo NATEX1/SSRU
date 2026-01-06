@@ -1,9 +1,11 @@
 import { Inter, Kanit } from "next/font/google";
 import "./globals.css";
-import SessionProvider from '@/components/session-provider'
+import SessionProvider from "@/components/session-provider";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { Toaster } from "sonner";
+import Script from "next/script";
+import GAPageView from "@/components/ga-pageview";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,16 +23,32 @@ export const metadata = {
   description:
     "คณะกรรมการกำหนดทิศทางยุทธศาสตร์ในการสื่อสารองค์กรมหาวิทยาลัยราชภัฏสวนสุนันทา",
   icons: {
-    icon: "/assets/images/logo_new.png", 
+    icon: "/assets/images/logo_new.png",
     shortcut: "/assets/images/logo_new.png",
     apple: "/assets/images/logo_new.png",
   },
 };
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
 export default async function RootLayout({ children }) {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
   return (
     <html lang="en" data-theme="light">
+      <head>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+        </Script>
+      </head>
       <body
         className={`
           ${inter.variable}
@@ -43,6 +61,7 @@ export default async function RootLayout({ children }) {
       >
         <SessionProvider session={session}>
           <Toaster position="top-right" expand={true} richColors />
+          <GAPageView />
           {children}
         </SessionProvider>
       </body>

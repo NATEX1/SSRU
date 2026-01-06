@@ -10,7 +10,7 @@ export default async function middleware(req) {
   const { pathname } = req.nextUrl;
 
   if (pathname.startsWith("/write") && !token) {
-    return NextResponse.redirect(new URL("/", req.url));
+    return NextResponse.redirect(new URL("/signin", req.url));
   }
 
   if (

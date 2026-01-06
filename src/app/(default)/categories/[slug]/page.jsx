@@ -1,9 +1,11 @@
 import Pagination from "@/components/pagination";
 import { getAllCategories, getPostsByCategory } from "@/lib/markdown";
-import { Eye, Share2 } from "lucide-react";
+import { Eye, Pencil, Share2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 async function getCategoryBySlug(rawSlug, page = 1, limit = 9) {
   const slug = decodeURIComponent(rawSlug);
@@ -14,7 +16,7 @@ async function getCategoryBySlug(rawSlug, page = 1, limit = 9) {
     include: {
       articles: {
         where: {
-          status: 'approved'
+          status: "approved",
         },
         skip,
         take: limit,
@@ -35,6 +37,7 @@ async function getCategoryBySlug(rawSlug, page = 1, limit = 9) {
 }
 
 export default async function CategoryPage({ params, searchParams }) {
+  const session = await getServerSession(authOptions);
   const { slug } = await params;
   const sp = await searchParams;
   const page = sp?.page || 1;
@@ -91,7 +94,20 @@ export default async function CategoryPage({ params, searchParams }) {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto px-4 mt-8">
             {category.articles.map((article, i) => (
-              <div className="card shadow-sm group" key={i}>
+              <div
+                className="card shadow-sm group relative overflow-hidden"
+                key={i}
+              >
+                {/* {session && session.user?.id === article.authorId && (
+                  <Link
+                    href={`/articles/${article.id}/edit`}
+                    className="absolute top-2 right-2 bg-black/80 rounded-full size-6 text-white z-20
+               flex items-center justify-center hover:bg-black transition"
+                  >
+                    <Pencil className="size-3" />
+                  </Link>
+                )} */}
+
                 <figure className="h-40">
                   <a href={`/articles/${article.id}`}>
                     <img

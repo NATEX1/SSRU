@@ -18,14 +18,12 @@ export default function ShareButtons({ title, articleId }) {
     line: `https://social-plugins.line.me/lineit/share?url=${encodedUrl}`,
   };
 
-  /** 🔥 นับ share */
   const trackShare = () => {
     fetch(`/api/articles/${articleId}/share`, {
       method: "POST",
     });
   };
 
-  /** เปิด share + track */
   const openShare = (shareUrl) => {
     trackShare();
     window.open(shareUrl, "_blank", "noopener,noreferrer,width=600,height=500");
