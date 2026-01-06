@@ -42,10 +42,10 @@ export default function Page() {
   };
 
   return (
-    <div className="container p-6">
+    <div className="min-h-screen flex items-center justify-center bg-[#F9FAFB] px-4">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md mx-auto bg-white border border-gray-100 rounded-2xl shadow-sm p-6 sm:p-8 space-y-5"
+        className="w-full max-w-md bg-white border border-gray-100 rounded-2xl shadow-sm p-6 sm:p-8 space-y-5"
       >
         <div className="text-center space-y-1">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Welcome To Writing Kaew Chao Chom</h1>
@@ -61,8 +61,10 @@ export default function Page() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400
-                        outline-none transition focus:border-gray-400 focus:ring-4 focus:ring-gray-100"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3
+                        text-gray-900 placeholder:text-gray-400
+                        outline-none transition
+                        focus:border-[#F06FAA] focus:ring-4 focus:ring-[#F06FAA]/20"
             />
           </div>
 
@@ -74,8 +76,10 @@ export default function Page() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400
-                        outline-none transition focus:border-gray-400 focus:ring-4 focus:ring-gray-100"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3
+                        text-gray-900 placeholder:text-gray-400
+                        outline-none transition
+                        focus:border-[#F06FAA] focus:ring-4 focus:ring-[#F06FAA]/20"
             />
           </div>
         </div>
@@ -89,13 +93,13 @@ export default function Page() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-xl px-4 py-3 font-semibold text-white transition
-                    bg-gray-900 hover:bg-gray-800 active:bg-gray-950
+          className="w-full rounded-xl px-4 py-3 font-semibold transition
+                    bg-[#F06FAA] text-white
+                    hover:bg-[#E5E7EB] hover:text-gray-900
                     disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {loading ? "Logging in..." : "Login"}
         </button>
-
 
       </form>
     </div>
