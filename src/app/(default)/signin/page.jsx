@@ -42,32 +42,62 @@ export default function Page() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="email"
-          required
-        />
-      </div>
+    <div className="container p-6">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md mx-auto bg-white border border-gray-100 rounded-2xl shadow-sm p-6 sm:p-8 space-y-5"
+      >
+        <div className="text-center space-y-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Welcome To Writing Kaew Chao Chom</h1>
+          <p className="text-sm text-gray-500">Sign in to continue</p>
+        </div>
 
-      <div>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="password"
-          required
-        />
-      </div>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+              className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400
+                        outline-none transition focus:border-gray-400 focus:ring-4 focus:ring-gray-100"
+            />
+          </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+              className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400
+                        outline-none transition focus:border-gray-400 focus:ring-4 focus:ring-gray-100"
+            />
+          </div>
+        </div>
 
-      <button type="submit" disabled={loading}>
-        {loading ? "Logging in..." : "Login"}
-      </button>
-    </form>
+        {error && (
+          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-xl px-4 py-3 font-semibold text-white transition
+                    bg-gray-900 hover:bg-gray-800 active:bg-gray-950
+                    disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {loading ? "Logging in..." : "Login"}
+        </button>
+
+
+      </form>
+    </div>
   );
 }
