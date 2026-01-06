@@ -114,79 +114,77 @@ export default function Page() {
   if (loading) return null;
 
   return (
-    <div className="min-h-[calc(100vh-64px)] px-4 py-6 sm:py-10 flex items-start sm:items-center justify-center">
-      <div className="w-full max-w-xl lg:max-w-2xl bg-white border rounded-2xl shadow-sm p-5 sm:p-8">
-        <h1 className="text-xl sm:text-2xl font-bold text-[#101828]">บัญชีของฉัน</h1>
-        {/* ================= PROFILE IMAGE ================= */}
-        <div className="mt-6 flex flex-col items-center">
-          <div className="relative rounded-full border-4 border-white shadow my-3 size-28 sm:size-32 md:size-40">
-            <img
-              className="w-full h-full object-cover rounded-full"
-              src={preview || user.image || "/assets/images/user.png"}
-              alt=""
-            />
-
-            <button
-              onClick={() => fileRef.current.click()}
-              className="absolute bottom-0 right-0 bg-white size-8 rounded-full border flex items-center justify-center shadow-sm hover:bg-gray-50 transition"
-            >
-              <Pencil className="size-4" />
-            </button>
-
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={(e) => handleSelectImage(e.target.files[0])}
-            />
-          </div>
-
-          <span className="text-muted-foreground text-sm">เปลี่ยนรูปโปรไฟล์</span>
-
-          {/* ===== CONFIRM UPLOAD ===== */}
-          {preview && (
-            <div className="flex gap-2 mt-3">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => {
-                  setPreview(null);
-                  setSelectedFile(null);
-                }}
-              >
-                ยกเลิก
-              </Button>
-
-              <Button
-                size="sm"
-                onClick={handleConfirmUpload}
-                disabled={uploading}
-              >
-                {uploading ? "กำลังอัปโหลด..." : "ยืนยันเปลี่ยนรูป"}
-              </Button>
-            </div>
-          )}
-        </div>
-
-        {/* ================= FORM ================= */}
-        <div className="mt-8 space-y-4">
-          <Input
-            placeholder="ชื่อ"
-            value={user.name || ""}
-            onChange={(e) => setUser({ ...user, name: e.target.value })}
+    <div className="max-w-5xl mx-auto py-10 px-4 mt-8 border rounded-2xl">
+        <h1 className="text-2xl font-bold">บัญชีของฉัน</h1>
+      {/* ================= PROFILE IMAGE ================= */}
+      <div className="flex flex-col items-center">
+        <div className="size-40 relative rounded-full border-4 border-white shadow my-3">
+          <img
+            className="w-full h-full object-cover rounded-full"
+            src={preview || user.image || "/assets/images/user.png"}
+            alt=""
           />
 
-          {/* <Input
-            placeholder="ตำแหน่ง"
-            value={user.position || ""}
-            onChange={(e) => setUser({ ...user, position: e.target.value })}
-          /> */}
+          <button
+            onClick={() => fileRef.current.click()}
+            className="absolute bg-white size-8 bottom-0 right-0.5 rounded-full border flex items-center justify-center"
+          >
+            <Pencil className="size-4" />
+          </button>
 
-          <Button onClick={handleSave} disabled={saving} className="w-full">
-            {saving ? "กำลังบันทึก..." : "บันทึกข้อมูล"}
-          </Button>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={(e) => handleSelectImage(e.target.files[0])}
+          />
         </div>
+
+        <span className="text-muted-foreground text-sm">เปลี่ยนรูปโปรไฟล์</span>
+
+        {/* ===== CONFIRM UPLOAD ===== */}
+        {preview && (
+          <div className="flex gap-2 mt-3">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                setPreview(null);
+                setSelectedFile(null);
+              }}
+            >
+              ยกเลิก
+            </Button>
+
+            <Button
+              size="sm"
+              onClick={handleConfirmUpload}
+              disabled={uploading}
+            >
+              {uploading ? "กำลังอัปโหลด..." : "ยืนยันเปลี่ยนรูป"}
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {/* ================= FORM ================= */}
+      <div className="space-y-4 mt-6">
+        <Input
+          placeholder="ชื่อ"
+          value={user.name || ""}
+          onChange={(e) => setUser({ ...user, name: e.target.value })}
+        />
+
+        {/* <Input
+          placeholder="ตำแหน่ง"
+          value={user.position || ""}
+          onChange={(e) => setUser({ ...user, position: e.target.value })}
+        /> */}
+
+        <Button onClick={handleSave} disabled={saving} className="w-full">
+          {saving ? "กำลังบันทึก..." : "บันทึกข้อมูล"}
+        </Button>
       </div>
     </div>
   );
