@@ -20,5 +20,12 @@ export default async function middleware(req) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
+  if (
+    pathname.startsWith("/account") &&
+    (!token)
+  ) {
+    return NextResponse.redirect(new URL("/signin", req.url));
+  }
+
   return NextResponse.next();
 }

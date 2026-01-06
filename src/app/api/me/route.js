@@ -29,3 +29,22 @@ export async function GET() {
     });
   }
 }
+
+
+export async function PUT(req) {
+  const session = await getServerSession(authOptions)
+  if (!session) return NextResponse.json({}, { status: 401 })
+
+  const body = await req.json()
+
+  await prisma.user.update({
+    where: { id: session.user.id },
+    data: {
+      name: body.name,
+      position: body.position,
+      image: body.image,
+    },
+  })
+
+  return NextResponse.json({ success: true })
+}

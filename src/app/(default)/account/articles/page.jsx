@@ -16,7 +16,7 @@ const PAGE_SIZE = 10;
 
 export default async function Page({ searchParams }) {
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/login");
+  if (!session) redirect("/signin");
 
   const sp = await searchParams;
   const page = Number(sp.page) || 1;
@@ -44,7 +44,7 @@ export default async function Page({ searchParams }) {
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <div className="max-w-5xl mx-auto py-10">
+    <div className="max-w-5xl mx-auto py-10 px-4 mt-8 border rounded-2xl">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-bold">บทความของฉัน</h1>
         <Link href="/write">

@@ -36,7 +36,7 @@ import {
 } from "./ui/dropdown-menu";
 import { signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Button } from "./ui/button";
 
 export default function DashboardSidebar() {
@@ -155,13 +155,13 @@ export default function DashboardSidebar() {
               <DialogContent>
                 <DialogTitle className="text-sm mb-4">คุณต้องการออกจากระบบใช่หรือไม่?</DialogTitle>
 
-                <div className="flex justify-end gap-2">
+                <DialogFooter className="flex justify-end gap-2">
                   <Button
                     onClick={() => signOut()}
                   >
                     ออกจากระบบ
                   </Button>
-                </div>
+                </DialogFooter>
               </DialogContent>
             </Dialog>
           )}

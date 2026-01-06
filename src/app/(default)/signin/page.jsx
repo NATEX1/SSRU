@@ -37,18 +37,20 @@ export default function Page() {
     if (sessionData?.user?.role === "admin") {
       router.replace("/backoffice");
     } else {
-      router.replace("/");
+      router.replace("/account");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F9FAFB] px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-white border border-gray-100 rounded-2xl shadow-sm p-6 sm:p-8 space-y-5"
       >
         <div className="text-center space-y-1">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Welcome To Writing Kaew Chao Chom</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            Welcome To Writing Kaew Chao Chom
+          </h1>
           <p className="text-sm text-gray-500">Sign in to continue</p>
         </div>
 
@@ -69,7 +71,9 @@ export default function Page() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Password</label>
+            <label className="text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
               type="password"
               value={password}
@@ -100,7 +104,6 @@ export default function Page() {
         >
           {loading ? "Logging in..." : "Login"}
         </button>
-
       </form>
     </div>
   );
