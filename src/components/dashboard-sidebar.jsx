@@ -36,6 +36,8 @@ import {
 } from "./ui/dropdown-menu";
 import { signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { Button } from "./ui/button";
 
 export default function DashboardSidebar() {
   const { open } = useSidebar();
@@ -81,20 +83,20 @@ export default function DashboardSidebar() {
           href: "/backoffice/articles",
         },
         {
-          label: 'จัดการหมวดหมู่',
+          label: "จัดการหมวดหมู่",
           icon: Layers,
-          href: '/backoffice/categories'
-        },
-         {
-          label: 'Short Clips',
-          icon: Film,
-          href: '/backoffice/short-clips'
+          href: "/backoffice/categories",
         },
         {
-          label: 'ตั้งค่า',
+          label: "Short Clips",
+          icon: Film,
+          href: "/backoffice/short-clips",
+        },
+        {
+          label: "ตั้งค่า",
           icon: Settings,
-          href: '/backoffice/settings/account'
-        }
+          href: "/backoffice/settings/account",
+        },
       ],
     },
   ];
@@ -143,9 +145,25 @@ export default function DashboardSidebar() {
           </div>
 
           {open && (
-            <button className="px-2 py-1 cursor-pointer">
-              <LogOut className="h-4 w-4" />
-            </button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <button className="px-2 py-1 cursor-pointer">
+                  <LogOut className="h-4 w-4" />
+                </button>
+              </DialogTrigger>
+
+              <DialogContent>
+                <DialogTitle className="text-sm mb-4">คุณต้องการออกจากระบบใช่หรือไม่?</DialogTitle>
+
+                <div className="flex justify-end gap-2">
+                  <Button
+                    onClick={() => signOut()}
+                  >
+                    ออกจากระบบ
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           )}
         </div>
       </SidebarFooter>
