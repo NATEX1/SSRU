@@ -35,11 +35,18 @@ export function render(content) {
 
         case "list":
           const listTag = block.data.style === "ordered" ? "ol" : "ul";
-          const listClass = block.data.style === "ordered" ? "list-decimal" : "list-disc";
+          const listClass =
+            block.data.style === "ordered" ? "list-decimal" : "list-disc";
+
           const items = block.data.items
-            .map((item) => `<li>${item}</li>`)
+            .map((item) => `<li>${item.content}</li>`)
             .join("");
-          return `<${listTag} class="${listClass} pl-6" style="${alignStyle}">${items}</${listTag}>`;
+
+          return `
+            <${listTag} class="${listClass} pl-6" style="${alignStyle}">
+              ${items}
+            </${listTag}>
+          `;
 
         case "quote":
           const caption = block.data.caption
@@ -55,13 +62,19 @@ export function render(content) {
             ? `<figcaption class="text-sm text-gray-600 mt-2" style="${alignStyle}">${block.data.caption}</figcaption>`
             : "";
           return `<figure class="my-4" style="${alignStyle}">
-            <img src="${block.data.file.url}" alt="${block.data.caption || ""}" class="max-w-full h-auto" />
+            <img src="${block.data.file.url}" alt="${
+            block.data.caption || ""
+          }" class="max-w-full h-auto" />
             ${imgCaption}
           </figure>`;
 
         default:
           // สำหรับ block type อื่นๆ ที่ไม่รู้จัก
-          return `<div style="${alignStyle}"><pre>${JSON.stringify(block, null, 2)}</pre></div>`;
+          return `<div style="${alignStyle}"><pre>${JSON.stringify(
+            block,
+            null,
+            2
+          )}</pre></div>`;
       }
     })
     .join("");

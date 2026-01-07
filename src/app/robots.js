@@ -6,12 +6,12 @@ export default function robots() {
         allow: "/",
         disallow: [
           "/api",
-          "/admin",
           "/auth",
+          "/account",
           "/dashboard",
         ],
       },
     ],
-    sitemap: process.env.NEXT_PUBLIC_BASE_URL ||"https://kcc.ssru.ac.th/sitemap.xml",
+    sitemap: `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap.xml` ||"https://kcc.ssru.ac.th/sitemap.xml",
   }
 }
