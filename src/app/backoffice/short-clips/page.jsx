@@ -63,7 +63,33 @@ export default function page() {
   const [limit, setLimit] = useState(5);
 
   useEffect(() => {
-    console.log("muhaha");
+    const fetchVideos = async () => {
+      try {
+        setLoading(true);
+
+        const params = new URLSearchParams({
+          page,
+          limit,
+          search: search || "",
+          role: selectedRole || "",
+        });
+
+        const res = await fetch(`/api/short-clips?${params.toString()}`);
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message);
+
+        setData(data.data);
+        setTotal(data.pagination.total);
+        setTotalPages(data.pagination.totalPages);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVideos();
   }, [page, search, selectedRole, limit]);
 
   const handleDelete = async (id) => {
@@ -85,7 +111,66 @@ export default function page() {
     }
   };
 
-  const columns = [];
+  const columns = [
+    {
+      id: "thumbnail",
+      header: "รูปปก",
+      cell: ({ row }) => {
+        const shortClip = row.original;
+
+        const isYoutube = !!shortClip.youtubeUrl;
+
+        const thumbnail = isYoutube
+          ? `https://img.youtube.com/vi/${shortClip.youtubeId}/hqdefault.jpg`
+          : shortClip.thumbnailUrl;
+
+        return (
+          <div className="w-20 aspect-9/16 rounded-md overflow-hidden bg-muted">
+            {thumbnail ? (
+              <img
+                src={thumbnail}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">
+                No Image
+              </div>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+        accessorKey: 'titleTh',
+        header: 'Title (TH)'
+    },
+    {
+        accessorKey: 'titleEn',
+        header: 'Title (EN)'
+    },
+    {
+        accessorKey: 'titleCn',
+        header: 'Title (CN)'
+    },
+    {
+        id: 'actions',
+        cell: ({row}) => {
+            const shortClip = row.original
+
+            return (
+                <div>
+                    <Button variant="ghost" className={'underline cursor-pointer'}>
+                        <Pencil /> แก้ไข
+                    </Button>
+                     <Button variant="ghost" className={'text-red-500 underline cursor-pointer'}>
+                        <Trash /> ลบ
+                    </Button>
+                </div>
+            )
+        }
+    }
+  ];
 
   const table = useReactTable({
     data,

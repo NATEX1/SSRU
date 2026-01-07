@@ -2,97 +2,129 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import path from "path";
+import { writeFile, mkdir } from "fs/promises";
+import { existsSync } from "fs";
+
+async function saveFile(file, folder) {
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+
+  const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
+  if (!existsSync(uploadDir)) {
+    await mkdir(uploadDir, { recursive: true });
+  }
+
+  const filename = `${Date.now()}-${file.name}`;
+  const filepath = path.join(uploadDir, filename);
+
+  await writeFile(filepath, buffer);
+
+  return `/uploads/${folder}/${filename}`;
+}
+
+function extractYoutubeId(url) {
+  const match = url.match(
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([^&\n?#]+)/
+  );
+  return match ? match[1] : null;
+}
 
 export async function POST(req) {
   try {
-    // 1. Auth
+    // 🔐 auth (ถ้าไม่ต้องการตัดออกได้)
     const session = await getServerSession(authOptions);
-
-    if (!session || session.user?.role !== "admin") {
+    if (!session) {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },
         { status: 401 }
       );
     }
 
-    const contentType = req.headers.get("content-type") || "";
+    const formData = await req.formData();
+    const type = formData.get("type");
+
+    const titleTh = formData.get("titleTh") || "";
+    const titleEn = formData.get("titleEn") || "";
+    const titleCn = formData.get("titleCn") || "";
+
+    if (!type || !["upload", "youtube"].includes(type)) {
+      return NextResponse.json(
+        { success: false, message: "ประเภทไม่ถูกต้อง" },
+        { status: 400 }
+      );
+    }
+
+    if (!titleTh && !titleEn && !titleCn) {
+      return NextResponse.json(
+        { success: false, message: "กรุณาใส่ชื่ออย่างน้อย 1 ภาษา" },
+        { status: 400 }
+      );
+    }
+
+    let videoUrl = null;
+    let thumbnailUrl = null;
+    let youtubeUrl = null;
+    let youtubeId = null;
 
     // ================= UPLOAD =================
-    if (contentType.includes("multipart/form-data")) {
-      const formData = await req.formData();
+    if (type === "upload") {
+      const videoFile = formData.get("video");
+      const thumbnailFile = formData.get("thumbnail");
 
-      const type = formData.get("type"); // upload
-      if (type !== "upload") {
+      if (!videoFile || !thumbnailFile) {
         return NextResponse.json(
-          { success: false, message: "Invalid type" },
+          { success: false, message: "กรุณาเลือกไฟล์วิดีโอและรูปปก" },
           { status: 400 }
         );
       }
 
-      const titleTh = formData.get("titleTh");
-      const titleEn = formData.get("titleEn");
-      const titleCn = formData.get("titleCn");
-
-      // 🔥 สมมุติว่า upload เสร็จแล้ว ได้ URL มา
-      const videoUrl = formData.get("videoUrl");
-      const thumbnailUrl = formData.get("thumbnailUrl");
-
-      if (!titleTh || !videoUrl) {
+      if (videoFile.size > 1024 * 1024 * 1024) {
         return NextResponse.json(
-          { success: false, message: "Missing required fields" },
+          { success: false, message: "วิดีโอต้องไม่เกิน 1GB" },
           { status: 400 }
         );
       }
 
-      const clip = await prisma.shortClip.create({
-        data: {
-          type: "upload",
-          titleTh,
-          titleEn,
-          titleCn,
-          videoUrl,
-          thumbnailUrl,
-        },
-      });
+      if (thumbnailFile.size > 5 * 1024 * 1024) {
+        return NextResponse.json(
+          { success: false, message: "รูปปกต้องไม่เกิน 5MB" },
+          { status: 400 }
+        );
+      }
 
-      return NextResponse.json({ success: true, data: clip });
+      videoUrl = await saveFile(videoFile, "videos");
+      thumbnailUrl = await saveFile(thumbnailFile, "thumbnails");
     }
 
     // ================= YOUTUBE =================
-    const body = await req.json();
-    const { type, titleTh, titleEn, titleCn, youtubeUrl } = body;
+    if (type === "youtube") {
+      youtubeUrl = formData.get("youtubeUrl");
 
-    if (type !== "youtube") {
-      return NextResponse.json(
-        { success: false, message: "Invalid type" },
-        { status: 400 }
-      );
+      if (!youtubeUrl) {
+        return NextResponse.json(
+          { success: false, message: "กรุณาใส่ลิงก์ YouTube" },
+          { status: 400 }
+        );
+      }
+
+      youtubeId = extractYoutubeId(youtubeUrl);
+      if (!youtubeId) {
+        return NextResponse.json(
+          { success: false, message: "ลิงก์ YouTube ไม่ถูกต้อง" },
+          { status: 400 }
+        );
+      }
     }
 
-    if (!youtubeUrl || !titleTh) {
-      return NextResponse.json(
-        { success: false, message: "Missing required fields" },
-        { status: 400 }
-      );
-    }
-
-    const youtubeId =
-      youtubeUrl.split("v=")[1]?.split("&")[0] ||
-      youtubeUrl.split("youtu.be/")[1];
-
-    if (!youtubeId) {
-      return NextResponse.json(
-        { success: false, message: "Invalid YouTube URL" },
-        { status: 400 }
-      );
-    }
-
+    // ================= PRISMA =================
     const clip = await prisma.shortClip.create({
       data: {
-        type: "youtube",
         titleTh,
         titleEn,
         titleCn,
+        videoUrl,
+        thumbnailUrl,
         youtubeUrl,
         youtubeId,
       },
@@ -101,10 +133,58 @@ export async function POST(req) {
     return NextResponse.json({ success: true, data: clip });
   } catch (error) {
     console.error("CREATE SHORT CLIP ERROR:", error);
-
     return NextResponse.json(
       { success: false, message: "Internal Server Error" },
       { status: 500 }
     );
+  }
+}
+
+export async function GET(req) {
+  try {
+    const { searchParams } = new URL(req.url)
+
+    const page = Number(searchParams.get("page") || 1)
+    const limit = Number(searchParams.get("limit") || 10)
+    const search = searchParams.get("search") || ""
+
+    const skip = (page - 1) * limit
+
+    const where = search
+      ? {
+          OR: [
+            { titleTh: { contains: search, mode: "insensitive" } },
+            { titleEn: { contains: search, mode: "insensitive" } },
+            { titleCn: { contains: search, mode: "insensitive" } },
+          ],
+        }
+      : {}
+
+    const [shortClips, total] = await Promise.all([
+      prisma.shortClip.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: limit,
+      }),
+      prisma.shortClip.count({ where }),
+    ])
+
+    return NextResponse.json({
+      success: true,
+      data: shortClips,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    })
+  } catch (error) {
+    console.error("GET SHORT CLIPS ERROR:", error)
+    return NextResponse.json(
+      { success: false, message: "Internal Server Error" },
+      { status: 500 }
+    )
   }
 }
