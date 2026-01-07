@@ -92,7 +92,7 @@ model Article {
   approvedBy   User?         @relation("ArticleApprover", fields: [approvedById], references: [id])
   category     Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   tags         ArticleTag[]
-  views        Int           @default(0)
+  viewCount    Int           @default(0) @map("view_count")
   shareCount   Int           @default(0) @map("share_count")
 
   @@map("articles")
