@@ -113,7 +113,7 @@ export default async function page({ params }) {
         <div className="flex flex-wrap gap-4">
           <div className="text-[#6A7282] text-sm flex items-center gap-1">
             <Eye className="h-4" />
-            <span>{article.views} อ่าน</span>
+            <span>{article.viewCount} อ่าน</span>
           </div>
           <div className="text-[#6A7282] text-sm flex items-center gap-1">
             <Share2 className="h-4" />

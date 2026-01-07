@@ -143,7 +143,7 @@ export default async function CategoryPage({ params, searchParams }) {
                     <div className="flex gap-2">
                       <p className="text-[#99A1AF] flex items-center gap-1">
                         <Eye className="size-[1em]" />
-                        <span>{article.views} อ่าน</span>
+                        <span>{article.viewCount} อ่าน</span>
                       </p>
                       <p className="text-[#99A1AF] flex items-center gap-1">
                         <Share2 className="size-[1em]" />

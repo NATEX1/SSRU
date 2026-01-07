@@ -15,25 +15,25 @@ const shortClips = [
     id: "a9ml5nZen5Y",
     title:
       "“จากการเปลี่ยนผ่านผู้นำ สู่บทบาทอธิการบดีหญิง” รศ.ดร.ชุติกาญจน์ ศรีวิบูลย์ #ssru",
-    views: "896",
+    viewCount: "896",
     url: "https://youtube.com/shorts/a9ml5nZen5Y?si=_fzaQAMa57RggcHB",
   },
   {
     id: "qqBm0GBcTgs",
     title: "“ เป็นผู้นำต้องมีความพราว สง่างาม” รศ.พล.ต.ท.ดร.สัณฐาน ชยนนท์ #ssru",
-    views: "405",
+    viewCount: "405",
     url: "https://youtube.com/shorts/qqBm0GBcTgs?si=Mf5tpNuescDAAYUE",
   },
   {
     id: "V5TMKwpSbkc",
     title: "“ ยิงปืนนัดเดียวได้นก 2 ตัว” ผศ.ดร. วนิดา วอนสวัสดิ์ #ssru",
-    views: "1.3k",
+    viewCount: "1.3k",
     url: "https://youtube.com/shorts/V5TMKwpSbkc?si=oOBCovxDNDmoFvaa",
   },
   {
     id: "Wwih-fmMAIM",
     title: "“เส้นทางไม่ง่าย แต่ท้อไม่เป็น” น้องไป๋ เนาวรัตน์ แซ่ย่าง #นักกีฬาวูซูทีมชาติ #ssru #วูซู",
-    views: "1.7k",
+    viewCount: "1.7k",
     url: "https://youtube.com/shorts/Wwih-fmMAIM?si=IbPOVAHgynq7EF_4",
   },
 ];
@@ -105,7 +105,7 @@ export default function ClipCarousel() {
 
                     <div className="flex gap-1 items-center text-[#99A1AF] text-sm">
                       <Film className="h-4" />
-                      <span>• {item.views} views</span>
+                      <span>• {item.viewCount} views</span>
                     </div>
                   </div>
                 </div>
@@ -146,7 +146,7 @@ export default function ClipCarousel() {
 
                     <div className="flex gap-1 items-center text-[#99A1AF] text-sm">
                       <Film className="h-4" />
-                      <span>• {item.views} views</span>
+                      <span>• {item.viewCount} views</span>
                     </div>
                   </div>
                 </div>

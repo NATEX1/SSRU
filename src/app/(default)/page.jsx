@@ -28,32 +28,32 @@ const magazines = [
 const clips = [
   {
     image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
+    viewCount: "12.5k",
     title: "Vlog: 1 วันในรั้วสวนสุนันทา",
   },
   {
     image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
+    viewCount: "12.5k",
     title: "Vlog: 1 วันในรั้วสวนสุนันทา",
   },
   {
     image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
+    viewCount: "12.5k",
     title: "Vlog: 1 วันในรั้วสวนสุนันทา",
   },
   {
     image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
+    viewCount: "12.5k",
     title: "Vlog: 1 วันในรั้วสวนสุนันทา",
   },
   {
     image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
+    viewCount: "12.5k",
     title: "Vlog: 1 วันในรั้วสวนสุนันทา",
   },
   {
     image: "/assets/images/ssru-around.jpg",
-    views: "12.5k",
+    viewCount: "12.5k",
     title: "Vlog: 1 วันในรั้วสวนสุนันทา",
   },
 ];
@@ -111,7 +111,7 @@ export default async function Home() {
       status: "approved",
     },
     orderBy: {
-      views: "desc",
+      viewCount: "desc",
     },
     take: 7,
   });
@@ -188,7 +188,7 @@ export default async function Home() {
                                   </div>
                                   <div className="flex items-center gap-1">
                                     <Eye className="h-3 shrink-0" />{" "}
-                                    {cat.article.views}
+                                    {cat.article.viewCount}
                                   </div>
                                   <div className="flex items-center gap-1">
                                     <Share2 className="h-3 shrink-0" />{" "}
@@ -282,7 +282,7 @@ export default async function Home() {
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <Eye className="size-2.5 shrink-0" />
-                                  <span>{cat.article.views}</span>
+                                  <span>{cat.article.viewCount}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <Share2 className="size-2.5 shrink-0" />
@@ -369,7 +369,7 @@ export default async function Home() {
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <Eye className="h-2.5 shrink-0" />
-                                  <span>{category.article.views}</span>
+                                  <span>{category.article.viewCount}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <Share2 className="h-2.5 shrink-0" />

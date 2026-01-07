@@ -26,7 +26,7 @@ export async function POST(req, { params }) {
   await prisma.article.update({
     where: { id: Number(id) },
     data: {
-      views: { increment: 1 },
+      viewCount: { increment: 1 },
     },
   });
 
