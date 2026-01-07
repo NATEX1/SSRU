@@ -46,7 +46,7 @@ export default function ArticleSlider({ data }) {
         {/* image */}
         <div className="relative aspect-video overflow-hidden rounded-lg">
             <AnimatePresence mode="wait">
-              <a href={`/articles/${current.slug}`}>
+              <a href={`/articles/${current.id}`}>
               <motion.img
                 key={current.id}
                 src={current.image}
@@ -68,7 +68,7 @@ export default function ArticleSlider({ data }) {
               <span className="text-[#F06FAA]">{current.author}</span> | {current.dateText}
             </p>
 
-            <a href={`/articles/${current.slug}`}>
+            <a href={`/articles/${current.id}`}>
               <h2 className="text-3xl font-bold mb-4 line-clamp-2 wrap-break-word">
                 {current.title}
               </h2>
