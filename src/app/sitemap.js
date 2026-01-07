@@ -22,6 +22,11 @@ export default async function sitemap() {
       lastModified: new Date(),
     },
 
+     {
+      url: `${BASE_URL}/write`,
+      lastModified: new Date(),
+    },
+
     {
       url: `${BASE_URL}/contact-us`,
       lastModified: new Date(),
@@ -34,6 +39,11 @@ export default async function sitemap() {
     // Articles
     ...articles.map((a) => ({
       url: `${BASE_URL}/articles/${a.id}`,
+      lastModified: a.updatedAt,
+    })),
+
+    ...articles.map((a) => ({
+      url: `${BASE_URL}/articles/${a.id}/edit`,
       lastModified: a.updatedAt,
     })),
 

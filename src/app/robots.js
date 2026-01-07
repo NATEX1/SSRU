@@ -8,7 +8,7 @@ export default function robots() {
           "/api",
           "/auth",
           "/account",
-          "/dashboard",
+          "/backoffice",
         ],
       },
     ],
