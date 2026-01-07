@@ -1,17 +1,20 @@
 export default function robots() {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://kcc.ssru.ac.th";
+
   return {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
         disallow: [
           "/api",
           "/auth",
           "/account",
           "/backoffice",
+          "/write",
+          "/articles/*/edit",
         ],
       },
     ],
-    sitemap: `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap.xml` ||"https://kcc.ssru.ac.th/sitemap.xml",
-  }
+    sitemap: `${baseUrl}/sitemap.xml`,
+  };
 }

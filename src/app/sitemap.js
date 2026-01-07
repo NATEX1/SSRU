@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://kcc.ssru.ac.th";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://kcc.ssru.ac.th";
 
 export default async function sitemap() {
   const articles = await prisma.article.findMany({
@@ -17,16 +18,13 @@ export default async function sitemap() {
   });
 
   return [
+    // Home
     {
       url: BASE_URL,
       lastModified: new Date(),
     },
 
-     {
-      url: `${BASE_URL}/write`,
-      lastModified: new Date(),
-    },
-
+    // Static pages (public เท่านั้น)
     {
       url: `${BASE_URL}/contact-us`,
       lastModified: new Date(),
@@ -36,14 +34,9 @@ export default async function sitemap() {
       lastModified: new Date(),
     },
 
-    // Articles
+    // Articles (approved only)
     ...articles.map((a) => ({
       url: `${BASE_URL}/articles/${a.id}`,
-      lastModified: a.updatedAt,
-    })),
-
-    ...articles.map((a) => ({
-      url: `${BASE_URL}/articles/${a.id}/edit`,
       lastModified: a.updatedAt,
     })),
 
@@ -55,7 +48,7 @@ export default async function sitemap() {
 
     // Short clips
     ...clips.map((c) => ({
-      url: `${BASE_URL}/ssru-around/${c.id}`,
+      url: `${BASE_URL}/short-clips/${c.id}`,
       lastModified: c.updatedAt,
     })),
   ];
