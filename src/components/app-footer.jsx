@@ -19,7 +19,7 @@ export default function AppFooter() {
 
           <div>
             <p className="text-lg font-semibold text-[#101828]">
-              เว็บไซต์วารสารแก้วเจ้าจอมออนไลน์
+              วารสารแก้วเจ้าจอมออนไลน์
             </p>
             <p className="text-[#6A7282] text-sm leading-relaxed">
               คณะกรรมการกำหนดทิศทางยุทธศาสตร์ในการสื่อสารองค์กร <br />
