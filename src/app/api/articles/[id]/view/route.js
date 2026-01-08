@@ -1,19 +1,10 @@
 import prisma from "@/lib/prisma";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(req, { params }) {
   const { id } = await params;
-  // const slug = decodeURIComponent(rawSlug);
 
-  const cookieStore = await cookies();
-  const key = `viewed_${id}`;
-
-  // already viewed
-  if (cookieStore.get(key)) {
-    return NextResponse.json({ ok: true });
-  }
-
+  // ตรวจสอบว่า article มีอยู่
   const article = await prisma.article.findUnique({
     where: { id: Number(id) },
     select: { id: true },
@@ -23,17 +14,10 @@ export async function POST(req, { params }) {
     return NextResponse.json({ ok: false }, { status: 404 });
   }
 
+  // เพิ่ม viewCount ทันที
   await prisma.article.update({
     where: { id: Number(id) },
-    data: {
-      viewCount: { increment: 1 },
-    },
-  });
-
-  cookieStore.set(key, "1", {
-    maxAge: 60 * 60 * 24,
-    path: "/",
-    sameSite: "lax",
+    data: { viewCount: { increment: 1 } },
   });
 
   return NextResponse.json({ ok: true });

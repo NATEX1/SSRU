@@ -71,41 +71,32 @@ const archiveCategories = [
 ];
 
 async function getCategoriesWithOneArticle() {
-  const cats = await prisma.category.findMany({
-    orderBy: {
-      id: "asc", 
-    },
+  const categories = await prisma.category.findMany({
+    orderBy: { id: "asc" },
     include: {
       articles: {
-        where: {
-          status: "approved",
-        },
-        orderBy: {
-          createdAt: "desc", 
-        },
+        where: { status: "approved" },
+        orderBy: { createdAt: "desc" },
         take: 1,
         include: {
-          author: {
-            select: {
-              name: true,
-            },
-          },
+          author: { select: { name: true } },
         },
       },
     },
   });
 
-  // แปลง articles array ให้เป็น object เดียว
-  return cats.map((c) => ({
-    ...c,
-    article: c.articles[0] || null,
-    articles: undefined,
+  // แปลง articles array ให้เป็น object เดียว (article)
+  return categories.map((category) => ({
+    ...category,
+    article: category.articles[0] || null, // เอาอันแรก ถ้าไม่มีให้เป็น null
+    articles: undefined, // ลบ array เดิม
   }));
 }
 
 export default async function Home() {
   const cats = await getCategoriesWithOneArticle();
-
+  console.log(cats);
+  
   const popularArticles = await prisma.article.findMany({
     where: {
       status: "approved",
@@ -315,7 +306,10 @@ export default async function Home() {
                     if (!category.article) return;
 
                     return (
-                      <div key={i} className="flex flex-col max-w-full overflow-hidden">
+                      <div
+                        key={i}
+                        className="flex flex-col max-w-full overflow-hidden"
+                      >
                         <div className="flex items-center gap-2 mb-4">
                           <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
                           <a
@@ -361,10 +355,13 @@ export default async function Home() {
                                 <div className="flex items-center gap-1">
                                   <Calendar className="h-2.5 shrink-0" />
                                   <span>
-                                    {new Date(category.article.createdAt).toLocaleDateString(
-                                      "th-TH",
-                                      { day: "numeric", month: "long", year: "numeric" }
-                                    )}
+                                    {new Date(
+                                      category.article.createdAt
+                                    ).toLocaleDateString("th-TH", {
+                                      day: "numeric",
+                                      month: "long",
+                                      year: "numeric",
+                                    })}
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-1">
@@ -382,7 +379,8 @@ export default async function Home() {
                                 className="shrink-0"
                               >
                                 <span className="text-[#3F458D] text-xs flex items-center cursor-pointer whitespace-nowrap">
-                                  อ่านต่อ <ArrowRight className="h-2.5 ml-0.5" />
+                                  อ่านต่อ{" "}
+                                  <ArrowRight className="h-2.5 ml-0.5" />
                                 </span>
                               </a>
                             </div>
@@ -393,7 +391,6 @@ export default async function Home() {
                   })}
                 </div>
               </div>
-
             </div>
             <br />
             <br />
@@ -537,7 +534,7 @@ export default async function Home() {
                 </a>
               </div> */}
             </div>
-            <CommentForm/>
+            <CommentForm />
           </div>
         </div>
 
@@ -576,8 +573,11 @@ export default async function Home() {
 
                   <div className="mt-3 text-right">
                     <span className="text-xs md:text-sm text-[#667085]">
-                      <span className="font-medium text-[#344054]">ณัฐวลัญช์ วังนิล
-                        <br />บรรณาธิการ</span>
+                      <span className="font-medium text-[#344054]">
+                        ณัฐวลัญช์ วังนิล
+                        <br />
+                        บรรณาธิการ
+                      </span>
                     </span>
                   </div>
                 </div>
