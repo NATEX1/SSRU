@@ -126,7 +126,11 @@ export async function GET(req) {
     const category = searchParams.get("category");
     const q = searchParams.get("q");
 
-    const where = {};
+    const where = {
+      NOT: {
+        status: 'draft'
+      }
+    };
 
     if (q) {
       where.OR = [

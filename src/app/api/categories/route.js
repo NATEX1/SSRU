@@ -74,12 +74,12 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
-      );
-    }
+    // if (!session) {
+    //   return NextResponse.json(
+    //     { success: false, message: "Unauthorized" },
+    //     { status: 401 }
+    //   );
+    // }
 
     const { name, nameEn, nameCn } = await request.json();
 
