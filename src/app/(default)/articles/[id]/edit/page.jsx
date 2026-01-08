@@ -85,7 +85,7 @@ export default function page() {
     <ArticleForm
       mode="edit"
       initialData={article}
-      onSubmitSuccess={handleSubmitSuccess}
+      onSubmitSuccess={() => router.push("/account/articles")}
     />
   );
 }
