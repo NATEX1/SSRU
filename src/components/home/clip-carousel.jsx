@@ -11,24 +11,43 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const shortClips = [
+  // {
+  //   id: "a9ml5nZen5Y",
+  //   title:
+  //     "“จากการเปลี่ยนผ่านผู้นำ สู่บทบาทอธิการบดีหญิง” รศ.ดร.ชุติกาญจน์ ศรีวิบูลย์ #ssru",
+  //   viewCount: "896",
+  //   url: "https://youtube.com/shorts/a9ml5nZen5Y?si=_fzaQAMa57RggcHB",
+  // },
+  // {
+  //   id: "qqBm0GBcTgs",
+  //   title: "“ เป็นผู้นำต้องมีความพราว สง่างาม” รศ.พล.ต.ท.ดร.สัณฐาน ชยนนท์ #ssru",
+  //   viewCount: "405",
+  //   url: "https://youtube.com/shorts/qqBm0GBcTgs?si=Mf5tpNuescDAAYUE",
+  // },
+  // {
+  //   id: "V5TMKwpSbkc",
+  //   title: "“ ยิงปืนนัดเดียวได้นก 2 ตัว” ผศ.ดร. วนิดา วอนสวัสดิ์ #ssru",
+  //   viewCount: "1.3k",
+  //   url: "https://youtube.com/shorts/V5TMKwpSbkc?si=oOBCovxDNDmoFvaa",
+  // },
   {
-    id: "a9ml5nZen5Y",
+    id: "ex_lpnQY_jE",
     title:
-      "“จากการเปลี่ยนผ่านผู้นำ สู่บทบาทอธิการบดีหญิง” รศ.ดร.ชุติกาญจน์ ศรีวิบูลย์ #ssru",
+      "“การสร้างคนคือหัวใจการพัฒนางาน” #วารสารแก้วเจ้าจอมออนไลน์ #มืออาชีพ #ssru #การศึกษา #ราชภัฏ",
     viewCount: "896",
-    url: "https://youtube.com/shorts/a9ml5nZen5Y?si=_fzaQAMa57RggcHB",
+    url: "https://youtube.com/shorts/ex_lpnQY_jE?si=yVwRd-rn8sAbpzVn",
   },
   {
     id: "qqBm0GBcTgs",
-    title: "“ เป็นผู้นำต้องมีความพราว สง่างาม” รศ.พล.ต.ท.ดร.สัณฐาน ชยนนท์ #ssru",
+    title: "“เป็นผู้นำต้องมีความพราว สง่างาม”รศ.พล.ต.ท.ดร.สัณฐาน ชยนนท์ สัมภาษณ์ #วารสารแก้วเจ้าจอมออนไลน์ #ssru",
     viewCount: "405",
-    url: "https://youtube.com/shorts/qqBm0GBcTgs?si=Mf5tpNuescDAAYUE",
+    url: "https://youtube.com/shorts/qqBm0GBcTgs?si=CsMAu_DscxcCjEEJ",
   },
   {
-    id: "V5TMKwpSbkc",
-    title: "“ ยิงปืนนัดเดียวได้นก 2 ตัว” ผศ.ดร. วนิดา วอนสวัสดิ์ #ssru",
-    viewCount: "1.3k",
-    url: "https://youtube.com/shorts/V5TMKwpSbkc?si=oOBCovxDNDmoFvaa",
+    id: "XFCiLXMzpV0",
+    title: "บทสัมภาษณ์ | #วารสารแก้วเจ้าจอมออนไลน์ #วิจัย #ssru #การศึกษา #ราชภัฏ",
+    viewCount: "200",
+    url: "https://youtube.com/shorts/XFCiLXMzpV0?si=9u0_nX2y7FumB9tP",
   },
   {
     id: "Wwih-fmMAIM",
