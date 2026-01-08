@@ -9,7 +9,7 @@ export default function page() {
   return (
     <ArticleForm
       mode="create"
-      onSubmitSuccess={() => router.push("/")}
+      onSubmitSuccess={() => router.push("/account/articles")}
     />
   );
 }

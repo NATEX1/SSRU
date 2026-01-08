@@ -95,7 +95,7 @@ export async function POST(req) {
       excerpt,
       authorType,
       keywords,
-      authorId: authorType === "user" ? session.user.id : null,
+      authorId: session.user.id ,
       penName: authorType === "penname" ? penName : null,
       position: authorType === "penname" ? position : null,
     };

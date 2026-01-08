@@ -141,12 +141,6 @@ export async function PUT(req, { params }) {
       );
     }
 
-    // สร้าง slug ใหม่จาก title (ถ้า title เปลี่ยน)
-    // let newSlug = slug;
-    if (title !== existingArticle.title) {
-      newSlug = await generateUniqueSlug(title, existingArticle.id);
-    }
-
     // จัดการ thumbnail
     let thumbnailPath = existingArticle.thumbnail;
     if (thumbnail && thumbnail.size > 0) {
@@ -190,7 +184,6 @@ export async function PUT(req, { params }) {
       updateData.authorType = "penname";
       updateData.penName = penName?.trim() || null;
       updateData.position = position?.trim() || null;
-      updateData.authorId = null;
     } else {
       updateData.authorType = "user";
       updateData.authorId = session.user.id;
