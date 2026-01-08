@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -11,35 +5,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-}
-
-enum UserStatus {
-  active
-  inactive
-  suspended
-}
-
-enum UserRole {
-  admin
-  approver
-  author
-}
-
-enum ArticleStatus {
-  draft
-  pending
-  approved
-  rejected
-}
-
-enum AuthorType {
-  user
-  penname
-}
-
-enum ClipType {
-  upload
-  youtube
 }
 
 model User {
@@ -52,8 +17,8 @@ model User {
   position         String?    @map("position")
   status           UserStatus @default(active) @map("status")
   createdAt        DateTime   @default(now()) @map("created_at")
-  articles         Article[]  @relation("ArticleAuthor")
   approvedArticles Article[]  @relation("ArticleApprover")
+  articles         Article[]  @relation("ArticleAuthor")
 
   @@map("users")
 }
@@ -61,9 +26,9 @@ model User {
 model Category {
   id       Int       @id @default(autoincrement()) @map("id")
   name     String    @map("name")
-  nameEn   String?   @map("name_en")
-  nameCn   String?   @map("name_cn")
   slug     String    @unique @map("slug")
+  nameCn   String?   @map("name_cn")
+  nameEn   String?   @map("name_en")
   articles Article[]
 
   @@map("categories")
@@ -72,28 +37,28 @@ model Category {
 model Article {
   id           Int           @id @default(autoincrement()) @map("id")
   categoryId   Int           @map("category_id")
-  authorType   AuthorType    @default(user) @map("author_type")
   authorId     Int?          @map("author_id")
-  penName      String?       @map("pen_name")
-  position     String?       @map("position")
   title        String        @map("title")
   slug         String        @unique @map("slug")
   excerpt      String?
   content      String
-  keywords     String?
   thumbnail    String?
   status       ArticleStatus @default(draft)
-  rejectReason String?       @map("reject_reason")
-  approvedById Int?          @map("approved_by_id")
-  approvedAt   DateTime?     @map("approved_at")
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
-  author       User?         @relation("ArticleAuthor", fields: [authorId], references: [id])
-  approvedBy   User?         @relation("ArticleApprover", fields: [approvedById], references: [id])
-  category     Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  tags         ArticleTag[]
+  authorType   AuthorType    @default(user) @map("author_type")
+  penName      String?       @map("pen_name")
+  rejectReason String?       @map("reject_reason")
+  approvedAt   DateTime?     @map("approved_at")
+  approvedById Int?          @map("approved_by_id")
+  keywords     String?
   viewCount    Int           @default(0) @map("view_count")
+  position     String?       @map("position")
   shareCount   Int           @default(0) @map("share_count")
+  tags         ArticleTag[]
+  approvedBy   User?         @relation("ArticleApprover", fields: [approvedById], references: [id])
+  author       User?         @relation("ArticleAuthor", fields: [authorId], references: [id])
+  category     Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@map("articles")
 }
@@ -107,10 +72,10 @@ model Tag {
 }
 
 model ArticleTag {
-  article   Article @relation(fields: [articleId], references: [id])
   articleId Int     @map("article_id")
-  tag       Tag     @relation(fields: [tagId], references: [id])
   tagId     Int     @map("tag_id")
+  article   Article @relation(fields: [articleId], references: [id])
+  tag       Tag     @relation(fields: [tagId], references: [id])
 
   @@id([articleId, tagId])
   @@map("article_tags")
@@ -127,17 +92,18 @@ model Comment {
 }
 
 model SiteSetting {
-  id         Int      @id @default(1)
-  name       String
-  logo       String?
-  address    String?
-  phone      String?
-  email      String?
-  footerText String?  @map("footer_text")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-
+  id          Int          @id @default(1)
+  name        String
+  logo        String?
+  address     String?
+  phone       String?
+  email       String?
+  footerText  String?      @map("footer_text")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
   socialLinks SocialLink[]
+
+  @@map("site_settings")
 }
 
 model SocialLink {
@@ -149,10 +115,12 @@ model SocialLink {
   siteId    Int         @default(1) @map("site_id")
   createdAt DateTime    @default(now()) @map("created_at")
   site      SiteSetting @relation(fields: [siteId], references: [id])
+
+  @@map("social_links")
 }
 
 model ShortClip {
-  id           String   @id @default(cuid())
+  id           Int      @id @default(autoincrement())
   titleTh      String   @map("title_th")
   titleEn      String   @map("title_en")
   titleCn      String   @map("title_cn")
@@ -165,4 +133,43 @@ model ShortClip {
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   @@map("short_clips")
+}
+
+enum UserStatus {
+  active
+  inactive
+  suspended
+  
+  @@map("user_status")
+}
+
+enum UserRole {
+  admin
+  approver
+  author
+
+  @@map("user_role")
+}
+
+enum ArticleStatus {
+  draft
+  approved
+  rejected
+  pending
+
+  @@map("article_status")
+}
+
+enum AuthorType {
+  user
+  penname
+
+  @@map("article_type")
+}
+
+enum ClipType {
+  upload
+  youtube
+
+  @@map("clip_type")
 }

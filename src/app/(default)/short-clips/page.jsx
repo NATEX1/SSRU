@@ -33,8 +33,8 @@ export default async function page({ searchParams }) {
         {clips.map((c) => (
           <a
             key={c.id}
-            href={c.youtubeUrl || c.videoUrl || "#"}
-            target="_blank"
+            // href={c.youtubeUrl || c.videoUrl || "#"}
+            href={`/short-clips/${c.id}`}
             rel="noreferrer"
             className="block h-full"
           >
