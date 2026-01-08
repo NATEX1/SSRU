@@ -120,7 +120,7 @@ model SocialLink {
 }
 
 model ShortClip {
-  id           Int      @id @default(autoincrement())
+  id           Int   @id @default(autoincrement())
   titleTh      String   @map("title_th")
   titleEn      String   @map("title_en")
   titleCn      String   @map("title_cn")

@@ -95,7 +95,6 @@ async function getCategoriesWithOneArticle() {
 
 export default async function Home() {
   const cats = await getCategoriesWithOneArticle();
-  console.log(cats);
   
   const popularArticles = await prisma.article.findMany({
     where: {

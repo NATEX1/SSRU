@@ -143,7 +143,7 @@ export default function Page() {
       {/* Google Map */}
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.0955996116104!2d100.5075044!3d13.7731081!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e2995e778f8bfb%3A0xf9a7730535388e56!2sSuan%20Sunandha%20Rajabhat%20University!5e0!3m2!1sen!2sth!4v1764858074483!5m2!1sen!2sth"
-        className="w-full rounded-2xl h-[320px] sm:h-[400px] border border-[#F3F4F6] shadow"
+        className="w-full rounded-2xl h-80 sm:h-[400px] border border-[#F3F4F6] shadow"
         loading="lazy"
       />
     </div>
