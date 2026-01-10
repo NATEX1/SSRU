@@ -68,6 +68,25 @@ export function render(content) {
             ${imgCaption}
           </figure>`;
 
+        case "embed":
+          const embedCaption = block.data.caption
+            ? `<figcaption class="text-sm text-gray-600 mt-2" style="${alignStyle}">${block.data.caption}</figcaption>`
+            : "";
+          const embedHeight = block.data.height || 320;
+          
+          return `<figure class="my-4" style="${alignStyle}">
+            <div class="relative" style="padding-bottom: ${(embedHeight / 580 * 100)}%; height: 0; overflow: hidden;">
+              <iframe 
+                src="${block.data.embed}" 
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+            ${embedCaption}
+          </figure>`;
+
         default:
           // สำหรับ block type อื่นๆ ที่ไม่รู้จัก
           return `<div style="${alignStyle}"><pre>${JSON.stringify(

@@ -17,7 +17,146 @@ const DEFAULT_INITIAL_DATA = {
 
 const EDITOR_HOLDER_ID = "editorjs";
 
-// Custom Alignment Tune (ทำเอง)
+// Custom Embed Tool
+class CustomEmbed {
+  constructor({ data, api }) {
+    this.api = api;
+    this.data = {
+      service: data.service || "",
+      source: data.source || "",
+      embed: data.embed || "",
+      width: data.width || undefined,
+      height: data.height || undefined,
+      caption: data.caption || "",
+    };
+
+    this.services = {
+      youtube: {
+        regex: /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+        embedUrl: "https://www.youtube.com/embed/<%= remote_id %>",
+        html: '<iframe style="width:100%; height:320px;" frameborder="0" allowfullscreen></iframe>',
+        height: 320,
+        width: 580,
+      },
+    };
+  }
+
+  static get toolbox() {
+    return {
+      title: "Embed",
+      icon: '<svg xmlns="www.w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-youtube"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 15.2 0 2 2 0 0 1 1.4 1.4 24.05 24.05 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-15.2 0 2 2 0 0 1-1.4-1.4Z"/><path d="m10 15 5-3-5-3z"/></svg>',
+    };
+  }
+
+  render() {
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("embed-tool");
+
+    if (this.data && this.data.embed) {
+      const iframe = this.createIframe();
+      wrapper.appendChild(iframe);
+
+      const caption = document.createElement("input");
+      caption.classList.add("embed-tool__caption");
+      caption.placeholder = "Caption (optional)";
+      caption.value = this.data.caption || "";
+      caption.addEventListener("input", (e) => {
+        this.data.caption = e.target.value;
+      });
+      wrapper.appendChild(caption);
+    } else {
+      const input = document.createElement("input");
+      input.classList.add("embed-tool__input");
+      input.placeholder = "Paste a YouTube URL";
+      input.addEventListener("paste", (e) => {
+        const url = e.clipboardData.getData("text");
+        setTimeout(() => this.processUrl(url, wrapper), 100);
+      });
+      wrapper.appendChild(input);
+    }
+
+    return wrapper;
+  }
+
+  createIframe() {
+    const iframe = document.createElement("iframe");
+    iframe.src = this.data.embed;
+    iframe.style.width = "100%";
+    iframe.style.height = (this.data.height || 320) + "px";
+    iframe.frameBorder = "0";
+    iframe.allowFullscreen = true;
+    return iframe;
+  }
+
+  processUrl(url, wrapper) {
+    for (const [serviceName, service] of Object.entries(this.services)) {
+      const match = url.match(service.regex);
+      if (match) {
+        const remoteId = service.id ? service.id(match.slice(1)) : match[1];
+        const embedUrl = service.embedUrl.replace("<%= remote_id %>", remoteId);
+
+        this.data = {
+          service: serviceName,
+          source: url,
+          embed: embedUrl,
+          width: service.width,
+          height: service.height,
+          caption: "",
+        };
+
+        wrapper.innerHTML = "";
+        const iframe = this.createIframe();
+        wrapper.appendChild(iframe);
+
+        const caption = document.createElement("input");
+        caption.classList.add("embed-tool__caption");
+        caption.placeholder = "Caption (optional)";
+        caption.addEventListener("input", (e) => {
+          this.data.caption = e.target.value;
+        });
+        wrapper.appendChild(caption);
+
+        return;
+      }
+    }
+  }
+
+  save() {
+    return this.data;
+  }
+
+  static get pasteConfig() {
+    return {
+      patterns: {
+        youtube: /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+      },
+    };
+  }
+
+  onPaste(event) {
+    const { key, data } = event.detail;
+    
+    const service = this.services[key];
+    if (!service) return;
+
+    const match = data.match(service.regex);
+    if (match) {
+      const remoteId = service.id ? service.id(match.slice(1)) : match[1];
+      const embedUrl = service.embedUrl.replace("<%= remote_id %>", remoteId);
+
+      this.data = {
+        service: key,
+        source: data,
+        embed: embedUrl,
+        width: service.width,
+        height: service.height,
+        caption: "",
+      };
+    }
+  }
+}
+
+// Custom Alignment Tune
 class AlignmentTune {
   static get isTune() {
     return true;
@@ -51,7 +190,6 @@ class AlignmentTune {
         button.classList.add("ce-tune-alignment__button--active");
       }
 
-      // Render Lucide icon using React
       const iconContainer = document.createElement("span");
       const root = createRoot(iconContainer);
       root.render(<align.Icon size={16} />);
@@ -59,7 +197,6 @@ class AlignmentTune {
 
       button.addEventListener("click", () => {
         this.setAlignment(align.name);
-        // Update button states
         wrapper.querySelectorAll("button").forEach((btn) => {
           btn.classList.remove("ce-tune-alignment__button--active");
         });
@@ -74,13 +211,12 @@ class AlignmentTune {
 
   setAlignment(alignment) {
     this.data.alignment = alignment;
-    
-    // Apply CSS to block holder
+
     const currentIndex = this.api.blocks.getCurrentBlockIndex();
     const block = this.api.blocks.getBlockByIndex(currentIndex);
-    
+
     if (block && block.holder) {
-      const contentDiv = block.holder.querySelector('.ce-block__content');
+      const contentDiv = block.holder.querySelector(".ce-block__content");
       if (contentDiv) {
         contentDiv.style.textAlign = alignment;
       }
@@ -129,7 +265,7 @@ export default function Editor({ data, onChange, holder }) {
     const editor = new EditorJS({
       holder: holderId,
       placeholder: "Start writing here...",
-      
+
       tools: {
         paragraph: {
           class: Paragraph,
@@ -176,6 +312,7 @@ export default function Editor({ data, onChange, holder }) {
             },
           },
         },
+        embed: CustomEmbed,
         alignmentTune: {
           class: AlignmentTune,
           config: {
@@ -183,9 +320,9 @@ export default function Editor({ data, onChange, holder }) {
           },
         },
       },
-      
+
       data: editorData,
-      
+
       onChange: async (api) => {
         setTimeout(async () => {
           try {
@@ -197,12 +334,11 @@ export default function Editor({ data, onChange, holder }) {
           }
         }, 100);
       },
-      
+
       onReady: () => {
         console.log("✅ Editor ready");
         isInitializedRef.current = true;
-        
-        // Apply alignment to existing blocks
+
         setTimeout(() => {
           if (editorData && editorData.blocks) {
             editorData.blocks.forEach((blockData, index) => {
@@ -210,7 +346,8 @@ export default function Editor({ data, onChange, holder }) {
               if (alignment) {
                 const block = editor.blocks.getBlockByIndex(index);
                 if (block && block.holder) {
-                  const contentDiv = block.holder.querySelector('.ce-block__content');
+                  const contentDiv =
+                    block.holder.querySelector(".ce-block__content");
                   if (contentDiv) {
                     contentDiv.style.textAlign = alignment;
                   }
@@ -253,7 +390,7 @@ export default function Editor({ data, onChange, holder }) {
           gap: 4px;
           padding: 4px;
         }
-        
+
         .ce-tune-alignment__button {
           padding: 6px 8px;
           border: 1px solid #e5e7eb;
@@ -265,12 +402,12 @@ export default function Editor({ data, onChange, holder }) {
           justify-content: center;
           transition: all 0.15s ease;
         }
-        
+
         .ce-tune-alignment__button:hover {
           background: #f3f4f6;
           border-color: #d1d5db;
         }
-        
+
         .ce-tune-alignment__button--active {
           background: #3b82f6;
           color: white;
@@ -284,53 +421,91 @@ export default function Editor({ data, onChange, holder }) {
         .ce-tune-alignment__button--active:hover svg {
           color: black;
         }
-        
-        /* Force alignment for all block types */
+
         .alignment-wrapper {
           width: 100%;
         }
-        
+
         .alignment-wrapper[style*="text-align: center"] * {
           text-align: center !important;
         }
-        
+
         .alignment-wrapper[style*="text-align: right"] * {
           text-align: right !important;
         }
-        
+
         .alignment-wrapper[style*="text-align: left"] * {
           text-align: left !important;
         }
-        
-        /* Direct block content styling */
+
         .ce-block__content[style*="text-align: center"] {
           text-align: center !important;
         }
-        
+
         .ce-block__content[style*="text-align: right"] {
           text-align: right !important;
         }
-        
+
         .ce-block__content[style*="text-align: left"] {
           text-align: left !important;
         }
-        
-        /* Specific element overrides */
+
         .ce-block__content[style*="text-align: center"] .ce-paragraph,
         .ce-block__content[style*="text-align: center"] .ce-header,
         .ce-block__content[style*="text-align: center"] .cdx-list,
         .ce-block__content[style*="text-align: center"] .cdx-quote {
           text-align: center !important;
         }
-        
+
         .ce-block__content[style*="text-align: right"] .ce-paragraph,
         .ce-block__content[style*="text-align: right"] .ce-header,
         .ce-block__content[style*="text-align: right"] .cdx-list,
         .ce-block__content[style*="text-align: right"] .cdx-quote {
           text-align: right !important;
         }
+
+        /* Embed Tool Styles */
+        .embed-tool {
+          margin: 20px 0;
+        }
+
+        .embed-tool__input {
+          width: 100%;
+          padding: 12px;
+          border: 2px dashed #e5e7eb;
+          border-radius: 8px;
+          font-size: 14px;
+          outline: none;
+          transition: border-color 0.2s;
+        }
+
+        .embed-tool__input:focus {
+          border-color: #3b82f6;
+        }
+
+        .embed-tool iframe {
+          border-radius: 8px;
+          display: block;
+        }
+
+        .embed-tool__caption {
+          width: 100%;
+          padding: 8px;
+          margin-top: 8px;
+          border: 1px solid #e5e7eb;
+          border-radius: 4px;
+          font-size: 13px;
+          outline: none;
+        }
+
+        .embed-tool__caption:focus {
+          border-color: #3b82f6;
+        }
       `}</style>
-      <div id={holderId} className="prose max-w-none border rounded-lg p-4 min-h-[300px]" />
+      <div
+        id={holderId}
+        className="prose max-w-none border rounded-lg p-4 min-h-[300px]"
+      />
     </>
   );
 }

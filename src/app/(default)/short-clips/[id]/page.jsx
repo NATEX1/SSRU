@@ -3,7 +3,7 @@ import React from "react";
 
 export default async function page({ params }) {
   const { id } = await params;
-  const clip = await prisma.shortClip.findUnique({ where: { id } });
+  const clip = await prisma.shortClip.findUnique({ where: { id: Number(id) } });
 
   if (!clip) {
     return <div>ไม่พบวิดีโอ</div>;

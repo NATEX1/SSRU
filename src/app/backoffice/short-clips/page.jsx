@@ -125,7 +125,7 @@ export default function page() {
           : shortClip.thumbnailUrl;
 
         return (
-          <div className="w-20 aspect-9/16 rounded-md overflow-hidden bg-muted">
+          <div className="size-40 rounded-md overflow-hidden bg-muted">
             {thumbnail ? (
               <img
                 src={thumbnail}
