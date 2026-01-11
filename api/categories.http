@@ -14,7 +14,7 @@ GET http://localhost:3000/api/categories/สนทนาบนเส้นทา
  
 
 ### Create category in production
-POST https://kcc-uat.ssru.ac.th/api/categories
+POST https://kcc.ssru.ac.th/api/categories
 {
     "name": "สนทนาบนเส้นทางงาน",
     "slug": "career-path-conversations"

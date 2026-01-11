@@ -15,7 +15,7 @@ GET http://localhost:3000/api/users
 
 
 ### Create user in production
-POST https://kcc-uat.ssru.ac.th/api/users
+POST https://kcc.ssru.ac.th/api/users
 Content-Type: application/json
 
 {
@@ -26,4 +26,4 @@ Content-Type: application/json
 }
 
 ### Get users in production
-GET https://kcc-uat.ssru.ac.th/api/users
+GET https://kcc.ssru.ac.th/api/users

@@ -19,6 +19,7 @@ const kanit = Kanit({
 });
 
 export const metadata = {
+  url: "https://kcc.ssru.ac.th",
   title: "วารสารแก้วเจ้าจอมออนไลน์",
   description:
     "คณะกรรมการกำหนดทิศทางยุทธศาสตร์ในการสื่อสารองค์กรมหาวิทยาลัยราชภัฏสวนสุนันทา",

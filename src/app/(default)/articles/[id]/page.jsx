@@ -44,7 +44,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: article.title,
       description: article.excerpt,
-      url: `https://kcc-uat.ssru.ac.th/${article.slug}`,
+      url: `https://kcc.ssru.ac.th/${article.slug}`,
       siteName: "SSRU",
       images: [
         {
