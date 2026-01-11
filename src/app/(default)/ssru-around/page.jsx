@@ -3,10 +3,18 @@ import React from "react";
 
 const magazines = [
   {
+    image: "/contents/magazine3.jpg",
+    issue: "Issue 12",
+    year: "2026",
+    title: "รอบรั้วแก้วเจ้าจอม (วันที่ 1-8 ม.ค. 69)",
+    type: "Digital Version Available",
+    link: "https://online.fliphtml5.com/eakkq/wojd/",
+  },
+  {
     image: "/contents/magazine1.jpg",
     issue: "Issue 12",
     year: "2025",
-    title: "รอบรั้วแก้วเจ้าจอมฉบับที่ 1",
+    title: "รอบรั้วแก้วเจ้าจอม (วันที่ 20-26 ธ.ค. 68)",
     type: "Digital Version Available",
     link: "https://online.fliphtml5.com/eakkq/ftzw/",
   },
@@ -14,7 +22,7 @@ const magazines = [
     image: "/contents/magazine2.jpg",
     issue: "Issue 12",
     year: "2025",
-    title: "รอบรั้วแก้วเจ้าจอมฉบับที่ 2",
+    title: "รอบรั้วแก้วเจ้าจอม (วันที่ 12-19 ธ.ค. 68)",
     type: "Digital Version Available",
     link: "https://online.fliphtml5.com/eakkq/lodv/",
   },

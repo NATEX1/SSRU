@@ -30,30 +30,55 @@ const shortClips = [
   //   viewCount: "1.3k",
   //   url: "https://youtube.com/shorts/V5TMKwpSbkc?si=oOBCovxDNDmoFvaa",
   // },
+  // {
+  //   id: "ex_lpnQY_jE",
+  //   title:
+  //     "“การสร้างคนคือหัวใจการพัฒนางาน” #วารสารแก้วเจ้าจอมออนไลน์ #มืออาชีพ #ssru #การศึกษา #ราชภัฏ",
+  //   viewCount: "896",
+  //   url: "https://youtube.com/shorts/ex_lpnQY_jE?si=yVwRd-rn8sAbpzVn",
+  // },
+  // {
+  //   id: "qqBm0GBcTgs",
+  //   title: "“เป็นผู้นำต้องมีความพราว สง่างาม”รศ.พล.ต.ท.ดร.สัณฐาน ชยนนท์ สัมภาษณ์ #วารสารแก้วเจ้าจอมออนไลน์ #ssru",
+  //   viewCount: "405",
+  //   url: "https://youtube.com/shorts/qqBm0GBcTgs?si=CsMAu_DscxcCjEEJ",
+  // },
+  // {
+  //   id: "XFCiLXMzpV0",
+  //   title: "บทสัมภาษณ์ | #วารสารแก้วเจ้าจอมออนไลน์ #วิจัย #ssru #การศึกษา #ราชภัฏ",
+  //   viewCount: "200",
+  //   url: "https://youtube.com/shorts/XFCiLXMzpV0?si=9u0_nX2y7FumB9tP",
+  // },
+  // {
+  //   id: "Wwih-fmMAIM",
+  //   title: "“เส้นทางไม่ง่าย แต่ท้อไม่เป็น” น้องไป๋ เนาวรัตน์ แซ่ย่าง #นักกีฬาวูซูทีมชาติ #ssru #วูซู",
+  //   viewCount: "1.7k",
+  //   url: "https://youtube.com/shorts/Wwih-fmMAIM?si=IbPOVAHgynq7EF_4",
+  // },
   {
-    id: "ex_lpnQY_jE",
+    id: "lHoC6emGIH4",
     title:
-      "“การสร้างคนคือหัวใจการพัฒนางาน” #วารสารแก้วเจ้าจอมออนไลน์ #มืออาชีพ #ssru #การศึกษา #ราชภัฏ",
+      "#มืออาชีพ ไม่ใช่พรสวรรค์แต่คือ #มาตรฐาน | สัมภาษณ์ #วารสารแก้วเจ้าจอมออนไลน์ #ssru #news",
     viewCount: "896",
-    url: "https://youtube.com/shorts/ex_lpnQY_jE?si=yVwRd-rn8sAbpzVn",
+    url: "https://youtube.com/shorts/lHoC6emGIH4?si=nPM3pfTLNBUUZ7_2",
   },
   {
-    id: "qqBm0GBcTgs",
-    title: "“เป็นผู้นำต้องมีความพราว สง่างาม”รศ.พล.ต.ท.ดร.สัณฐาน ชยนนท์ สัมภาษณ์ #วารสารแก้วเจ้าจอมออนไลน์ #ssru",
+    id: "nvbhXeZMhXM",
+    title: "พลิกวิกฤตให้เป็น “โอกาส” #วารสารแก้วเจ้าจอมออนไลน์ #ssru #news #คณะมนุษยศาสตร์และสังคมศาสตร์",
     viewCount: "405",
-    url: "https://youtube.com/shorts/qqBm0GBcTgs?si=CsMAu_DscxcCjEEJ",
+    url: "https://youtube.com/shorts/nvbhXeZMhXM?si=fDfS1lyfbBGjCdy4",
   },
   {
-    id: "XFCiLXMzpV0",
-    title: "บทสัมภาษณ์ | #วารสารแก้วเจ้าจอมออนไลน์ #วิจัย #ssru #การศึกษา #ราชภัฏ",
+    id: "_26moSxT3Fs",
+    title: "“จากห้องเรียนสู่เวทีโลก” 🌎 สัมภาษณ์| #วารสารแก้วเจ้าจอมออนไลน์ #วิจัย #ssru #news",
     viewCount: "200",
-    url: "https://youtube.com/shorts/XFCiLXMzpV0?si=9u0_nX2y7FumB9tP",
+    url: "https://youtube.com/shorts/_26moSxT3Fs?si=Ol8wpz8tN8D9ARg8",
   },
   {
-    id: "Wwih-fmMAIM",
-    title: "“เส้นทางไม่ง่าย แต่ท้อไม่เป็น” น้องไป๋ เนาวรัตน์ แซ่ย่าง #นักกีฬาวูซูทีมชาติ #ssru #วูซู",
-    viewCount: "1.7k",
-    url: "https://youtube.com/shorts/Wwih-fmMAIM?si=IbPOVAHgynq7EF_4",
+    id: "TosuzqzoEdU",
+    title: "“แพรพลอย หัวใจเพ็ชร”นักกีฬาฟุตซอลหญิง #ssru ทีมชาติไทย #ssru #วารสารแก้วเจ้าจอมออนไลน์ #กีฬา #ฟุตบอล",
+    viewCount: "189",
+    url: "https://youtu.be/TosuzqzoEdU?si=KlkCGB3suCRyBQj7",
   },
 ];
 
