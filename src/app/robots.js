@@ -1,5 +1,7 @@
 export default function robots() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://kcc.ssru.ac.th";
+  const baseUrlRaw = process.env.NEXT_PUBLIC_BASE_URL || "https://kcc.ssru.ac.th";
+
+  const baseUrl = baseUrlRaw.replace("https://www.", "https://");
 
   return {
     rules: [

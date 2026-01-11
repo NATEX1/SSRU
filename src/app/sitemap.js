@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://kcc.ssru.ac.th";
+const BASE_URL = (process.env.NEXT_PUBLIC_BASE_URL || "https://kcc.ssru.ac.th")
+  .replace("https://www.", "https://");
 
 export default async function sitemap() {
   const articles = await prisma.article.findMany({

@@ -40,7 +40,7 @@ export default function page() {
         <div className=" rounded bg-[#F06FAA] w-24 h-1 mt-8"></div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         {magazines.map((item, i) => (
           <a href={item.link} key={i} target="__bank">
             <div className="card border shadow">

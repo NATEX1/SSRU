@@ -57,38 +57,71 @@ export default async function Page({ searchParams }) {
       )}
 
       <div className="space-y-4">
-        {articles.map((article) => (
-          <div
-            key={article.id}
-            className="flex items-center justify-between border rounded-lg p-4"
-          >
-            <div>
-              <a href={`/articles/${article.id}`} target="_blank">
-                <h3 className="font-medium line-clamp-1 hover:underline">
-                  {article.title}
-                </h3>
-              </a>
-              <div className="text-sm text-muted-foreground">
-                {article.createdAt.toLocaleDateString("th-TH", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
+        {articles.map((article) => {
+          const statusMap = {
+            draft: {
+              label: "Draft",
+              className: "text-gray-500",
+            },
+            approved: {
+              label: "Approved",
+              className: "text-green-600",
+            },
+            rejected: {
+              label: "Rejected",
+              className: "text-red-600",
+            },
+          };
+
+          const status = statusMap[article.status] || {
+            label: article.status,
+            className: "text-gray-500",
+          };
+
+          const isApproved = article.status === "approved";
+
+          return (
+            <div
+              key={article.id}
+              className="flex items-center justify-between border rounded-lg p-4"
+            >
+              <div>
+                <a href={`/articles/${article.id}`} target="_blank">
+                  <h3 className="font-medium line-clamp-1 hover:underline">
+                    {article.title}
+                  </h3>
+                </a>
+
+                <div className="text-sm text-muted-foreground mt-1">
+                  {article.createdAt.toLocaleDateString("th-TH", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </div>
+
+                <div className={`text-sm font-medium mt-0.5 ${status.className}`}>
+                  {status.label}
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-center gap-2">
-              <Link href={`/articles/${article.id}/edit`}>
-                <Button variant="ghost" size="sm">
-                  <Pencil className="size-4" />
-                </Button>
-              </Link>
+              {/* ปุ่มจะซ่อนเมื่อ Approved */}
+              {!isApproved && (
+                <div className="flex items-center gap-2">
+                  <Link href={`/articles/${article.id}/edit`}>
+                    <Button variant="ghost" size="sm">
+                      <Pencil className="size-4" />
+                    </Button>
+                  </Link>
 
-              <DeleteButton id={article.id} />
+                  <DeleteButton id={article.id} />
+                </div>
+              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
+
 
       {/* Pagination */}
       {totalPages > 1 && (

@@ -125,9 +125,9 @@ export default function MagazineCarousel({ data }) {
 
                   <div className="p-4 space-y-2">
                     <div className="flex justify-between items-start">
-                      <div className="bg-[#3F458D0D] text-[#3F458D] font-bold text-xs px-2 py-1 rounded-md">
-                        {/* {item.issue} */}
-                      </div>
+                      {/* <div className="bg-[#3F458D0D] text-[#3F458D] font-bold text-xs px-2 py-1 rounded-md">
+                        {item.issue}
+                      </div> */}
 
                       <div className="text-xs text-[#99A1AF]">
                         {item.year}
