@@ -17,12 +17,12 @@ const magazines = [
     link: "https://online.fliphtml5.com/eakkq/wojd/",
   },
   {
-    image: "/contents/magazine2.jpg",
+    image: "/contents/magazine1.jpg",
     issue: "Issue 12",
     year: "2025",
-    title: "รอบรั้วแก้วเจ้าจอม (วันที่ 12-19 ธ.ค. 68)",
+    title: "รอบรั้วแก้วเจ้าจอม (วันที่ 20-26 ธ.ค. 68)",
     type: "Digital Version Available",
-    link: "https://online.fliphtml5.com/eakkq/kpkv/",
+    link: "https://online.fliphtml5.com/eakkq/ftzw/",
   },
 ];
 
