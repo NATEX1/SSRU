@@ -63,6 +63,10 @@ export default async function Page({ searchParams }) {
               label: "Draft",
               className: "text-gray-500",
             },
+            pending: {
+              label: "Pending",
+              className: "text-orange-600",
+            },
             approved: {
               label: "Approved",
               className: "text-green-600",
