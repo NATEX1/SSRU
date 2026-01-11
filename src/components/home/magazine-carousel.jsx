@@ -95,42 +95,60 @@ export default function MagazineCarousel({ data }) {
       </div>
 
       {/* ================= Desktop ================= */}
-      <div className="hidden xl:block w-full">
-        <div className="grid grid-cols-2 gap-4">
-          {data?.slice(0, 2).map((item, index) => (
-            <a
-              key={index}
-              href={item.link}
-              target="_blank"
-              rel="noreferrer"
-              className="block h-full"
-            >
-              <div className="h-full bg-white shadow rounded-xl overflow-hidden hover:shadow-md transition">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-[220px] object-cover"
-                  loading="lazy"
-                />
+      <div className="hidden xl:block w-full overflow-hidden">
+        <Swiper
+          modules={[Grid]}
+          spaceBetween={16}
+          slidesPerView={2}
+          grid={{
+            rows: 2,
+            fill: "row",
+          }}
+          loop={false}
+          className="w-full"
+        >
+          {data?.map((item, index) => (
+            <SwiperSlide key={index} className="h-auto">
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noreferrer"
+                className="block h-full"
+              >
+                <div className="h-full bg-white shadow rounded-xl overflow-hidden hover:shadow-md transition">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-[360px] object-cover"
+                    loading="lazy"
+                  />
 
-                <div className="p-4 space-y-2">
-                  <div className="flex justify-between items-start">
-                    <div className="text-xs text-[#99A1AF]">{item.year}</div>
-                  </div>
+                  <div className="p-4 space-y-2">
+                    <div className="flex justify-between items-start">
+                      {/* <div className="bg-[#3F458D0D] text-[#3F458D] font-bold text-xs px-2 py-1 rounded-md">
+                        {item.issue}
+                      </div> */}
 
-                  <h2 className="font-semibold line-clamp-2">{item.title}</h2>
+                      <div className="text-xs text-[#99A1AF]">
+                        {item.year}
+                      </div>
+                    </div>
 
-                  <div className="flex gap-1 items-center text-[#99A1AF] text-sm">
-                    <BookOpen className="h-4" />
-                    <p className="line-clamp-1">{item.type}</p>
+                    <h2 className="font-semibold">
+                      {item.title}
+                    </h2>
+
+                    <div className="flex gap-1 items-center text-[#99A1AF] text-sm">
+                      <BookOpen className="h-4" />
+                      <p>{item.type}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </a>
+              </a>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
-
     </div>
   );
 }

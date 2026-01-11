@@ -9,12 +9,12 @@ import { ArrowRight, Calendar, Eye, Share2 } from "lucide-react";
 
 const magazines = [
   {
-    image: "/contents/magazine1.jpg",
+    image: "/contents/magazine3.jpg",
     issue: "Issue 12",
-    year: "2025",
-    title: "รอบรั้วแก้วเจ้าจอม (วันที่ 20-26 ธ.ค. 68)",
+    year: "2026",
+    title: "รอบรั้วแก้วเจ้าจอม (วันที่ 1-8 ม.ค. 69)",
     type: "Digital Version Available",
-    link: "https://online.fliphtml5.com/eakkq/vkvz/",
+    link: "https://online.fliphtml5.com/eakkq/wojd/",
   },
   {
     image: "/contents/magazine2.jpg",
@@ -363,14 +363,9 @@ export default async function Home() {
             </div>
             <br />
             <br />
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 flex-1 mb-8">
-              <div className="min-w-0 max-w-full space-y-8">
-                <div className="bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
-                  <MagazineCarousel data={magazines} />
-                </div>
-                <div className="bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
-                  <VlogCarousel />
-                </div>
+            <div className="flex flex-col xl:flex-row gap-8 flex-1 mb-8">
+              <div className="max-w-full min-w-0 bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
+                <MagazineCarousel data={magazines} />
               </div>
 
               <div className="min-w-0 max-w-full bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
