@@ -26,8 +26,7 @@ const vlogClips = [
 ];
 
 export default function VlogCarousel({
-  data = vlogClips,
-  playlistUrl = "/vlog", 
+  data = vlogClips
 }) {
   const items = (data || []).slice(0, 2);
 
@@ -39,9 +38,9 @@ export default function VlogCarousel({
         <h2 className="text-[#101828] text-2xl font-bold">Vlog</h2>
 
         <a
-          href={playlistUrl}
-          target={playlistUrl?.startsWith("http") ? "_blank" : undefined}
-          rel={playlistUrl?.startsWith("http") ? "noreferrer" : undefined}
+          href="https://www.youtube.com/playlist?list=PL9rBdn9yFjyvkR2D4qZIc5A1_or_CT_XL"
+          target="_blank"
+          rel="noreferrer"
           className="hover:underline"
         >
           <div className="text-[#6A7282] flex text-xs items-center gap-1">

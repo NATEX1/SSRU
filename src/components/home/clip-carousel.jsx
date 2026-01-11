@@ -78,7 +78,7 @@ const shortClips = [
     id: "TosuzqzoEdU",
     title: "“แพรพลอย หัวใจเพ็ชร”นักกีฬาฟุตซอลหญิง #ssru ทีมชาติไทย #ssru #วารสารแก้วเจ้าจอมออนไลน์ #กีฬา #ฟุตบอล",
     viewCount: "189",
-    url: "https://youtu.be/TosuzqzoEdU?si=KlkCGB3suCRyBQj7",
+    url: "https://youtube.com/shorts/TosuzqzoEdU?si=pdZMHc2-uNvKxvIA",
   },
 ];
 
