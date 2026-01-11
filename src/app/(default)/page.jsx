@@ -1,6 +1,6 @@
 import ArticleSlider from "@/components/article-slider";
 import ClipCarousel from "@/components/home/clip-carousel";
-import ClipCarousel from "@/components/home/vlog-clip";
+import VlogCarousel from "@/components/home/vlog-clip";
 import CommentForm from "@/components/home/comment-form";
 import MagazineCarousel from "@/components/home/magazine-carousel";
 import { getOnePostEachOtherCategory, getCategoryName } from "@/lib/markdown";
