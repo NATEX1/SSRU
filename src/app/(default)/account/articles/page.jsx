@@ -82,7 +82,7 @@ export default async function Page({ searchParams }) {
             className: "text-gray-500",
           };
 
-          const isApproved = article.status === "approved";
+          const isApproved = ["approved", "pending"].includes(article.status);
 
           return (
             <div
