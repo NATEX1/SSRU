@@ -369,12 +369,12 @@ export default async function Home() {
                   <MagazineCarousel data={magazines} />
                 </div>
                 <div className="bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
-                  <VlogCarousel data={vlogs} />
+                  <VlogCarousel />
                 </div>
               </div>
 
               <div className="min-w-0 max-w-full bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
-                <ClipCarousel data={clips} />
+                <ClipCarousel />
               </div>
 
               {/*  ยอดนิยม (Mobile)  */}
