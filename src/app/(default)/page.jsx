@@ -1,5 +1,6 @@
 import ArticleSlider from "@/components/article-slider";
 import ClipCarousel from "@/components/home/clip-carousel";
+import ClipCarousel from "@/components/home/vlog-clip";
 import CommentForm from "@/components/home/comment-form";
 import MagazineCarousel from "@/components/home/magazine-carousel";
 import { getOnePostEachOtherCategory, getCategoryName } from "@/lib/markdown";
@@ -25,38 +26,7 @@ const magazines = [
   },
 ];
 
-const clips = [
-  {
-    image: "/assets/images/ssru-around.jpg",
-    viewCount: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    viewCount: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    viewCount: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    viewCount: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    viewCount: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-  {
-    image: "/assets/images/ssru-around.jpg",
-    viewCount: "12.5k",
-    title: "Vlog: 1 วันในรั้วสวนสุนันทา",
-  },
-];
+
 const archiveCategories = [
   { category: "มองการไกลกับผู้บริหาร", href: "/categories/executive-thoughts" },
   {
@@ -393,12 +363,17 @@ export default async function Home() {
             </div>
             <br />
             <br />
-            <div className="flex flex-col xl:flex-row gap-8 flex-1 mb-8">
-              <div className="max-w-full min-w-0 bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
-                <MagazineCarousel data={magazines} />
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 flex-1 mb-8">
+              <div className="min-w-0 max-w-full space-y-8">
+                <div className="bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
+                  <MagazineCarousel data={magazines} />
+                </div>
+                <div className="bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
+                  <VlogCarousel data={vlogs} />
+                </div>
               </div>
 
-              <div className="max-w-full min-w-0 bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
+              <div className="min-w-0 max-w-full bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
                 <ClipCarousel data={clips} />
               </div>
 
