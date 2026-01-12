@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
+import { createShortClip } from "@/actions/short-clips";
 
 export default function AddShortClipDialog({ onSuccess }) {
   const [open, setOpen] = useState(false);
@@ -136,14 +137,10 @@ export default function AddShortClipDialog({ onSuccess }) {
         formData.append("youtubeUrl", form.youtubeUrl);
       }
 
-      const res = await fetch("/api/short-clips", {
-        method: "POST",
-        body: formData,
-      });
+      // Server Action call
+      const res = await createShortClip(null, formData);
 
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.message || "เกิดข้อผิดพลาด");
+      if (!res.success) throw new Error(res.message || "เกิดข้อผิดพลาด");
 
       toast.success("เพิ่มคลิปสำเร็จ");
       setOpen(false);
