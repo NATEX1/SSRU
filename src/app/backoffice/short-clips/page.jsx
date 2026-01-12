@@ -52,7 +52,6 @@ import DeleteDialog from "@/components/delete-dialog";
 import UserDialog from "@/components/backoffice/user-dialog";
 import AddShortClipDialog from "@/components/backoffice/add-short-clip-dialog";
 import EditShortClipDialog from "@/components/backoffice/edit-short-clip-dialog";
-import { deleteShortClip } from "@/actions/short-clips";
 import { toast } from "sonner";
 
 export default function page() {
@@ -99,10 +98,13 @@ export default function page() {
 
   const handleDelete = async (id) => {
     try {
-      const res = await deleteShortClip(id);
+      const res = await fetch(`/api/short-clips/${id}`, {
+        method: "DELETE",
+      });
+      const json = await res.json();
 
-      if (!res.success) {
-        throw new Error(res.message || "ลบข้อมูลไม่สำเร็จ");
+      if (!res.ok) {
+        throw new Error(json.message || "ลบข้อมูลไม่สำเร็จ");
       }
 
       toast.success("ลบข้อมูลสำเร็จ");

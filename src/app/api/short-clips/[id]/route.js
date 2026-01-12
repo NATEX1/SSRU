@@ -26,7 +26,6 @@ async function saveFile(file, folder) {
 async function deleteFile(fileUrl) {
     if (!fileUrl) return;
     try {
-        // fileUrl example: /uploads/videos/123-abc.mp4
         const filepath = path.join(process.cwd(), "public", fileUrl);
         if (existsSync(filepath)) {
             await unlink(filepath);
@@ -55,7 +54,6 @@ export async function PUT(req, { params }) {
 
         const { id } = await params;
 
-        // Check if exists
         const oldClip = await prisma.shortClip.findUnique({
             where: { id: Number(id) },
         });
@@ -86,8 +84,6 @@ export async function PUT(req, { params }) {
         let youtubeUrl = oldClip.youtubeUrl;
         let youtubeId = oldClip.youtubeId;
 
-        // Changes logic based on type switching
-        // If switching from upload to youtube, delete old files
         if (type === 'youtube' && oldClip.videoUrl) {
             await deleteFile(oldClip.videoUrl);
             await deleteFile(oldClip.thumbnailUrl);
@@ -95,13 +91,11 @@ export async function PUT(req, { params }) {
             thumbnailUrl = null;
         }
 
-        // If switching from youtube to upload
         if (type === 'upload' && oldClip.youtubeUrl) {
             youtubeUrl = null;
             youtubeId = null;
         }
 
-        // ================= UPLOAD =================
         if (type === "upload") {
             const videoFile = formData.get("video");
             const thumbnailFile = formData.get("thumbnail");
@@ -110,7 +104,6 @@ export async function PUT(req, { params }) {
                 if (videoFile.size > 1024 * 1024 * 1024) {
                     return NextResponse.json({ success: false, message: "วิดีโอต้องไม่เกิน 1GB" }, { status: 400 });
                 }
-                // Delete old video
                 await deleteFile(oldClip.videoUrl);
                 videoUrl = await saveFile(videoFile, "videos");
             }
@@ -119,13 +112,11 @@ export async function PUT(req, { params }) {
                 if (thumbnailFile.size > 5 * 1024 * 1024) {
                     return NextResponse.json({ success: false, message: "รูปปกต้องไม่เกิน 5MB" }, { status: 400 });
                 }
-                // Delete old thumbnail
                 await deleteFile(oldClip.thumbnailUrl);
                 thumbnailUrl = await saveFile(thumbnailFile, "thumbnails");
             }
         }
 
-        // ================= YOUTUBE =================
         if (type === "youtube") {
             const newYoutubeUrl = formData.get("youtubeUrl");
             if (newYoutubeUrl) {
@@ -137,7 +128,6 @@ export async function PUT(req, { params }) {
             }
         }
 
-        // Update
         const updatedClip = await prisma.shortClip.update({
             where: { id: Number(id) },
             data: {
@@ -185,7 +175,6 @@ export async function DELETE(req, { params }) {
             );
         }
 
-        // Delete files
         await deleteFile(clip.videoUrl);
         await deleteFile(clip.thumbnailUrl);
 
