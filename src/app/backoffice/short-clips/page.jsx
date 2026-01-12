@@ -51,6 +51,7 @@ import {
 import DeleteDialog from "@/components/delete-dialog";
 import UserDialog from "@/components/backoffice/user-dialog";
 import AddShortClipDialog from "@/components/backoffice/add-short-clip-dialog";
+import EditShortClipDialog from "@/components/backoffice/edit-short-clip-dialog";
 
 export default function page() {
   const [data, setData] = useState([]);
@@ -61,40 +62,42 @@ export default function page() {
   const [search, setSearch] = useState("");
   const [selectedRole, setSelectedRole] = useState("all");
   const [limit, setLimit] = useState(5);
+  const [editingItem, setEditingItem] = useState(null); // Item being edited
+  const [editOpen, setEditOpen] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      const params = new URLSearchParams({
+        page,
+        limit,
+        search: search || "",
+        role: selectedRole || "",
+      });
+
+      const res = await fetch(`/api/short-clips?${params.toString()}`);
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message);
+
+      setData(data.data);
+      setTotal(data.pagination.total);
+      setTotalPages(data.pagination.totalPages);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        setLoading(true);
-
-        const params = new URLSearchParams({
-          page,
-          limit,
-          search: search || "",
-          role: selectedRole || "",
-        });
-
-        const res = await fetch(`/api/short-clips?${params.toString()}`);
-        const data = await res.json();
-
-        if (!res.ok) throw new Error(data.message);
-
-        setData(data.data);
-        setTotal(data.pagination.total);
-        setTotalPages(data.pagination.totalPages);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchVideos();
+    fetchData();
   }, [page, search, selectedRole, limit]);
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`/api/users/${id}`, {
+      const res = await fetch(`/api/short-clips/${id}`, {
         method: "DELETE",
       });
       const json = await res.json();
@@ -142,33 +145,42 @@ export default function page() {
       },
     },
     {
-        accessorKey: 'titleTh',
-        header: 'Title (TH)'
+      accessorKey: 'titleTh',
+      header: 'Title (TH)'
     },
     {
-        accessorKey: 'titleEn',
-        header: 'Title (EN)'
+      accessorKey: 'titleEn',
+      header: 'Title (EN)'
     },
     {
-        accessorKey: 'titleCn',
-        header: 'Title (CN)'
+      accessorKey: 'titleCn',
+      header: 'Title (CN)'
     },
     {
-        id: 'actions',
-        cell: ({row}) => {
-            const shortClip = row.original
+      id: 'actions',
+      cell: ({ row }) => {
+        const shortClip = row.original
 
-            return (
-                <div>
-                    <Button variant="ghost" className={'underline cursor-pointer'}>
-                        <Pencil /> แก้ไข
-                    </Button>
-                     <Button variant="ghost" className={'text-red-500 underline cursor-pointer'}>
-                        <Trash /> ลบ
-                    </Button>
-                </div>
-            )
-        }
+        return <div>
+          <Button
+            variant="ghost"
+            className={'underline cursor-pointer'}
+            onClick={() => {
+              setEditingItem(shortClip);
+              setEditOpen(true);
+            }}
+          >
+            <Pencil /> แก้ไข
+          </Button>
+          <Button
+            variant="ghost"
+            className={'text-red-500 underline cursor-pointer'}
+            onClick={() => handleDelete(shortClip.id)}
+          >
+            <Trash /> ลบ
+          </Button>
+        </div>
+      }
     }
   ];
 
@@ -182,7 +194,14 @@ export default function page() {
     <div>
       <div className="flex justify-between mb-8">
         <h2 className="text-4xl font-bold">จัดการคลิปสั้น</h2>
-        <AddShortClipDialog />
+        <AddShortClipDialog onSuccess={fetchData} />
+
+        <EditShortClipDialog
+          open={editOpen}
+          setOpen={setEditOpen}
+          data={editingItem}
+          onSuccess={fetchData}
+        />
       </div>
 
       {/* Table */}
@@ -261,9 +280,9 @@ export default function page() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -302,9 +321,9 @@ export default function page() {
           <div className="text-sm text-muted-foreground">
             {data.length > 0
               ? `แสดง ${(page - 1) * limit + 1} - ${Math.min(
-                  page * limit,
-                  total
-                )} จากทั้งหมด ${total}`
+                page * limit,
+                total
+              )} จากทั้งหมด ${total}`
               : ""}
           </div>
 

@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 
-export default function AddShortClipDialog() {
+export default function AddShortClipDialog({ onSuccess }) {
   const [open, setOpen] = useState(false);
   const [type, setType] = useState("upload");
   const [loading, setLoading] = useState(false); // Fixed: should start as false
@@ -148,7 +148,8 @@ export default function AddShortClipDialog() {
       toast.success("เพิ่มคลิปสำเร็จ");
       setOpen(false);
       resetForm();
-      
+      if (onSuccess) onSuccess();
+
       // Optional: trigger a refresh of the clips list
       // window.location.reload() or call a parent component function
     } catch (err) {

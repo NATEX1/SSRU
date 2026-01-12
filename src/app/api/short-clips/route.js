@@ -134,7 +134,7 @@ export async function POST(req) {
   } catch (error) {
     console.error("CREATE SHORT CLIP ERROR:", error);
     return NextResponse.json(
-      { success: false, message: "Internal Server Error" },
+      { success: false, message: error.message || "Internal Server Error" },
       { status: 500 }
     );
   }
@@ -152,12 +152,12 @@ export async function GET(req) {
 
     const where = search
       ? {
-          OR: [
-            { titleTh: { contains: search, mode: "insensitive" } },
-            { titleEn: { contains: search, mode: "insensitive" } },
-            { titleCn: { contains: search, mode: "insensitive" } },
-          ],
-        }
+        OR: [
+          { titleTh: { contains: search, mode: "insensitive" } },
+          { titleEn: { contains: search, mode: "insensitive" } },
+          { titleCn: { contains: search, mode: "insensitive" } },
+        ],
+      }
       : {}
 
     const [shortClips, total] = await Promise.all([
