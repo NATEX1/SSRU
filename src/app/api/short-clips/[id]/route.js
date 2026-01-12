@@ -3,8 +3,25 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import path from "path";
-import { unlink } from "fs/promises";
+import { writeFile, mkdir, unlink } from "fs/promises";
 import { existsSync } from "fs";
+
+async function saveFile(file, folder) {
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
+    if (!existsSync(uploadDir)) {
+        await mkdir(uploadDir, { recursive: true });
+    }
+
+    const filename = `${Date.now()}-${file.name}`;
+    const filepath = path.join(uploadDir, filename);
+
+    await writeFile(filepath, buffer);
+
+    return `/uploads/${folder}/${filename}`;
+}
 
 async function deleteFile(fileUrl) {
     if (!fileUrl) return;
@@ -24,8 +41,6 @@ function extractYoutubeId(url) {
     );
     return match ? match[1] : null;
 }
-
-import { parseForm } from "@/lib/upload-helper";
 
 export async function PUT(req, { params }) {
     try {
@@ -50,12 +65,12 @@ export async function PUT(req, { params }) {
             );
         }
 
-        const { fields, files } = await parseForm(req);
-        const type = fields.type;
+        const formData = await req.formData();
+        const type = formData.get("type");
 
-        const titleTh = fields.titleTh || "";
-        const titleEn = fields.titleEn || "";
-        const titleCn = fields.titleCn || "";
+        const titleTh = formData.get("titleTh") || "";
+        const titleEn = formData.get("titleEn") || "";
+        const titleCn = formData.get("titleCn") || "";
 
         if (!type || !["upload", "youtube"].includes(type)) {
             return NextResponse.json(
@@ -82,28 +97,28 @@ export async function PUT(req, { params }) {
         }
 
         if (type === "upload") {
-            const videoFile = files.video;
-            const thumbnailFile = files.thumbnail;
+            const videoFile = formData.get("video");
+            const thumbnailFile = formData.get("thumbnail");
 
-            if (videoFile) {
+            if (videoFile && typeof videoFile === 'object') {
                 if (videoFile.size > 1024 * 1024 * 1024) {
                     return NextResponse.json({ success: false, message: "วิดีโอต้องไม่เกิน 1GB" }, { status: 400 });
                 }
                 await deleteFile(oldClip.videoUrl);
-                videoUrl = videoFile.url;
+                videoUrl = await saveFile(videoFile, "videos");
             }
 
-            if (thumbnailFile) {
+            if (thumbnailFile && typeof thumbnailFile === 'object') {
                 if (thumbnailFile.size > 5 * 1024 * 1024) {
                     return NextResponse.json({ success: false, message: "รูปปกต้องไม่เกิน 5MB" }, { status: 400 });
                 }
                 await deleteFile(oldClip.thumbnailUrl);
-                thumbnailUrl = thumbnailFile.url;
+                thumbnailUrl = await saveFile(thumbnailFile, "thumbnails");
             }
         }
 
         if (type === "youtube") {
-            const newYoutubeUrl = fields.youtubeUrl;
+            const newYoutubeUrl = formData.get("youtubeUrl");
             if (newYoutubeUrl) {
                 youtubeUrl = newYoutubeUrl;
                 youtubeId = extractYoutubeId(youtubeUrl);
