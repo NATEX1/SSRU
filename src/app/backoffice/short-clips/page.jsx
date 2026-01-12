@@ -52,8 +52,6 @@ import DeleteDialog from "@/components/delete-dialog";
 import UserDialog from "@/components/backoffice/user-dialog";
 import AddShortClipDialog from "@/components/backoffice/add-short-clip-dialog";
 import EditShortClipDialog from "@/components/backoffice/edit-short-clip-dialog";
-import { deleteShortClip } from "@/actions/short-clips";
-import { toast } from "sonner";
 
 export default function page() {
   const [data, setData] = useState([]);
