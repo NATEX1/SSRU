@@ -6,12 +6,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
+import { createShortClip } from "@/actions/short-clips";
 
 export default function AddShortClipDialog({ onSuccess }) {
   const [open, setOpen] = useState(false);
@@ -136,14 +138,9 @@ export default function AddShortClipDialog({ onSuccess }) {
         formData.append("youtubeUrl", form.youtubeUrl);
       }
 
-      const res = await fetch("/api/short-clips", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await createShortClip(null, formData);
 
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.message || "เกิดข้อผิดพลาด");
+      if (!res.success) throw new Error(res.message || "เกิดข้อผิดพลาด");
 
       toast.success("เพิ่มคลิปสำเร็จ");
       setOpen(false);
@@ -168,6 +165,7 @@ export default function AddShortClipDialog({ onSuccess }) {
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>เพิ่ม Short Clip</DialogTitle>
+          <DialogDescription className="hidden">Add new short clip</DialogDescription>
         </DialogHeader>
 
         <Tabs value={type} onValueChange={handleTabChange}>
