@@ -113,7 +113,7 @@ export default function EditShortClipDialog({ open, setOpen, data, onSuccess }) 
         setLoading(true);
         try {
             const formData = new FormData();
-            formData.append("id", data.id);
+            formData.append("id", data.id); // Important: Add ID
             formData.append("type", type);
             formData.append("titleTh", form.titleTh);
             formData.append("titleEn", form.titleEn);

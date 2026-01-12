@@ -52,6 +52,7 @@ import DeleteDialog from "@/components/delete-dialog";
 import UserDialog from "@/components/backoffice/user-dialog";
 import AddShortClipDialog from "@/components/backoffice/add-short-clip-dialog";
 import EditShortClipDialog from "@/components/backoffice/edit-short-clip-dialog";
+import { deleteShortClip } from "@/actions/short-clips";
 import { toast } from "sonner";
 
 export default function page() {
@@ -107,12 +108,11 @@ export default function page() {
         throw new Error(json.message || "ลบข้อมูลไม่สำเร็จ");
       }
 
-      toast.success("ลบข้อมูลสำเร็จ");
       // Refresh data
       fetchData();
     } catch (err) {
       console.error(err);
-      toast.error(err.message || "เกิดข้อผิดพลาดในการลบข้อมูล");
+      alert("เกิดข้อผิดพลาดในการลบข้อมูล");
     }
   };
 
