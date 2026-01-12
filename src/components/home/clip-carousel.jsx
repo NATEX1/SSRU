@@ -56,11 +56,11 @@ const shortClips = [
   //   url: "https://youtube.com/shorts/Wwih-fmMAIM?si=IbPOVAHgynq7EF_4",
   // },
   {
-    id: "lHoC6emGIH4",
+    id: "J5QWD9rfSY4",
     title:
       "#มืออาชีพ ไม่ใช่พรสวรรค์แต่คือ #มาตรฐาน | สัมภาษณ์ #วารสารแก้วเจ้าจอมออนไลน์ #ssru #news",
     viewCount: "896",
-    url: "https://youtube.com/shorts/lHoC6emGIH4?si=nPM3pfTLNBUUZ7_2",
+    url: "https://youtube.com/shorts/J5QWD9rfSY4?si=pgD_iGrdgIJUM_eU",
   },
   {
     id: "nvbhXeZMhXM",
