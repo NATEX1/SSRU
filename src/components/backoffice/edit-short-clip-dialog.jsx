@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
-import { updateShortClip } from "@/actions/short-clips";
 
 export default function EditShortClipDialog({ open, setOpen, data, onSuccess }) {
     const [type, setType] = useState("upload");
@@ -120,7 +119,6 @@ export default function EditShortClipDialog({ open, setOpen, data, onSuccess }) 
         setLoading(true);
         try {
             const formData = new FormData();
-            formData.append("id", data.id); // Important: Add ID
             formData.append("type", type);
             formData.append("titleTh", form.titleTh);
             formData.append("titleEn", form.titleEn);
@@ -133,9 +131,14 @@ export default function EditShortClipDialog({ open, setOpen, data, onSuccess }) 
                 formData.append("youtubeUrl", form.youtubeUrl);
             }
 
-            const res = await updateShortClip(null, formData);
+            const res = await fetch(`/api/short-clips/${data.id}`, {
+                method: "PUT",
+                body: formData,
+            });
 
-            if (!res.success) throw new Error(res.message || "เกิดข้อผิดพลาด");
+            const resData = await res.json();
+
+            if (!res.ok) throw new Error(resData.message || "เกิดข้อผิดพลาด");
 
             toast.success("แก้ไขคลิปสำเร็จ");
             setOpen(false);
