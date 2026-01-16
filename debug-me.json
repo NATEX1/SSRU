@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-01-16T17:11:38.938Z",
+  "session": {
+    "user": {
+      "name": "Super Admin",
+      "email": "admin@gmail.com",
+      "image": null,
+      "id": 1,
+      "role": "admin"
+    }
+  },
+  "user": {
+    "id": 1,
+    "name": "Super Admin",
+    "image": null,
+    "email": "admin@gmail.com",
+    "password": "$2b$10$EuBiGpt8CyrFCGgMaKzoD.NKJz2eGWPuH0UP/Dvuw7PgFAVVS9tVK",
+    "role": "admin",
+    "position": null,
+    "status": "active",
+    "createdAt": "2026-01-16T16:53:23.569Z"
+  }
+}

@@ -9,15 +9,15 @@ const adapter = new PrismaPg({
 
 // Next.js Dev Mode: ใช้ global object เพื่อไม่ให้สร้างหลาย instance
 if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient({adapter});
+    prisma = new PrismaClient({ adapter });
 } else {
-  // @ts-ignore
-  if (!global.prisma) {
-    // ใส่ {} เป็น PrismaClientOptions ว่าง
-    global.prisma = new PrismaClient({adapter});
-  }
-  // @ts-ignore
-  prisma = global.prisma;
+    // @ts-ignore
+    if (!global.prisma) {
+        // ใส่ {} เป็น PrismaClientOptions ว่าง
+        global.prisma = new PrismaClient({ adapter });
+    }
+    // @ts-ignore
+    prisma = global.prisma;
 }
 
 export default prisma;

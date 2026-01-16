@@ -163,7 +163,10 @@ export async function GET(req) {
     const [shortClips, total] = await Promise.all([
       prisma.shortClip.findMany({
         where,
-        orderBy: { createdAt: "desc" },
+        orderBy: [
+          { order: "asc" },
+          { updatedAt: "desc" },
+        ],
         skip,
         take: limit,
       }),

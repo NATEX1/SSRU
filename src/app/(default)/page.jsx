@@ -7,38 +7,8 @@ import { getOnePostEachOtherCategory, getCategoryName } from "@/lib/markdown";
 import prisma from "@/lib/prisma";
 import { ArrowRight, Calendar, Eye, Share2 } from "lucide-react";
 
-const magazines = [
-  {
-    image: "/contents/magazine3.jpg",
-    issue: "Issue 12",
-    year: "2026",
-    title: "รอบรั้วแก้วเจ้าจอม (วันที่ 1-8 ม.ค. 69)",
-    type: "Digital Version Available",
-    link: "https://online.fliphtml5.com/eakkq/wojd/",
-  },
-  {
-    image: "/contents/magazine1.jpg",
-    issue: "Issue 12",
-    year: "2025",
-    title: "รอบรั้วแก้วเจ้าจอม (วันที่ 20-26 ธ.ค. 68)",
-    type: "Digital Version Available",
-    link: "https://online.fliphtml5.com/eakkq/ftzw/",
-  },
-];
 
 
-const archiveCategories = [
-  { category: "มองการไกลกับผู้บริหาร", href: "/categories/executive-thoughts" },
-  {
-    category: "สนทนาบนเส้นทางงาน",
-    href: "/categories/career-path-conversations",
-  },
-  { category: "แนะนำงานวิจัย", href: "/categories/featured-research" },
-  { category: "สวนสุนันทาเมื่อวันวาน", href: "/categories/ssru-muea-wan" },
-  { category: "มุมคิดวันนี้", href: "/categories/thoughts-today" },
-  { category: "สารคดีความรู้", href: "/categories/documentary-knowledge" },
-  { category: "Hall of fame", href: "/categories/hall-of-fame" },
-];
 
 async function getCategoriesWithOneArticle() {
   const categories = await prisma.category.findMany({
@@ -65,7 +35,7 @@ async function getCategoriesWithOneArticle() {
 
 export default async function Home() {
   const cats = await getCategoriesWithOneArticle();
-  
+
   const popularArticles = await prisma.article.findMany({
     where: {
       status: "approved",
@@ -75,6 +45,71 @@ export default async function Home() {
     },
     take: 7,
   });
+
+  const shortClips = await prisma.shortClip.findMany({
+    orderBy: [
+      { order: "asc" },
+      { updatedAt: "desc" },
+    ],
+    take: 8,
+  });
+
+  const ssruAround = await prisma.ssruAround.findMany({
+    orderBy: [
+      { order: "asc" },
+      { createdAt: "desc" },
+    ],
+    take: 8,
+  });
+
+  // Fetch YouTube view counts if API key is available
+  const youtubeApiKey = process.env.YOUTUBE_API_KEY;
+  const clipsWithViews = await Promise.all(
+    shortClips.map(async (clip) => {
+      if (clip.youtubeId) {
+        let viewCount = null;
+
+        // Try API first
+        if (youtubeApiKey && youtubeApiKey !== "your_api_key_here") {
+          try {
+            const res = await fetch(
+              `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${clip.youtubeId}&key=${youtubeApiKey}`,
+              { next: { revalidate: 3600 } }
+            );
+            const data = await res.json();
+            viewCount = data.items?.[0]?.statistics?.viewCount;
+            if (viewCount) {
+              return { ...clip, viewCount: parseInt(viewCount) };
+            }
+          } catch (error) {
+            console.error(`Error fetching YouTube views for ${clip.youtubeId}:`, error);
+          }
+        }
+
+        // Fallback: Try to scrape if API failed or no key
+        if (!viewCount) {
+          try {
+            const res = await fetch(`https://www.youtube.com/watch?v=${clip.youtubeId}`, {
+              next: { revalidate: 3600 }
+            });
+            const html = await res.text();
+            const match = html.match(/"viewCount":"(\d+)"/);
+            if (match) {
+              return { ...clip, viewCount: parseInt(match[1]) };
+            }
+            // Another common pattern in YouTube HTML
+            const match2 = html.match(/"label":"([\d,]+) views"/);
+            if (match2) {
+              return { ...clip, viewCount: parseInt(match2[1].replace(/,/g, "")) };
+            }
+          } catch (error) {
+            console.error(`Error scraping YouTube views for ${clip.youtubeId}:`, error);
+          }
+        }
+      }
+      return clip;
+    })
+  );
 
   return (
     <div className="p-6 mb-8">
@@ -170,11 +205,11 @@ export default async function Home() {
 
                             <div
                               className="
-                                pointer-events-none
-                                absolute inset-0
-                                bg-linear-to-b
-                                from-transparent from-10%
-                                to-black/80 to-100%"
+                                 pointer-events-none
+                                 absolute inset-0
+                                 bg-linear-to-b
+                                 from-transparent from-10%
+                                 to-black/80 to-100%"
                             />
                           </div>
                         </div>
@@ -291,7 +326,7 @@ export default async function Home() {
                           </a>
                         </div>
 
-                        <div className="card overflow-hidden max-w-full">
+                        <div className="card overflow-hidden house-w-full">
                           <a
                             href={`/articles/${category.article.id}`}
                             className="block"
@@ -365,11 +400,11 @@ export default async function Home() {
             <br />
             <div className="flex flex-col xl:flex-row gap-8 flex-1 mb-8">
               <div className="max-w-full min-w-0 bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
-                <MagazineCarousel data={magazines} />
+                <MagazineCarousel data={ssruAround} />
               </div>
 
               <div className="min-w-0 max-w-full bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
-                <ClipCarousel />
+                <ClipCarousel data={clipsWithViews} />
               </div>
 
               {/*  ยอดนิยม (Mobile)  */}
@@ -479,15 +514,15 @@ export default async function Home() {
               <hr className="mb-4" />
 
               <ul className="space-y-4">
-                {archiveCategories.map((item) => (
-                  <li key={item.href}>
+                {cats.map((item) => (
+                  <li key={item.id}>
                     <div>
                       <h6>
                         <a
-                          href={item.href}
+                          href={`/categories/${item.slug}`}
                           className="hover:text-[#F06FAA] transition"
                         >
-                          {item.category}
+                          {item.name}
                         </a>
                       </h6>
 

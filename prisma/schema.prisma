@@ -129,10 +129,32 @@ model ShortClip {
   youtubeUrl   String?  @map("youtube_url")
   youtubeId    String?  @map("youtube_id")
   viewCount    Int      @default(0) @map("view_count")
+  order        Int      @default(1) @map("order")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   @@map("short_clips")
+}
+
+model SsruAround {
+  id        Int      @id @default(autoincrement())
+  titleTh   String   @map("title_th")
+  titleEn   String?  @map("title_en")
+  titleCn   String?  @map("title_cn")
+  title     String?  @map("title") // Keep for compatibility
+  issue     String?  @map("issue")
+  year      String?  @map("year")
+  imageTh   String?  @map("image_th")
+  imageEn   String?  @map("image_en")
+  imageCn   String?  @map("image_cn")
+  image     String?  @map("image") // Keep for compatibility
+  link      String?  @map("link")
+  type      String?  @map("type")
+  order     Int      @default(1) @map("order")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("ssru_around")
 }
 
 enum UserStatus {

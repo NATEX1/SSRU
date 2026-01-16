@@ -131,7 +131,7 @@ export default async function CategoryPage({ params, searchParams }) {
                       })}
                     </span>
                   </p>
-                  <a href={`/articles/${article.slug}`}>
+                  <a href={`/articles/${article.id}`}>
                     <h2 className="card-title line-clamp-2 hover:underline">
                       {article.title}
                     </h2>

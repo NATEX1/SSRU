@@ -23,6 +23,7 @@ export default function EditShortClipDialog({ open, setOpen, data, onSuccess }) 
         titleEn: "",
         titleCn: "",
         youtubeUrl: "",
+        order: 1,
     });
 
     useEffect(() => {
@@ -33,6 +34,7 @@ export default function EditShortClipDialog({ open, setOpen, data, onSuccess }) 
                 titleEn: data.titleEn || "",
                 titleCn: data.titleCn || "",
                 youtubeUrl: data.youtubeUrl || "",
+                order: data.order || 1,
             });
             setVideoFile(null);
             setThumbnailFile(null);
@@ -62,9 +64,6 @@ export default function EditShortClipDialog({ open, setOpen, data, onSuccess }) 
     };
 
     const handleSubmit = async () => {
-        // Basic validation
-        // (Validation logic remains same)
-
         if (type === "upload") {
             if (videoFile) {
                 if (!isValidVideoFile(videoFile)) {
@@ -117,6 +116,7 @@ export default function EditShortClipDialog({ open, setOpen, data, onSuccess }) 
             formData.append("titleTh", form.titleTh);
             formData.append("titleEn", form.titleEn);
             formData.append("titleCn", form.titleCn);
+            formData.append("order", form.order);
 
             if (type === "upload") {
                 if (videoFile) formData.append("video", videoFile);
@@ -190,6 +190,17 @@ export default function EditShortClipDialog({ open, setOpen, data, onSuccess }) 
                                 value={form.titleCn}
                                 onChange={onChange}
                                 placeholder="片段标题 (中文)"
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="order">ลำดับการแสดง (Order)</Label>
+                            <Input
+                                id="order"
+                                name="order"
+                                type="number"
+                                value={form.order}
+                                onChange={onChange}
+                                placeholder="0"
                             />
                         </div>
 
@@ -268,6 +279,17 @@ export default function EditShortClipDialog({ open, setOpen, data, onSuccess }) 
                                 name="titleCn"
                                 value={form.titleCn}
                                 onChange={onChange}
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="order-yt">ลำดับการแสดง (Order)</Label>
+                            <Input
+                                id="order-yt"
+                                name="order"
+                                type="number"
+                                value={form.order}
+                                onChange={onChange}
+                                placeholder="0"
                             />
                         </div>
                         <Button onClick={handleSubmit} disabled={loading} className="w-full">

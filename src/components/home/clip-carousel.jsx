@@ -1,7 +1,7 @@
 "use client";
 
-import { ArrowRight, Film } from "lucide-react";
-import React from "react";
+import { ArrowRight, Film, X } from "lucide-react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Grid, Navigation, Pagination } from "swiper/modules";
 
@@ -10,79 +10,55 @@ import "swiper/css/grid";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const shortClips = [
-  // {
-  //   id: "a9ml5nZen5Y",
-  //   title:
-  //     "“จากการเปลี่ยนผ่านผู้นำ สู่บทบาทอธิการบดีหญิง” รศ.ดร.ชุติกาญจน์ ศรีวิบูลย์ #ssru",
-  //   viewCount: "896",
-  //   url: "https://youtube.com/shorts/a9ml5nZen5Y?si=_fzaQAMa57RggcHB",
-  // },
-  // {
-  //   id: "qqBm0GBcTgs",
-  //   title: "“ เป็นผู้นำต้องมีความพราว สง่างาม” รศ.พล.ต.ท.ดร.สัณฐาน ชยนนท์ #ssru",
-  //   viewCount: "405",
-  //   url: "https://youtube.com/shorts/qqBm0GBcTgs?si=Mf5tpNuescDAAYUE",
-  // },
-  // {
-  //   id: "V5TMKwpSbkc",
-  //   title: "“ ยิงปืนนัดเดียวได้นก 2 ตัว” ผศ.ดร. วนิดา วอนสวัสดิ์ #ssru",
-  //   viewCount: "1.3k",
-  //   url: "https://youtube.com/shorts/V5TMKwpSbkc?si=oOBCovxDNDmoFvaa",
-  // },
-  // {
-  //   id: "ex_lpnQY_jE",
-  //   title:
-  //     "“การสร้างคนคือหัวใจการพัฒนางาน” #วารสารแก้วเจ้าจอมออนไลน์ #มืออาชีพ #ssru #การศึกษา #ราชภัฏ",
-  //   viewCount: "896",
-  //   url: "https://youtube.com/shorts/ex_lpnQY_jE?si=yVwRd-rn8sAbpzVn",
-  // },
-  // {
-  //   id: "qqBm0GBcTgs",
-  //   title: "“เป็นผู้นำต้องมีความพราว สง่างาม”รศ.พล.ต.ท.ดร.สัณฐาน ชยนนท์ สัมภาษณ์ #วารสารแก้วเจ้าจอมออนไลน์ #ssru",
-  //   viewCount: "405",
-  //   url: "https://youtube.com/shorts/qqBm0GBcTgs?si=CsMAu_DscxcCjEEJ",
-  // },
-  // {
-  //   id: "XFCiLXMzpV0",
-  //   title: "บทสัมภาษณ์ | #วารสารแก้วเจ้าจอมออนไลน์ #วิจัย #ssru #การศึกษา #ราชภัฏ",
-  //   viewCount: "200",
-  //   url: "https://youtube.com/shorts/XFCiLXMzpV0?si=9u0_nX2y7FumB9tP",
-  // },
-  // {
-  //   id: "Wwih-fmMAIM",
-  //   title: "“เส้นทางไม่ง่าย แต่ท้อไม่เป็น” น้องไป๋ เนาวรัตน์ แซ่ย่าง #นักกีฬาวูซูทีมชาติ #ssru #วูซู",
-  //   viewCount: "1.7k",
-  //   url: "https://youtube.com/shorts/Wwih-fmMAIM?si=IbPOVAHgynq7EF_4",
-  // },
-  {
-    id: "J5QWD9rfSY4",
-    title:
-      "#มืออาชีพ ไม่ใช่พรสวรรค์แต่คือ #มาตรฐาน | สัมภาษณ์ #วารสารแก้วเจ้าจอมออนไลน์ #ssru #news",
-    viewCount: "896",
-    url: "https://youtube.com/shorts/J5QWD9rfSY4?si=pgD_iGrdgIJUM_eU",
-  },
-  {
-    id: "nvbhXeZMhXM",
-    title: "พลิกวิกฤตให้เป็น “โอกาส” #วารสารแก้วเจ้าจอมออนไลน์ #ssru #news #คณะมนุษยศาสตร์และสังคมศาสตร์",
-    viewCount: "405",
-    url: "https://youtube.com/shorts/nvbhXeZMhXM?si=fDfS1lyfbBGjCdy4",
-  },
-  {
-    id: "_26moSxT3Fs",
-    title: "“จากห้องเรียนสู่เวทีโลก” 🌎 สัมภาษณ์| #วารสารแก้วเจ้าจอมออนไลน์ #วิจัย #ssru #news",
-    viewCount: "200",
-    url: "https://youtube.com/shorts/_26moSxT3Fs?si=Ol8wpz8tN8D9ARg8",
-  },
-  {
-    id: "TosuzqzoEdU",
-    title: "“แพรพลอย หัวใจเพ็ชร”นักกีฬาฟุตซอลหญิง #ssru ทีมชาติไทย #ssru #วารสารแก้วเจ้าจอมออนไลน์ #กีฬา #ฟุตบอล",
-    viewCount: "189",
-    url: "https://youtube.com/shorts/TosuzqzoEdU?si=pdZMHc2-uNvKxvIA",
-  },
-];
+export default function ClipCarousel({ data = [] }) {
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [clips, setClips] = useState(data);
 
-export default function ClipCarousel() {
+  // Sync props to state
+  React.useEffect(() => {
+    setClips(data);
+  }, [data]);
+
+  const handleClipClick = async (e, item) => {
+    if (item.videoUrl) {
+      e.preventDefault();
+      setSelectedVideo(item);
+
+      // Increment view count in DB
+      try {
+        const res = await fetch(`/api/short-clips/${item.id}/view`, {
+          method: "PATCH",
+        });
+        const result = await res.json();
+        if (result.success) {
+          // Update local state
+          setClips((prev) =>
+            prev.map((c) =>
+              c.id === item.id ? { ...c, viewCount: result.data.viewCount } : c
+            )
+          );
+        }
+      } catch (error) {
+        console.error("Error incrementing view:", error);
+      }
+    }
+  };
+
+  const closeVideo = () => {
+    setSelectedVideo(null);
+  };
+
+  const formatViews = (count) => {
+    if (!count) return 0;
+    if (count >= 1000000) {
+      return (count / 1000000).toFixed(1) + "M";
+    }
+    if (count >= 1000) {
+      return (count / 1000).toFixed(1) + "k";
+    }
+    return count;
+  };
+
   return (
     <div className="flex-1">
       <p className="text-[#F06FAA]">SSRU CHANNEL</p>
@@ -128,28 +104,36 @@ export default function ClipCarousel() {
             },
           }}
         >
-          {shortClips.map((item) => (
+          {clips.map((item) => (
             <SwiperSlide key={item.id} className="h-auto">
               <a
-                href={item.url}
-                target="_blank"
+                href={item.youtubeUrl || item.videoUrl || "#"}
+                target={item.youtubeUrl ? "_blank" : "_self"}
                 rel="noreferrer"
                 className="block h-full"
+                onClick={(e) => handleClipClick(e, item)}
               >
                 <div className="h-full bg-white shadow rounded-xl overflow-hidden hover:shadow-md transition">
                   <img
-                    src={`https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`}
-                    alt={item.title}
+                    src={
+                      item.thumbnailUrl ||
+                      (item.youtubeId
+                        ? `https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg`
+                        : "")
+                    }
+                    alt={item.titleTh}
                     className="w-full object-contain h-[360px] md:h-[360px]"
                     loading="lazy"
                   />
 
                   <div className="p-4 flex flex-col gap-2">
-                    <h3 className="font-semibold line-clamp-2">{item.title}</h3>
+                    <h3 className="font-semibold line-clamp-2">
+                      {item.titleTh}
+                    </h3>
 
                     <div className="flex gap-1 items-center text-[#99A1AF] text-sm">
                       <Film className="h-4" />
-                      <span>• {item.viewCount} views</span>
+                      <span>• {formatViews(item.viewCount)} views</span>
                     </div>
                   </div>
                 </div>
@@ -169,28 +153,36 @@ export default function ClipCarousel() {
           navigation
           className="w-full"
         >
-          {shortClips.map((item) => (
+          {clips.map((item) => (
             <SwiperSlide key={item.id} className="h-auto">
               <a
-                href={item.url}
-                target="_blank"
+                href={item.youtubeUrl || item.videoUrl || "#"}
+                target={item.youtubeUrl ? "_blank" : "_self"}
                 rel="noreferrer"
                 className="block h-full"
+                onClick={(e) => handleClipClick(e, item)}
               >
                 <div className="h-full bg-white shadow rounded-xl overflow-hidden hover:shadow-md transition">
                   <img
-                    src={`https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`}
-                    alt={item.title}
-                    className="h-[200px] w-full object-cover"
+                    src={
+                      item.thumbnailUrl ||
+                      (item.youtubeId
+                        ? `https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg`
+                        : "")
+                    }
+                    alt={item.titleTh}
+                    className="h-[150px] w-full object-cover"
                     loading="lazy"
                   />
 
                   <div className="p-4 flex flex-col gap-2">
-                    <h3 className="font-semibold line-clamp-2">{item.title}</h3>
+                    <h3 className="font-semibold line-clamp-2">
+                      {item.titleTh}
+                    </h3>
 
                     <div className="flex gap-1 items-center text-[#99A1AF] text-sm">
                       <Film className="h-4" />
-                      <span>• {item.viewCount} views</span>
+                      <span>• {formatViews(item.viewCount)} views</span>
                     </div>
                   </div>
                 </div>
@@ -199,6 +191,40 @@ export default function ClipCarousel() {
           ))}
         </Swiper>
       </div>
+
+      {/* Video Modal */}
+      {selectedVideo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 animate-in fade-in duration-300">
+          <div className="relative w-full max-w-4xl bg-black rounded-2xl overflow-hidden shadow-2xl">
+            <button
+              onClick={closeVideo}
+              className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            <div className="aspect-video bg-black flex items-center justify-center">
+              <video
+                src={selectedVideo.videoUrl}
+                controls
+                autoPlay
+                className="w-full h-full"
+              />
+            </div>
+
+            <div className="p-4 bg-[#101828] text-white">
+              <h3 className="text-xl font-bold">{selectedVideo.titleTh}</h3>
+              <div className="mt-2 flex gap-4 text-sm text-gray-400">
+                <div className="flex items-center gap-1">
+                  <Film className="w-4 h-4" />
+                  <span>{selectedVideo.viewCount} views</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="absolute inset-0 -z-10" onClick={closeVideo} />
+        </div>
+      )}
     </div>
   );
 }

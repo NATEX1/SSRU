@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -14,10 +14,8 @@ import {
   useReactTable,
   getCoreRowModel,
 } from "@tanstack/react-table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Filter, Pencil, Search, Trash, UserPlus } from "lucide-react";
-import { StatusBadge } from "@/components/ui/status-badge";
+import { Film, Filter, Pencil, Search, Trash, X, GripVertical } from "lucide-react";
 import {
   InputGroup,
   InputGroupAddon,
@@ -49,11 +47,76 @@ import {
 } from "@/components/ui/select";
 
 import DeleteDialog from "@/components/delete-dialog";
-import UserDialog from "@/components/backoffice/user-dialog";
 import AddShortClipDialog from "@/components/backoffice/add-short-clip-dialog";
 import EditShortClipDialog from "@/components/backoffice/edit-short-clip-dialog";
+import { toast } from "sonner";
 
-export default function page() {
+// DnD Kit Imports
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+
+// --- Sortable Row Component ---
+function SortableRow({ row }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: row.original.id,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 1 : 0,
+    opacity: isDragging ? 0.8 : 1,
+    position: isDragging ? "relative" : "static",
+  };
+
+  return (
+    <TableRow
+      ref={setNodeRef}
+      style={style}
+      className={isDragging ? "bg-muted shadow-lg" : ""}
+    >
+      {row.getVisibleCells().map((cell) => (
+        <TableCell key={cell.id}>
+          {cell.column.id === "drag-handle" ? (
+            <div
+              {...attributes}
+              {...listeners}
+              className="cursor-grab active:cursor-grabbing p-2 hover:bg-muted rounded"
+            >
+              <GripVertical className="w-5 h-5 text-muted-foreground" />
+            </div>
+          ) : (
+            flexRender(cell.column.columnDef.cell, cell.getContext())
+          )}
+        </TableCell>
+      ))}
+    </TableRow>
+  );
+}
+
+export default function Page() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -62,8 +125,17 @@ export default function page() {
   const [search, setSearch] = useState("");
   const [selectedRole, setSelectedRole] = useState("all");
   const [limit, setLimit] = useState(5);
-  const [editingItem, setEditingItem] = useState(null); // Item being edited
+  const [editingItem, setEditingItem] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+
+  // DnD Sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const fetchData = async () => {
     try {
@@ -96,98 +168,178 @@ export default function page() {
   }, [page, search, selectedRole, limit]);
 
   const handleDelete = async (id) => {
+    if (!confirm("คุณต้องการลบข้อมูลนี้ใช่หรือไม่?")) return;
     try {
       const res = await fetch(`/api/short-clips/${id}`, {
         method: "DELETE",
       });
       const json = await res.json();
 
-      if (!res.ok) {
-        throw new Error(json.message || "ลบข้อมูลไม่สำเร็จ");
-      }
+      if (!res.ok) throw new Error(json.message || "ลบข้อมูลไม่สำเร็จ");
 
-      // Refresh data
+      toast.success("ลบข้อมูลสำเร็จ");
       fetchData();
     } catch (err) {
       console.error(err);
-      alert("เกิดข้อผิดพลาดในการลบข้อมูล");
+      toast.error("เกิดข้อผิดพลาดในการลบข้อมูล");
     }
   };
 
-  const columns = [
+  const handleDragEnd = async (event) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const oldIndex = data.findIndex((item) => item.id === active.id);
+      const newIndex = data.findIndex((item) => item.id === over.id);
+
+      // Reorder items in the array
+      const reorderedData = arrayMove(data, oldIndex, newIndex);
+
+      // Map the new order numbers (starting from 1 based on current page/limit)
+      const newDataWithUpdatedOrder = reorderedData.map((item, index) => ({
+        ...item,
+        order: (page - 1) * limit + index + 1,
+      }));
+
+      // Optimistically update UI
+      setData(newDataWithUpdatedOrder);
+
+      // Prepare items for bulk update API
+      const updatedItems = newDataWithUpdatedOrder.map((item) => ({
+        id: item.id,
+        order: item.order,
+      }));
+
+      try {
+        const res = await fetch("/api/short-clips/bulk", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items: updatedItems }),
+        });
+
+        if (!res.ok) throw new Error("Failed to update order");
+        toast.success("อัปเดตลำดับสำเร็จ");
+      } catch (error) {
+        console.error("DRAG END ERROR:", error);
+        toast.error("ไม่สามารถอัปเดตลำดับได้");
+        fetchData(); // Rollback if error
+      }
+    }
+  };
+
+  const columns = useMemo(() => [
+    {
+      id: "drag-handle",
+      header: "",
+      cell: () => null, // Rendered in SortableRow
+    },
     {
       id: "thumbnail",
       header: "รูปปก",
       cell: ({ row }) => {
         const shortClip = row.original;
-
         const isYoutube = !!shortClip.youtubeUrl;
-
         const thumbnail = isYoutube
           ? `https://img.youtube.com/vi/${shortClip.youtubeId}/hqdefault.jpg`
           : shortClip.thumbnailUrl;
 
         return (
-          <div className="size-40 rounded-md overflow-hidden bg-muted">
+          <a
+            href={shortClip.youtubeUrl || shortClip.videoUrl || "#"}
+            target={shortClip.youtubeUrl ? "_blank" : "_self"}
+            rel="noreferrer"
+            onClick={(e) => {
+              if (shortClip.videoUrl) {
+                e.preventDefault();
+                setSelectedVideo(shortClip);
+              }
+            }}
+            className="block size-40 rounded-md overflow-hidden bg-muted cursor-pointer hover:opacity-80 transition-opacity"
+          >
             {thumbnail ? (
-              <img
-                src={thumbnail}
-                alt=""
-                className="w-full h-full object-cover"
-              />
+              <img src={thumbnail} alt="" className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">
                 No Image
               </div>
             )}
+          </a>
+        );
+      },
+    },
+    {
+      accessorKey: "titleTh",
+      header: "หัวข้อ (Multilingual)",
+      cell: ({ row }) => {
+        const item = row.original;
+        const titles = [
+          { text: item.titleTh, lang: "TH" },
+          { text: item.titleEn, lang: "EN" },
+          { text: item.titleCn, lang: "CN" },
+        ].filter((t) => t.text);
+
+        return (
+          <div className="flex flex-col gap-1.5 max-w-[350px]">
+            {titles.map((t, i) => (
+              <div key={i} className="flex gap-2 items-start leading-tight">
+                <span className="bg-muted border text-muted-foreground text-[10px] px-1.5 rounded h-4 flex items-center justify-center shrink-0 mt-0.5 font-bold uppercase">
+                  {t.lang}
+                </span>
+                <span
+                  className={`truncate ${i === 0
+                      ? "font-semibold text-foreground"
+                      : "text-muted-foreground text-sm"
+                    }`}
+                >
+                  {t.text}
+                </span>
+              </div>
+            ))}
           </div>
         );
       },
     },
     {
-      accessorKey: 'titleTh',
-      header: 'Title (TH)'
+      accessorKey: "order",
+      header: "ลำดับ",
+      cell: ({ row }) => (
+        <div className="font-bold text-center w-10">{row.original.order}</div>
+      ),
     },
     {
-      accessorKey: 'titleEn',
-      header: 'Title (EN)'
-    },
-    {
-      accessorKey: 'titleCn',
-      header: 'Title (CN)'
-    },
-    {
-      id: 'actions',
+      id: "actions",
       cell: ({ row }) => {
-        const shortClip = row.original
-
-        return <div>
-          <Button
-            variant="ghost"
-            className={'underline cursor-pointer'}
-            onClick={() => {
-              setEditingItem(shortClip);
-              setEditOpen(true);
-            }}
-          >
-            <Pencil /> แก้ไข
-          </Button>
-          <Button
-            variant="ghost"
-            className={'text-red-500 underline cursor-pointer'}
-            onClick={() => handleDelete(shortClip.id)}
-          >
-            <Trash /> ลบ
-          </Button>
-        </div>
-      }
-    }
-  ];
+        const shortClip = row.original;
+        return (
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              className="underline cursor-pointer"
+              onClick={() => {
+                setEditingItem(shortClip);
+                setEditOpen(true);
+              }}
+            >
+              <Pencil className="w-4 h-4 mr-1" /> แก้ไข
+            </Button>
+            <Button
+              variant="ghost"
+              className="text-red-500 underline cursor-pointer"
+              onClick={() => handleDelete(shortClip.id)}
+            >
+              <Trash className="w-4 h-4 mr-1" /> ลบ
+            </Button>
+          </div>
+        );
+      },
+    },
+  ], [data]);
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getRowId: (row) => row.id, // Important for DnD
   });
 
   return (
@@ -204,14 +356,16 @@ export default function page() {
         />
       </div>
 
-      {/* Table */}
       <div className="overflow-hidden border rounded-2xl shadow bg-white">
         <div className="flex gap-4 justify-between p-4">
           <Select
             value={limit.toString()}
-            onValueChange={(val) => setLimit(Number(val))}
+            onValueChange={(val) => {
+              setLimit(Number(val));
+              setPage(1);
+            }}
           >
-            <SelectTrigger>
+            <SelectTrigger className="w-20">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -219,51 +373,26 @@ export default function page() {
               <SelectItem value="10">10</SelectItem>
               <SelectItem value="25">25</SelectItem>
               <SelectItem value="50">50</SelectItem>
-              <SelectItem value="100">100</SelectItem>
             </SelectContent>
           </Select>
 
-          <div className="flex justify-end">
-            <InputGroup className={"w-56"}>
+          <div className="flex justify-end gap-2">
+            <InputGroup className="w-56">
               <InputGroupAddon>
-                <Search />
+                <Search className="w-4 h-4" />
               </InputGroupAddon>
               <InputGroupInput
                 placeholder="ค้นหา..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setPage(1);
+                }}
               />
             </InputGroup>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant={"ghost"}>
-                  <Filter />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>เลือกหมวดหมู่</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup
-                  value={selectedRole}
-                  onValueChange={setSelectedRole}
-                >
-                  <DropdownMenuRadioItem value="all">
-                    ทั้งหมด
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="author">
-                    ผู้เขียน
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="approver">
-                    ผู้อนุมัติ
-                  </DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
         </div>
 
-        {/* Loading */}
         {loading && (
           <div className="flex justify-center py-10 text-muted-foreground border-y">
             กำลังโหลดข้อมูล...
@@ -271,50 +400,46 @@ export default function page() {
         )}
 
         {!loading && (
-          <Table className={"tborder-y"}>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+            modifiers={[restrictToVerticalAxis]}
+          >
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id}>
+                        {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-
-            <TableBody>
-              {data.length > 0 ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
+                      </TableHead>
                     ))}
                   </TableRow>
-                ))
-              ) : (
-                <TableRow className={"p-4"}>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center text-muted-foreground"
-                  >
-                    ไม่พบข้อมูล
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                ))}
+              </TableHeader>
+              <TableBody>
+                <SortableContext
+                  items={data.map((item) => item.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {table.getRowModel().rows.map((row) => (
+                    <SortableRow key={row.id} row={row} />
+                  ))}
+                </SortableContext>
+                {data.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                      ไม่พบข้อมูล
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </DndContext>
         )}
 
         <Pagination className="p-4 justify-between items-center">
@@ -328,48 +453,66 @@ export default function page() {
           </div>
 
           <PaginationContent>
-            {/* Previous */}
             <PaginationItem>
               <PaginationPrevious
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
-                className={
-                  page === 1
-                    ? "pointer-events-none opacity-50"
-                    : "cursor-pointer"
-                }
+                className={page === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
               />
             </PaginationItem>
 
-            {/* Page numbers */}
-            {Array.from({ length: totalPages }).map((_, i) => {
-              const pageNumber = i + 1;
-              return (
-                <PaginationItem key={pageNumber}>
-                  <PaginationLink
-                    isActive={page === pageNumber}
-                    onClick={() => setPage(pageNumber)}
-                    className="cursor-pointer"
-                  >
-                    {pageNumber}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            })}
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <PaginationItem key={i}>
+                <PaginationLink
+                  isActive={page === i + 1}
+                  onClick={() => setPage(i + 1)}
+                  className="cursor-pointer"
+                >
+                  {i + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
 
-            {/* Next */}
             <PaginationItem>
               <PaginationNext
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                className={
-                  page === totalPages
-                    ? "pointer-events-none opacity-50"
-                    : "cursor-pointer"
-                }
+                className={page === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
               />
             </PaginationItem>
           </PaginationContent>
         </Pagination>
       </div>
+
+      {/* Video Modal */}
+      {selectedVideo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 animate-in fade-in duration-300">
+          <div className="relative w-full max-w-4xl bg-black rounded-2xl overflow-hidden shadow-2xl">
+            <button
+              onClick={() => setSelectedVideo(null)}
+              className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <div className="aspect-video bg-black flex items-center justify-center">
+              <video
+                src={selectedVideo.videoUrl}
+                controls
+                autoPlay
+                className="w-full h-full"
+              />
+            </div>
+            <div className="p-4 bg-[#101828] text-white">
+              <h3 className="text-xl font-bold">{selectedVideo.titleTh}</h3>
+              <div className="mt-2 flex gap-4 text-sm text-gray-400">
+                <div className="flex items-center gap-1">
+                  <Film className="w-4 h-4" />
+                  <span>{selectedVideo.viewCount} views</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="absolute inset-0 -z-10" onClick={() => setSelectedVideo(null)} />
+        </div>
+      )}
     </div>
   );
 }

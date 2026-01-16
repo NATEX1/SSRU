@@ -37,6 +37,7 @@ import {
   BadgeCheck,
   Check,
   Clock,
+  Eye,
   FilePlus,
   Filter,
   Pencil,
@@ -45,6 +46,7 @@ import {
   X,
   XCircle,
 } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -296,7 +298,33 @@ export default function Page() {
         const article = row.original;
 
         return (
-          <div className="flex gap-2">
+          <div className="flex gap-1 items-center">
+            {/* Preview/View */}
+            <Link href={`/articles/${article.id}`} target="_blank">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-blue-600 underline"
+                title="ดูตัวอย่าง"
+              >
+                <Eye className="size-4" />
+                ดูตัวอย่าง
+              </Button>
+            </Link>
+
+            {/* Edit */}
+            <Link href={`/articles/${article.id}/edit`}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-indigo-600 underline"
+                title="แก้ไข"
+              >
+                <Pencil className="size-4" />
+                แก้ไข
+              </Button>
+            </Link>
+
             {/* Approve */}
             <ApproveDialog onApprove={() => handleApprove(article.id)}>
               <Button
@@ -329,7 +357,7 @@ export default function Page() {
                 variant="ghost"
                 size="sm"
                 className="text-red-600 underline"
-                // disabled={article.status == "draft"}
+              // disabled={article.status == "draft"}
               >
                 <Trash className="size-4" />
                 ลบ
@@ -513,9 +541,9 @@ export default function Page() {
           <div className="text-sm text-muted-foreground">
             {data.length > 0
               ? `แสดง ${(page - 1) * limit + 1} - ${Math.min(
-                  page * limit,
-                  total
-                )} จากทั้งหมด ${total}`
+                page * limit,
+                total
+              )} จากทั้งหมด ${total}`
               : ""}
           </div>
 

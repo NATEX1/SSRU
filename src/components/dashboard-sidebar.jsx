@@ -27,6 +27,7 @@ import {
   UserCircle,
   Users,
   Video,
+  BookOpen,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -91,6 +92,11 @@ export default function DashboardSidebar() {
           label: "Short Clips",
           icon: Film,
           href: "/backoffice/short-clips",
+        },
+        {
+          label: "SSRU Around",
+          icon: BookOpen,
+          href: "/backoffice/ssru-around",
         },
         {
           label: "ตั้งค่า",

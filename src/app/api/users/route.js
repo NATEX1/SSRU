@@ -69,9 +69,9 @@ export async function GET(req) {
       NOT: { role: "admin" },
       OR: q
         ? [
-            { name: { contains: q, mode: "insensitive" } },
-            { email: { contains: q, mode: "insensitive" } },
-          ]
+          { name: { contains: q, mode: "insensitive" } },
+          { email: { contains: q, mode: "insensitive" } },
+        ]
         : undefined,
     };
 

@@ -8,7 +8,25 @@ import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
 
-export default function MagazineCarousel({ data }) {
+export default function MagazineCarousel({ data, locale = "th" }) {
+  const getDisplayData = (item) => {
+    const title =
+      locale === "en"
+        ? item.titleEn || item.titleTh || item.title
+        : locale === "cn"
+          ? item.titleCn || item.titleTh || item.title
+          : item.titleTh || item.title;
+
+    const image =
+      locale === "en"
+        ? item.imageEn || item.imageTh || item.image
+        : locale === "cn"
+          ? item.imageCn || item.imageTh || item.image
+          : item.imageTh || item.image;
+
+    return { title, image };
+  };
+
   return (
     <div className="relative w-full overflow-hidden">
       <p className="text-[#F06FAA]">E-BOOK</p>
@@ -61,8 +79,8 @@ export default function MagazineCarousel({ data }) {
               >
                 <div className="h-full bg-white shadow rounded-xl overflow-hidden hover:shadow-md transition">
                   <img
-                    src={item.image}
-                    alt={item.title}
+                    src={getDisplayData(item).image}
+                    alt={getDisplayData(item).title}
                     className="w-full h-[360px] md:h-[360px] object-contain"
                     loading="lazy"
                   />
@@ -79,7 +97,7 @@ export default function MagazineCarousel({ data }) {
                     </div>
 
                     <h2 className="font-semibold line-clamp-2">
-                      {item.title}
+                      {getDisplayData(item).title}
                     </h2>
 
                     <div className="flex gap-1 items-center text-[#99A1AF] text-sm">
@@ -117,17 +135,17 @@ export default function MagazineCarousel({ data }) {
               >
                 <div className="h-full bg-white shadow rounded-xl overflow-hidden hover:shadow-md transition">
                   <img
-                    src={item.image}
-                    alt={item.title}
+                    src={getDisplayData(item).image}
+                    alt={getDisplayData(item).title}
                     className="w-full h-[360px] object-cover"
                     loading="lazy"
                   />
 
                   <div className="p-4 space-y-2">
                     <div className="flex justify-between items-start">
-                      {/* <div className="bg-[#3F458D0D] text-[#3F458D] font-bold text-xs px-2 py-1 rounded-md">
+                      <div className="bg-[#3F458D0D] text-[#3F458D] font-bold text-xs px-2 py-1 rounded-md">
                         {item.issue}
-                      </div> */}
+                      </div>
 
                       <div className="text-xs text-[#99A1AF]">
                         {item.year}
@@ -135,7 +153,7 @@ export default function MagazineCarousel({ data }) {
                     </div>
 
                     <h2 className="font-semibold">
-                      {item.title}
+                      {getDisplayData(item).title}
                     </h2>
 
                     <div className="flex gap-1 items-center text-[#99A1AF] text-sm">

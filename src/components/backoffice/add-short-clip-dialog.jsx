@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 export default function AddShortClipDialog({ onSuccess }) {
   const [open, setOpen] = useState(false);
   const [type, setType] = useState("upload");
-  const [loading, setLoading] = useState(false); // Fixed: should start as false
+  const [loading, setLoading] = useState(false);
   const [videoFile, setVideoFile] = useState(null);
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [form, setForm] = useState({
@@ -25,13 +25,13 @@ export default function AddShortClipDialog({ onSuccess }) {
     titleEn: "",
     titleCn: "",
     youtubeUrl: "",
+    order: 1,
   });
 
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Validate YouTube URL
   const isValidYoutubeUrl = (url) => {
     const patterns = [
       /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]+/,
@@ -40,7 +40,6 @@ export default function AddShortClipDialog({ onSuccess }) {
     return patterns.some((pattern) => pattern.test(url));
   };
 
-  // Validate file type
   const isValidVideoFile = (file) => {
     const validTypes = ["video/mp4", "video/webm", "video/ogg", "video/quicktime"];
     return validTypes.includes(file.type);
@@ -51,26 +50,24 @@ export default function AddShortClipDialog({ onSuccess }) {
     return validTypes.includes(file.type);
   };
 
-  // Reset form
   const resetForm = () => {
     setForm({
       titleTh: "",
       titleEn: "",
       titleCn: "",
       youtubeUrl: "",
+      order: 1,
     });
     setVideoFile(null);
     setThumbnailFile(null);
   };
 
-  // Handle tab change
   const handleTabChange = (newType) => {
     setType(newType);
     resetForm();
   };
 
   const handleSubmit = async () => {
-    // ===== VALIDATE =====
     if (type === "upload") {
       if (!videoFile) {
         toast.error("กรุณาเลือกไฟล์วิดีโอ");
@@ -80,25 +77,18 @@ export default function AddShortClipDialog({ onSuccess }) {
         toast.error("กรุณาเลือกรูปปก");
         return;
       }
-
-      // Validate file types
       if (!isValidVideoFile(videoFile)) {
         toast.error("ไฟล์วิดีโอต้องเป็น MP4, WebM, OGG หรือ MOV เท่านั้น");
         return;
       }
-
       if (!isValidImageFile(thumbnailFile)) {
         toast.error("รูปปกต้องเป็น JPG, PNG หรือ WebP เท่านั้น");
         return;
       }
-
-      // Limit 1GB
       if (videoFile.size > 1024 * 1024 * 1024) {
         toast.error("ไฟล์วิดีโอต้องไม่เกิน 1GB");
         return;
       }
-
-      // Limit thumbnail to 5MB
       if (thumbnailFile.size > 5 * 1024 * 1024) {
         toast.error("รูปปกต้องไม่เกิน 5MB");
         return;
@@ -116,7 +106,6 @@ export default function AddShortClipDialog({ onSuccess }) {
       }
     }
 
-    // Check if at least one title is provided
     if (!form.titleTh && !form.titleEn && !form.titleCn) {
       toast.error("กรุณาใส่ชื่อคลิปอย่างน้อย 1 ภาษา");
       return;
@@ -129,6 +118,7 @@ export default function AddShortClipDialog({ onSuccess }) {
       formData.append("titleTh", form.titleTh);
       formData.append("titleEn", form.titleEn);
       formData.append("titleCn", form.titleCn);
+      formData.append("order", form.order);
 
       if (type === "upload") {
         formData.append("video", videoFile);
@@ -150,9 +140,6 @@ export default function AddShortClipDialog({ onSuccess }) {
       setOpen(false);
       resetForm();
       if (onSuccess) onSuccess();
-
-      // Optional: trigger a refresh of the clips list
-      // window.location.reload() or call a parent component function
     } catch (err) {
       console.error("Error adding clip:", err);
       toast.error(err.message || "เกิดข้อผิดพลาดในการเพิ่มคลิป");
@@ -211,6 +198,17 @@ export default function AddShortClipDialog({ onSuccess }) {
               />
             </div>
             <div>
+              <Label htmlFor="order">ลำดับการแสดง (Order)</Label>
+              <Input
+                id="order"
+                name="order"
+                type="number"
+                value={form.order}
+                onChange={onChange}
+                placeholder="0"
+              />
+            </div>
+            <div>
               <Label htmlFor="video">วิดีโอ (สูงสุด 1GB)</Label>
               <Input
                 id="video"
@@ -218,11 +216,6 @@ export default function AddShortClipDialog({ onSuccess }) {
                 accept="video/mp4,video/webm,video/ogg,video/quicktime"
                 onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
               />
-              {videoFile && (
-                <p className="text-sm text-gray-500 mt-1">
-                  {videoFile.name} ({(videoFile.size / 1024 / 1024).toFixed(2)} MB)
-                </p>
-              )}
             </div>
             <div>
               <Label htmlFor="thumbnail">รูปปก (สูงสุด 5MB)</Label>
@@ -232,11 +225,6 @@ export default function AddShortClipDialog({ onSuccess }) {
                 accept="image/jpeg,image/jpg,image/png,image/webp"
                 onChange={(e) => setThumbnailFile(e.target.files?.[0] || null)}
               />
-              {thumbnailFile && (
-                <p className="text-sm text-gray-500 mt-1">
-                  {thumbnailFile.name} ({(thumbnailFile.size / 1024).toFixed(2)} KB)
-                </p>
-              )}
             </div>
             <Button onClick={handleSubmit} disabled={loading} className="w-full">
               {loading ? "กำลังบันทึก..." : "บันทึก"}
@@ -254,9 +242,6 @@ export default function AddShortClipDialog({ onSuccess }) {
                 onChange={onChange}
                 placeholder="https://www.youtube.com/watch?v=..."
               />
-              <p className="text-xs text-gray-500 mt-1">
-                รองรับ: youtube.com/watch, youtu.be, youtube.com/shorts
-              </p>
             </div>
             <div>
               <Label htmlFor="titleTh-yt">Title (TH)</Label>
@@ -265,7 +250,6 @@ export default function AddShortClipDialog({ onSuccess }) {
                 name="titleTh"
                 value={form.titleTh}
                 onChange={onChange}
-                placeholder="ชื่อคลิป (ภาษาไทย)"
               />
             </div>
             <div>
@@ -275,7 +259,6 @@ export default function AddShortClipDialog({ onSuccess }) {
                 name="titleEn"
                 value={form.titleEn}
                 onChange={onChange}
-                placeholder="Clip title (English)"
               />
             </div>
             <div>
@@ -285,7 +268,17 @@ export default function AddShortClipDialog({ onSuccess }) {
                 name="titleCn"
                 value={form.titleCn}
                 onChange={onChange}
-                placeholder="片段标题 (中文)"
+              />
+            </div>
+            <div>
+              <Label htmlFor="order-yt">ลำดับการแสดง (Order)</Label>
+              <Input
+                id="order-yt"
+                name="order"
+                type="number"
+                value={form.order}
+                onChange={onChange}
+                placeholder="0"
               />
             </div>
             <Button onClick={handleSubmit} disabled={loading} className="w-full">
