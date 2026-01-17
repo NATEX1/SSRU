@@ -43,7 +43,6 @@ function extractYoutubeId(url) {
 }
 
 export async function PUT(req, { params }) {
-<<<<<<< Updated upstream
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -51,116 +50,6 @@ export async function PUT(req, { params }) {
         { success: false, message: "Unauthorized" },
         { status: 401 }
       );
-=======
-    try {
-        const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json(
-                { success: false, message: "Unauthorized" },
-                { status: 401 }
-            );
-        }
-
-        const { id } = await params;
-
-        const oldClip = await prisma.shortClip.findUnique({
-            where: { id: Number(id) },
-        });
-
-        if (!oldClip) {
-            return NextResponse.json(
-                { success: false, message: "ไม่พบข้อมูล" },
-                { status: 404 }
-            );
-        }
-
-        const formData = await req.formData();
-        const type = formData.get("type");
-
-        const titleTh = formData.get("titleTh") || "";
-        const titleEn = formData.get("titleEn") || "";
-        const titleCn = formData.get("titleCn") || "";
-        const order = formData.get("order") ? Number(formData.get("order")) : oldClip.order;
-
-        if (!type || !["upload", "youtube"].includes(type)) {
-            return NextResponse.json(
-                { success: false, message: "ประเภทไม่ถูกต้อง" },
-                { status: 400 }
-            );
-        }
-
-        let videoUrl = oldClip.videoUrl;
-        let thumbnailUrl = oldClip.thumbnailUrl;
-        let youtubeUrl = oldClip.youtubeUrl;
-        let youtubeId = oldClip.youtubeId;
-
-        if (type === 'youtube' && oldClip.videoUrl) {
-            await deleteFile(oldClip.videoUrl);
-            await deleteFile(oldClip.thumbnailUrl);
-            videoUrl = null;
-            thumbnailUrl = null;
-        }
-
-        if (type === 'upload' && oldClip.youtubeUrl) {
-            youtubeUrl = null;
-            youtubeId = null;
-        }
-
-        if (type === "upload") {
-            const videoFile = formData.get("video");
-            const thumbnailFile = formData.get("thumbnail");
-
-            if (videoFile && typeof videoFile === 'object') {
-                if (videoFile.size > 1024 * 1024 * 1024) {
-                    return NextResponse.json({ success: false, message: "วิดีโอต้องไม่เกิน 1GB" }, { status: 400 });
-                }
-                await deleteFile(oldClip.videoUrl);
-                videoUrl = await saveFile(videoFile, "videos");
-            }
-
-            if (thumbnailFile && typeof thumbnailFile === 'object') {
-                if (thumbnailFile.size > 5 * 1024 * 1024) {
-                    return NextResponse.json({ success: false, message: "รูปปกต้องไม่เกิน 5MB" }, { status: 400 });
-                }
-                await deleteFile(oldClip.thumbnailUrl);
-                thumbnailUrl = await saveFile(thumbnailFile, "thumbnails");
-            }
-        }
-
-        if (type === "youtube") {
-            const newYoutubeUrl = formData.get("youtubeUrl");
-            if (newYoutubeUrl) {
-                youtubeUrl = newYoutubeUrl;
-                youtubeId = extractYoutubeId(youtubeUrl);
-                if (!youtubeId) {
-                    return NextResponse.json({ success: false, message: "ลิงก์ YouTube ไม่ถูกต้อง" }, { status: 400 });
-                }
-            }
-        }
-
-        const updatedClip = await prisma.shortClip.update({
-            where: { id: Number(id) },
-            data: {
-                titleTh,
-                titleEn,
-                titleCn,
-                videoUrl,
-                thumbnailUrl,
-                youtubeUrl,
-                youtubeId,
-                order,
-            },
-        });
-
-        return NextResponse.json({ success: true, data: updatedClip });
-
-    } catch (error) {
-        console.error("UPDATE SHORT CLIP ERROR:", error);
-        return NextResponse.json(
-            { success: false, message: error.message || "Internal Server Error" },
-            { status: 500 }
-        );
->>>>>>> Stashed changes
     }
 
     const { id } = await params;
@@ -182,6 +71,7 @@ export async function PUT(req, { params }) {
     const titleTh = formData.get("titleTh") || "";
     const titleEn = formData.get("titleEn") || "";
     const titleCn = formData.get("titleCn") || "";
+    const order = formData.get("order") ? Number(formData.get("order")) : oldClip.order;
 
     if (!type || !["upload", "youtube"].includes(type)) {
       return NextResponse.json(
@@ -195,14 +85,14 @@ export async function PUT(req, { params }) {
     let youtubeUrl = oldClip.youtubeUrl;
     let youtubeId = oldClip.youtubeId;
 
-    if (type === "youtube" && oldClip.videoUrl) {
+    if (type === 'youtube' && oldClip.videoUrl) {
       await deleteFile(oldClip.videoUrl);
       await deleteFile(oldClip.thumbnailUrl);
       videoUrl = null;
       thumbnailUrl = null;
     }
 
-    if (type === "upload" && oldClip.youtubeUrl) {
+    if (type === 'upload' && oldClip.youtubeUrl) {
       youtubeUrl = null;
       youtubeId = null;
     }
@@ -211,23 +101,17 @@ export async function PUT(req, { params }) {
       const videoFile = formData.get("video");
       const thumbnailFile = formData.get("thumbnail");
 
-      if (videoFile && typeof videoFile === "object") {
+      if (videoFile && typeof videoFile === 'object') {
         if (videoFile.size > 1024 * 1024 * 1024) {
-          return NextResponse.json(
-            { success: false, message: "วิดีโอต้องไม่เกิน 1GB" },
-            { status: 400 }
-          );
+          return NextResponse.json({ success: false, message: "วิดีโอต้องไม่เกิน 1GB" }, { status: 400 });
         }
         await deleteFile(oldClip.videoUrl);
         videoUrl = await saveFile(videoFile, "videos");
       }
 
-      if (thumbnailFile && typeof thumbnailFile === "object") {
+      if (thumbnailFile && typeof thumbnailFile === 'object') {
         if (thumbnailFile.size > 5 * 1024 * 1024) {
-          return NextResponse.json(
-            { success: false, message: "รูปปกต้องไม่เกิน 5MB" },
-            { status: 400 }
-          );
+          return NextResponse.json({ success: false, message: "รูปปกต้องไม่เกิน 5MB" }, { status: 400 });
         }
         await deleteFile(oldClip.thumbnailUrl);
         thumbnailUrl = await saveFile(thumbnailFile, "thumbnails");
@@ -240,10 +124,7 @@ export async function PUT(req, { params }) {
         youtubeUrl = newYoutubeUrl;
         youtubeId = extractYoutubeId(youtubeUrl);
         if (!youtubeId) {
-          return NextResponse.json(
-            { success: false, message: "ลิงก์ YouTube ไม่ถูกต้อง" },
-            { status: 400 }
-          );
+          return NextResponse.json({ success: false, message: "ลิงก์ YouTube ไม่ถูกต้อง" }, { status: 400 });
         }
       }
     }
@@ -258,10 +139,12 @@ export async function PUT(req, { params }) {
         thumbnailUrl,
         youtubeUrl,
         youtubeId,
+        order,
       },
     });
 
     return NextResponse.json({ success: true, data: updatedClip });
+
   } catch (error) {
     console.error("UPDATE SHORT CLIP ERROR:", error);
     return NextResponse.json(
