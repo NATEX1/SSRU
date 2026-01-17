@@ -7,9 +7,6 @@ import { getOnePostEachOtherCategory, getCategoryName } from "@/lib/markdown";
 import prisma from "@/lib/prisma";
 import { ArrowRight, Calendar, Eye, Share2 } from "lucide-react";
 
-
-
-
 async function getCategoriesWithOneArticle() {
   const categories = await prisma.category.findMany({
     orderBy: { id: "asc" },
@@ -47,18 +44,12 @@ export default async function Home() {
   });
 
   const shortClips = await prisma.shortClip.findMany({
-    orderBy: [
-      { order: "asc" },
-      { updatedAt: "desc" },
-    ],
+    orderBy: [{ updatedAt: "desc" }],
     take: 8,
   });
 
   const ssruAround = await prisma.ssruAround.findMany({
-    orderBy: [
-      { order: "asc" },
-      { createdAt: "desc" },
-    ],
+    orderBy: [{ order: "asc" }, { createdAt: "desc" }],
     take: 8,
   });
 
@@ -82,16 +73,22 @@ export default async function Home() {
               return { ...clip, viewCount: parseInt(viewCount) };
             }
           } catch (error) {
-            console.error(`Error fetching YouTube views for ${clip.youtubeId}:`, error);
+            console.error(
+              `Error fetching YouTube views for ${clip.youtubeId}:`,
+              error
+            );
           }
         }
 
         // Fallback: Try to scrape if API failed or no key
         if (!viewCount) {
           try {
-            const res = await fetch(`https://www.youtube.com/watch?v=${clip.youtubeId}`, {
-              next: { revalidate: 3600 }
-            });
+            const res = await fetch(
+              `https://www.youtube.com/watch?v=${clip.youtubeId}`,
+              {
+                next: { revalidate: 3600 },
+              }
+            );
             const html = await res.text();
             const match = html.match(/"viewCount":"(\d+)"/);
             if (match) {
@@ -100,10 +97,16 @@ export default async function Home() {
             // Another common pattern in YouTube HTML
             const match2 = html.match(/"label":"([\d,]+) views"/);
             if (match2) {
-              return { ...clip, viewCount: parseInt(match2[1].replace(/,/g, "")) };
+              return {
+                ...clip,
+                viewCount: parseInt(match2[1].replace(/,/g, "")),
+              };
             }
           } catch (error) {
-            console.error(`Error scraping YouTube views for ${clip.youtubeId}:`, error);
+            console.error(
+              `Error scraping YouTube views for ${clip.youtubeId}:`,
+              error
+            );
           }
         }
       }
