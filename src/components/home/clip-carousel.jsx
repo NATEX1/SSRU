@@ -12,11 +12,13 @@ import "swiper/css/pagination";
 
 export default function ClipCarousel({ data = [] }) {
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [clips, setClips] = useState(data.slice(0, 4));
+  const [clips, setClips] = useState(
+    [...data].sort((a, b) => (a.order || 0) - (b.order || 0)).slice(0, 4)
+  );
 
   // Sync props to state
   React.useEffect(() => {
-    setClips(data.slice(0, 4));
+    setClips([...data].sort((a, b) => (a.order || 0) - (b.order || 0)).slice(0, 4));
   }, [data]);
 
   const handleClipClick = async (e, item) => {
