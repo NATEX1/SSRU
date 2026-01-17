@@ -2,10 +2,10 @@
 
 import { ArrowRight, BookOpen } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Grid, Pagination } from "swiper/modules";
+import { Pagination } from "swiper/modules";
 
 import "swiper/css";
-import "swiper/css/grid";
+
 import "swiper/css/pagination";
 
 export default function MagazineCarousel({ data, locale = "th" }) {
@@ -115,13 +115,9 @@ export default function MagazineCarousel({ data, locale = "th" }) {
       {/* ================= Desktop ================= */}
       <div className="hidden xl:block w-full overflow-hidden">
         <Swiper
-          modules={[Grid]}
+          modules={[]}
           spaceBetween={16}
           slidesPerView={2}
-          grid={{
-            rows: 2,
-            fill: "row",
-          }}
           loop={false}
           className="w-full"
         >
