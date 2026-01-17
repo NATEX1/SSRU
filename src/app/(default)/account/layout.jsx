@@ -66,7 +66,7 @@ export default function Layout({ children }) {
                       คุณต้องการออกจากระบบใช่หรือไม่?
                     </DialogTitle>
                     <DialogFooter className="flex justify-end gap-2">
-                      <Button onClick={() => signOut()}>ออกจากระบบ</Button>
+                      <Button onClick={() => signOut({ callbackUrl: "/signin" })}>ออกจากระบบ</Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
@@ -123,7 +123,7 @@ export default function Layout({ children }) {
                     คุณต้องการออกจากระบบใช่หรือไม่?
                   </DialogTitle>
                   <DialogFooter className="flex justify-end gap-2">
-                    <Button onClick={() => signOut()}>ออกจากระบบ</Button>
+                    <Button onClick={() => signOut({ callbackUrl: "/signin" })}>ออกจากระบบ</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>

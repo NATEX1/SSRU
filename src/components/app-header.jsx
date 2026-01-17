@@ -18,11 +18,43 @@ export default function AppHeader() {
     router.push(`/search?q=${encodeURIComponent(keyword)}`);
   };
 
+  const [settings, setSettings] = useState(null);
+  const [socialLinks, setSocialLinks] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [settingsRes, socialRes] = await Promise.all([
+          fetch("/api/site-settings"),
+          fetch("/api/social-links")
+        ]);
+
+        const settingsData = await settingsRes.json();
+        const socialData = await socialRes.json();
+
+        setSettings(settingsData);
+        setSocialLinks(socialData);
+      } catch (error) {
+        console.error("fetch data error:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   useEffect(() => {
     if (mobileSearchOpen) {
       setTimeout(() => inputRef.current?.focus(), 0);
     }
   }, [mobileSearchOpen]);
+
+  const socialIcons = {
+    youtube: "YouTube.webp",
+    facebook: "facebook.png",
+    instagram: "Instagram.webp",
+    twitter: "x.png",
+    line: "line.png",
+    tiktok: "tiktok.webp",
+  };
 
   return (
     <header className="fixed top-0 w-full border-b border-[#F3F4F6] bg-white z-40">
@@ -42,9 +74,9 @@ export default function AppHeader() {
         {/* Center Logo */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <img
-            src="/assets/images/logo_new.png"
+            src={settings?.logo || "/assets/images/logo_new.png"}
             alt="logo"
-            className="h-20 w-20 lx:h-40 lx:w-40 object-contain"
+            className="h-20 w-20 xl:h-40 xl:w-40 object-contain"
           />
         </div>
 
@@ -63,39 +95,35 @@ export default function AppHeader() {
           </div>
         </div> */}
         <ul className="hidden xl:flex items-center gap-3">
-          {[
-            ["YouTube.webp", "https://www.youtube.com/playlist?list=PL9rBdn9yFjyvkR2D4qZIc5A1_or_CT_XL"],
-            ["facebook.png", "https://www.facebook.com/kaewchaochomonline"],
-            ["Instagram.webp", "https://www.instagram.com/ssru_official"],
-            ["x.png", "https://x.com/official_ssru"],
-            ["line.png", "https://lin.ee/1WNbkCe"],
-            ["tiktok.webp", "https://www.tiktok.com/@ssru_official"],
-          ].map(([img, link], i) => (
-            <li key={i}>
-              <a
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block"
-              >
-                <img
-                  src={`/assets/images/${img}`}
-                  alt=""
-                  className="
-                    h-8 w-8 
-                    rounded-full 
-                    border border-[#E5E7EB]
-                    bg-white
-                    p-1
-                    transition
-                    group-hover:scale-105
-                    group-hover:shadow-sm
-                    group-hover:opacity-90
-                  "
-                />
-              </a>
-            </li>
-          ))}
+          {Object.entries(socialLinks).map(([platform, url]) => {
+            if (!url || !socialIcons[platform]) return null;
+            return (
+              <li key={platform}>
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block"
+                >
+                  <img
+                    src={`/assets/images/${socialIcons[platform]}`}
+                    alt={platform}
+                    className="
+                      h-8 w-8 
+                      rounded-full 
+                      border border-[#E5E7EB]
+                      bg-white
+                      p-1
+                      transition
+                      group-hover:scale-105
+                      group-hover:shadow-sm
+                      group-hover:opacity-90
+                    "
+                  />
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </header>

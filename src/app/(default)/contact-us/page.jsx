@@ -1,8 +1,37 @@
 "use client";
 
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function Page() {
+  const [settings, setSettings] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch("/api/site-settings");
+        const data = await res.json();
+        setSettings(data);
+      } catch (error) {
+        console.error("fetch settings error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSettings();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <Loader2 className="animate-spin h-8 w-8 text-[#3F458D]" />
+      </div>
+    );
+  }
+
+  if (!settings) return null;
+
   return (
     <div className="py-8 px-4 space-y-8 max-w-5xl mx-auto">
       <div className="text-center">
@@ -27,11 +56,8 @@ export default function Page() {
               </div>
             </div>
             <h3 className="font-bold text-[#3F458D]">ที่อยู่</h3>
-            <p className="text-[#4A5565] text-sm sm:text-base leading-relaxed">
-              คณะกรรมการกำหนดทิศทางยุทธศาสตร์ในการสื่อสารองค์กร <br />
-              มหาวิทยาลัยราชภัฏสวนสุนันทา <br />
-              1 ถ.อู่ทองนอก แขวงดุสิต เขตดุสิต <br />
-              กรุงเทพมหานคร 10300
+            <p className="text-[#4A5565] text-sm sm:text-base leading-relaxed whitespace-pre-line">
+              {settings.addressTh}
             </p>
           </div>
 
@@ -44,7 +70,7 @@ export default function Page() {
             </div>
             <h3 className="font-bold text-[#3F458D]">เบอร์โทรศัพท์</h3>
             <p className="text-[#4A5565] text-sm sm:text-base leading-relaxed">
-              02 160 1023
+              {settings.phone}
             </p>
           </div>
 
@@ -57,7 +83,7 @@ export default function Page() {
             </div>
             <h3 className="font-bold text-[#3F458D]">อีเมล</h3>
             <p className="text-[#4A5565] text-sm sm:text-base leading-relaxed">
-              kcc@ssru.ac.th
+              {settings.email}
             </p>
           </div>
 
@@ -69,9 +95,8 @@ export default function Page() {
               </div>
             </div>
             <h3 className="font-bold text-[#3F458D]">เวลาทำการ</h3>
-            <p className="text-[#4A5565] text-sm sm:text-base leading-relaxed">
-              จันทร์ - ศุกร์: 08:30 - 16:30 น. <br />
-              ปิดทำการวันเสาร์ - อาทิตย์ และวันหยุดนักขัตฤกษ์
+            <p className="text-[#4A5565] text-sm sm:text-base leading-relaxed whitespace-pre-line">
+              {settings.officeHoursTh}
             </p>
           </div>
         </div>
@@ -140,9 +165,9 @@ export default function Page() {
         </div>
       </div>
 
-      {/* Google Map */}
+      {/* Google Map - Use dynamic link if available, but be careful as iframe needs embed link */}
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.0955996116104!2d100.5075044!3d13.7731081!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e2995e778f8bfb%3A0xf9a7730535388e56!2sSuan%20Sunandha%20Rajabhat%20University!5e0!3m2!1sen!2sth!4v1764858074483!5m2!1sen!2sth"
+        src={settings.googleMapLink || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.0955996116104!2d100.5075044!3d13.7731081!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e2995e778f8bfb%3A0xf9a7730535388e56!2sSuan%20Sunandha%20Rajabhat%20University!5e0!3m2!1sen!2sth!4v1764858074483!5m2!1sen!2sth"}
         className="w-full rounded-2xl h-80 sm:h-[400px] border border-[#F3F4F6] shadow"
         loading="lazy"
       />

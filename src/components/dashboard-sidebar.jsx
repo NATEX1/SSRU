@@ -119,15 +119,27 @@ export default function DashboardSidebar() {
             <SidebarGroupLabel>{group.name}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {group.items.map((item, i) => (
-                  <SidebarMenuItem key={i}>
-                    <SidebarMenuButton asChild>
-                      <Link href={item.href}>
-                        <item.icon /> {item.label}
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                {group.items
+                  .filter((item) => {
+                    if (!user) return false;
+                    if (user.role === "admin") return true;
+                    if (user.role === "approver") {
+                      return ["หน้าแรก", "จัดการบทความ", "Short Clips", "SSRU Around"].includes(item.label);
+                    }
+                    if (user.role === "author") {
+                      return ["หน้าแรก", "จัดการบทความ", "ตั้งค่า"].includes(item.label);
+                    }
+                    return false;
+                  })
+                  .map((item, i) => (
+                    <SidebarMenuItem key={i}>
+                      <SidebarMenuButton asChild>
+                        <Link href={item.href}>
+                          <item.icon /> {item.label}
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
@@ -163,7 +175,7 @@ export default function DashboardSidebar() {
 
                 <DialogFooter className="flex justify-end gap-2">
                   <Button
-                    onClick={() => signOut()}
+                    onClick={() => signOut({ callbackUrl: "/signin" })}
                   >
                     ออกจากระบบ
                   </Button>

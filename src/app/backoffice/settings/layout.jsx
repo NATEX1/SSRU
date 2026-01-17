@@ -16,10 +16,9 @@ export default function layout({ children }) {
             <Button
               variant="ghost"
               asChild
-              className={` justify-start w-full rounded-none ${
-                pathname == "/backoffice/settings/account" &&
+              className={` justify-start w-full rounded-none ${pathname == "/backoffice/settings/account" &&
                 " bg-accent text-accent-foreground"
-              }`}
+                }`}
             >
               <Link href="/backoffice/settings/account">
                 <UserCircle /> Account
@@ -31,10 +30,9 @@ export default function layout({ children }) {
             <Button
               variant="ghost"
               asChild
-              className={` justify-start w-full rounded-none ${
-                pathname == "/backoffice/settings/site" &&
+              className={` justify-start w-full rounded-none ${pathname == "/backoffice/settings/site" &&
                 " bg-accent text-accent-foreground"
-              }`}
+                }`}
             >
               <Link href="/backoffice/settings/site">
                 <Bolt /> Site Settings
@@ -46,10 +44,9 @@ export default function layout({ children }) {
             <Button
               variant="ghost"
               asChild
-              className={` justify-start w-full rounded-none ${
-                pathname == "/backoffice/settings/social-links" &&
+              className={` justify-start w-full rounded-none ${pathname == "/backoffice/settings/social-links" &&
                 " bg-accent text-accent-foreground"
-              }`}
+                }`}
             >
               <Link href="/backoffice/settings/social-links">
                 <LinkIcon /> Social links

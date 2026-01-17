@@ -92,16 +92,26 @@ model Comment {
 }
 
 model SiteSetting {
-  id          Int          @id @default(1)
-  name        String
-  logo        String?
-  address     String?
-  phone       String?
-  email       String?
-  footerText  String?      @map("footer_text")
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @updatedAt @map("updated_at")
-  socialLinks SocialLink[]
+  id              Int          @id @default(1)
+  nameTh          String?      @map("name_th")
+  nameEn          String?      @map("name_en")
+  nameCn          String?      @map("name_cn")
+  logo            String?
+  phone           String?
+  email           String?
+  googleMapLink   String?      @map("google_map_link")
+  
+  addressTh       String?      @map("address_th")
+  addressEn       String?      @map("address_en")
+  addressCn       String?      @map("address_cn")
+  
+  officeHoursTh   String?      @map("office_hours_th")
+  officeHoursEn   String?      @map("office_hours_en")
+  officeHoursCn   String?      @map("office_hours_cn")
+  
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  socialLinks     SocialLink[]
 
   @@map("site_settings")
 }

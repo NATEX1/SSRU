@@ -34,7 +34,7 @@ export default function Page() {
     const sessionData = await sessionRes.json();
 
     // ตรวจสอบ role
-    if (sessionData?.user?.role === "admin") {
+    if (sessionData?.user?.role === "admin" || sessionData?.user?.role === "approver") {
       router.replace("/backoffice");
     } else {
       router.replace("/account");
