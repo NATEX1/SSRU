@@ -29,8 +29,10 @@ export default function ArticleSlider({ data }) {
 
   const [slideIndex, setSlideIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     if (articles.length <= 1) return;
 
     const timer = setInterval(() => {
@@ -70,7 +72,7 @@ export default function ArticleSlider({ data }) {
         <div className="flex flex-col justify-between">
           <div>
             <p className="text-sm text-gray-500 mb-2">
-              <span className="text-[#F06FAA]">{current.author}</span> | {current.dateText}
+              <span className="text-[#F06FAA]">{current.author}</span> | {mounted ? current.dateText : ""}
             </p>
 
             <a href={`/articles/${current.id}`}>
