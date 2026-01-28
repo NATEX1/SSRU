@@ -15,7 +15,7 @@ export default async function middleware(req) {
 
   if (
     pathname.startsWith("/backoffice") &&
-    (!token || token.role !== "admin")
+    (!token || !["admin", "approver"].includes(token.role))
   ) {
     return NextResponse.redirect(new URL("/", req.url));
   }

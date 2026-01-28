@@ -12,7 +12,10 @@ async function getCategoriesWithOneArticle() {
     orderBy: { id: "asc" },
     include: {
       articles: {
-        where: { status: "approved" },
+        where: {
+          status: "approved",
+          publishedAt: { lte: new Date() },
+        },
         orderBy: { createdAt: "desc" },
         take: 1,
         include: {
@@ -36,6 +39,7 @@ export default async function Home() {
   const popularArticles = await prisma.article.findMany({
     where: {
       status: "approved",
+      publishedAt: { lte: new Date() },
     },
     orderBy: {
       viewCount: "desc",
@@ -44,75 +48,116 @@ export default async function Home() {
   });
 
   const shortClips = await prisma.shortClip.findMany({
-    orderBy: [{ updatedAt: "desc" }],
-    take: 8,
+    orderBy: [{ order: "desc" }, { createdAt: "desc" }],
+    take: 4,
   });
 
   const ssruAround = await prisma.ssruAround.findMany({
-    orderBy: [{ order: "asc" }, { createdAt: "desc" }],
-    take: 8,
+    orderBy: [{ order: "desc" }, { createdAt: "desc" }],
+    take: 2,
   });
 
-  // Fetch YouTube view counts if API key is available
+  const vlogs = await prisma.vlog.findMany({
+    orderBy: [{ order: "desc" }, { createdAt: "desc" }],
+    take: 2,
+  });
+
+  // Fetch Page content
+  const editorPage = await prisma.page.findUnique({ where: { slug: "editor-message" } });
+  const criteriaPage = await prisma.page.findUnique({ where: { slug: "submission-criteria" } });
+
   const youtubeApiKey = process.env.YOUTUBE_API_KEY;
-  const clipsWithViews = await Promise.all(
-    shortClips.map(async (clip) => {
-      if (clip.youtubeId) {
-        let viewCount = null;
 
-        // Try API first
-        if (youtubeApiKey && youtubeApiKey !== "your_api_key_here") {
-          try {
-            const res = await fetch(
-              `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${clip.youtubeId}&key=${youtubeApiKey}`,
-              { next: { revalidate: 3600 } }
-            );
-            const data = await res.json();
-            viewCount = data.items?.[0]?.statistics?.viewCount;
-            if (viewCount) {
-              return { ...clip, viewCount: parseInt(viewCount) };
-            }
-          } catch (error) {
-            console.error(
-              `Error fetching YouTube views for ${clip.youtubeId}:`,
-              error
-            );
-          }
+  // Helper to safely get multilingual content with fallback
+  const getLang = (obj, field, lang = "Th") => {
+    if (!obj) return "";
+    const primary = obj[`${field}${lang}`];
+    if (primary && primary !== "" && primary !== "null") return primary;
+
+    // Fallback order: Th -> En -> Cn
+    return obj[`${field}Th`] || obj[`${field}En`] || obj[`${field}Cn`] || "";
+  };
+
+  const extractYoutubeId = (url) => {
+    if (!url) return null;
+    const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([^"&?\/\s]{11})/);
+    return match ? match[1] : null;
+  };
+
+  // YouTube metadata fetching helper (rest of code)
+  const fetchYouTubeMeta = async (youtubeId) => {
+    if (!youtubeId) return null;
+    let viewCount = null;
+    let publishedAt = null;
+
+    // Try API first
+    if (youtubeApiKey && youtubeApiKey !== "your_api_key_here") {
+      try {
+        const res = await fetch(
+          `https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=${youtubeId}&key=${youtubeApiKey}`,
+          { next: { revalidate: 3600 } }
+        );
+        const data = await res.json();
+        const item = data.items?.[0];
+        if (item) {
+          viewCount = item.statistics?.viewCount ? parseInt(item.statistics.viewCount) : null;
+          publishedAt = item.snippet?.publishedAt;
+          return { viewCount, publishedAt };
         }
+      } catch (error) {
+        console.error(`Error fetching YouTube API for ${youtubeId}:`, error);
+      }
+    }
 
-        // Fallback: Try to scrape if API failed or no key
-        if (!viewCount) {
-          try {
-            const res = await fetch(
-              `https://www.youtube.com/watch?v=${clip.youtubeId}`,
-              {
-                next: { revalidate: 3600 },
-              }
-            );
-            const html = await res.text();
-            const match = html.match(/"viewCount":"(\d+)"/);
-            if (match) {
-              return { ...clip, viewCount: parseInt(match[1]) };
-            }
-            // Another common pattern in YouTube HTML
-            const match2 = html.match(/"label":"([\d,]+) views"/);
-            if (match2) {
-              return {
-                ...clip,
-                viewCount: parseInt(match2[1].replace(/,/g, "")),
-              };
-            }
-          } catch (error) {
-            console.error(
-              `Error scraping YouTube views for ${clip.youtubeId}:`,
-              error
-            );
-          }
+    // Fallback: Scrape if API failed (rest of code)
+    try {
+      const res = await fetch(`https://www.youtube.com/watch?v=${youtubeId}`, {
+        next: { revalidate: 3600 },
+      });
+      const html = await res.text();
+
+      // Scrape views
+      const viewMatch = html.match(/"viewCount":"(\d+)"/);
+      if (viewMatch) {
+        viewCount = parseInt(viewMatch[1]);
+      } else {
+        const labelMatch = html.match(/"label":"([\d,]+) views"/);
+        if (labelMatch) viewCount = parseInt(labelMatch[1].replace(/,/g, ""));
+        else {
+          // Alternative regex for some YouTube versions
+          const interactionMatch = html.match(/"interactionCount":"(\d+)"/);
+          if (interactionMatch) viewCount = parseInt(interactionMatch[1]);
         }
       }
-      return clip;
-    })
-  );
+
+      // Scrape date
+      const dateMatch = html.match(/"uploadDate":"([^"]+)"/);
+      if (dateMatch) {
+        publishedAt = dateMatch[1];
+      } else {
+        const publishedMatch = html.match(/"publishDate":"([^"]+)"/);
+        if (publishedMatch) publishedAt = publishedMatch[1];
+      }
+
+    } catch (error) {
+      console.error(`Error scraping YouTube for ${youtubeId}:`, error);
+    }
+
+    return { viewCount, publishedAt };
+  };
+
+  const [clipsWithViews, vlogsWithMeta] = await Promise.all([
+    Promise.all(shortClips.map(async (clip) => {
+      const youtubeId = clip.youtubeId || extractYoutubeId(clip.youtubeUrl);
+      const meta = await fetchYouTubeMeta(youtubeId);
+      return { ...clip, youtubeId, ...(meta || {}) };
+    })),
+    Promise.all(vlogs.map(async (vlog) => {
+      const youtubeId = vlog.youtubeId || extractYoutubeId(vlog.youtubeUrl);
+      const meta = await fetchYouTubeMeta(youtubeId);
+      return { ...vlog, youtubeId, ...(meta || {}) };
+    }))
+  ]);
 
   return (
     <div className="p-6 mb-8">
@@ -152,7 +197,7 @@ export default async function Home() {
                               className="block max-w-full"
                             >
                               <img
-                                src={cat.article.thumbnail}
+                                src={getLang(cat.article, "thumbnail")}
                                 alt=""
                                 className="w-full max-w-full h-56 sm:h-64 md:h-full object-cover opacity-80 block"
                               />
@@ -164,12 +209,12 @@ export default async function Home() {
                                 className="shrink-0"
                               >
                                 <h6 className="text-white text-sm sm:text-lg font-semibold leading-snug line-clamp-2 wrap-break-word">
-                                  {cat.article.title}
+                                  {getLang(cat.article, "title")}
                                 </h6>
                               </a>
 
                               <p className="mt-1 line-clamp-2 text-white/80 text-[11px] sm:text-sm mb-3 sm:mb-4 wrap-break-word">
-                                {cat.article.excerpt}
+                                {getLang(cat.article, "excerpt")}
                               </p>
 
                               <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -177,7 +222,7 @@ export default async function Home() {
                                   <div className="flex items-center gap-1">
                                     <Calendar className="h-3 shrink-0" />{" "}
                                     {new Date(
-                                      cat.article.createdAt
+                                      cat.article.publishedAt
                                     ).toLocaleDateString("th-Th", {
                                       day: "numeric",
                                       month: "long",
@@ -243,8 +288,8 @@ export default async function Home() {
                           >
                             <figure className="max-w-full overflow-hidden">
                               <img
-                                src={cat.article.thumbnail}
-                                alt={cat.article.title}
+                                src={getLang(cat.article, "thumbnail")}
+                                alt={getLang(cat.article, "title")}
                                 className="h-40 w-full max-w-full object-cover block"
                               />
                             </figure>
@@ -256,12 +301,12 @@ export default async function Home() {
                               className="shrink-0"
                             >
                               <h2 className="card-title line-clamp-1 wrap-break-word">
-                                {cat.article.title}
+                                {getLang(cat.article, "title")}
                               </h2>
                             </a>
 
                             <p className="line-clamp-2 wrap-break-word text-sm">
-                              {cat.article.excerpt}
+                              {getLang(cat.article, "excerpt")}
                             </p>
 
                             <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -270,7 +315,7 @@ export default async function Home() {
                                   <Calendar className="size-2.5 shrink-0" />
                                   <span>
                                     {new Date(
-                                      cat.article.createdAt
+                                      cat.article.publishedAt
                                     ).toLocaleDateString("th-TH", {
                                       day: "numeric",
                                       month: "short",
@@ -336,8 +381,8 @@ export default async function Home() {
                           >
                             <figure className="max-w-full overflow-hidden">
                               <img
-                                src={category.article.thumbnail}
-                                alt={category.article.title}
+                                src={getLang(category.article, "thumbnail")}
+                                alt={getLang(category.article, "title")}
                                 className="h-44 w-full max-w-full object-cover block"
                               />
                             </figure>
@@ -349,12 +394,12 @@ export default async function Home() {
                               className="block"
                             >
                               <h2 className="card-title line-clamp-1 wrap-break-word">
-                                {category.article.title}
+                                {getLang(category.article, "title")}
                               </h2>
                             </a>
 
                             <p className="line-clamp-2 wrap-break-word text-sm">
-                              {category.article.excerpt}
+                              {getLang(category.article, "excerpt")}
                             </p>
 
                             <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -363,7 +408,7 @@ export default async function Home() {
                                   <Calendar className="h-2.5 shrink-0" />
                                   <span>
                                     {new Date(
-                                      category.article.createdAt
+                                      category.article.publishedAt
                                     ).toLocaleDateString("th-TH", {
                                       day: "numeric",
                                       month: "long",
@@ -409,8 +454,15 @@ export default async function Home() {
               <div className="min-w-0 max-w-full bg-[#F9FAFB] py-10 xl:py-16 px-5 xl:px-8 rounded-4xl w-full">
                 <ClipCarousel data={clipsWithViews} />
               </div>
+            </div>
 
-              {/*  ยอดนิยม (Mobile)  */}
+            {/* Vlog for Mobile + iPad */}
+            <div className="xl:hidden">
+              <VlogCarousel data={vlogsWithMeta} />
+            </div>
+
+            <div className="flex flex-col xl:flex-row gap-8 flex-1 mb-8">
+
               <div className="xl:hidden mb-8">
                 <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-4 rounded-2xl shadow">
                   <div className="flex items-center gap-2 mb-4">
@@ -431,8 +483,8 @@ export default async function Home() {
                           {/* image */}
                           <div className="w-24 h-20 shrink-0 overflow-hidden rounded-lg bg-gray-100">
                             <img
-                              src={article.thumbnail}
-                              alt={article.title}
+                              src={getLang(article, "thumbnail")}
+                              alt={getLang(article, "title")}
                               className="w-full h-full object-cover"
                               loading="lazy"
                             />
@@ -441,15 +493,19 @@ export default async function Home() {
                           {/* text */}
                           <div className="min-w-0 flex-1">
                             <h2 className="card-title line-clamp-1 wrap-break-word">
-                              {article.title}
+                              {getLang(article, "title")}
                             </h2>
 
                             <p className="line-clamp-2 wrap-break-word text-sm text-[#475467] mt-1">
-                              {article.excerpt}
+                              {getLang(article, "excerpt")}
                             </p>
 
                             <div className="mt-2 text-xs text-[#99A1AF]">
-                              {article.date}
+                              {new Date(article.publishedAt).toLocaleDateString("th-TH", {
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric",
+                              })}
                             </div>
                           </div>
                         </div>
@@ -487,10 +543,10 @@ export default async function Home() {
 
                       <div className="flex-1">
                         <p className="group-hover:text-[#F06FAA] transition line-clamp-1">
-                          {article.title}
+                          {getLang(article, "title")}
                         </p>
                         <p className="text-[#99A1AF] text-sm">
-                          {new Date(article.createdAt).toLocaleDateString(
+                          {new Date(article.publishedAt).toLocaleDateString(
                             "th-TH",
                             {
                               day: "numeric",
@@ -545,45 +601,50 @@ export default async function Home() {
           </div>
         </div>
 
-        <br />
+        {/* Vlog for Desktop (Before Editorial) */}
+        <div className="hidden xl:block">
+          <VlogCarousel data={vlogsWithMeta} />
+        </div>
+
         <div className="bg-[#F9FAFB] border border-[#F3F4F6] p-6 rounded-2xl shadow mb-8">
+
           <div className="grid grid-cols-1 xl:grid-cols-2">
             <div className="p-6 md:p-8">
               <div className="flex items-start gap-3 mb-4">
                 <div className="w-2 h-7 rounded-full bg-[#F06FAA]" />
                 <h4 className="text-xl md:text-2xl font-bold text-[#101828] leading-tight">
-                  สารจากกองบรรณาธิการ
+                  {getLang(editorPage, "title") || "สารจากกองบรรณาธิการ"}
                 </h4>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-[180px_1fr] gap-4 items-start">
-                <div className="overflow-hidden rounded-xl">
-                  <img
-                    src="/contents/editorial.jpg"
-                    alt="สารจากกองบรรณาธิการ"
-                    className="w-full object-cover"
-                  />
+                <div className="overflow-hidden rounded-xl border border-gray-100 shadow-sm aspect-[4/5] bg-gray-50 flex items-center justify-center">
+                  {editorPage?.image ? (
+                    <img
+                      src={editorPage.image}
+                      alt="บรรณาธิการ"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <img
+                      src="/contents/editorial.jpg"
+                      alt="บรรณาธิการ"
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                 </div>
 
                 <div className="flex flex-col">
-                  <p className="text-[#475467] leading-relaxed text-sm md:text-base">
-                    &nbsp;&nbsp;&nbsp;&nbsp;เว็บไซต์ข่าวแห่งนี้เป็นหนึ่งในช่องทางการสื่อสารของมหาวิทยาลัยราชภัฏสวนสุนันทา
-                    มุ่งมั่นนำเสนอข่าวสารและเรื่องราวที่น่าสนใจด้วยความรับผิดชอบต่อสังคม
-                    โดยยึดหลักความถูกต้อง ทันสมัย และเหมาะสมต่อบริบทของสังคมไทย
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;กองบรรณาธิการให้ความสำคัญกับการนำเสนอข้อมูลอย่างสร้างสรรค์
-                    รอบด้าน และคำนึงถึงจริยธรรมด้านการสื่อสาร
-                    เพื่อทำหน้าที่เป็นสื่อกลางในการถ่ายทอดข้อมูลข่าวสาร
-                    เสริมสร้างความเข้าใจ
-                    และสร้างการรับรู้ร่วมกันในสังคมอย่างยั่งยืน
-                  </p>
+                  <div className="text-[#475467] leading-relaxed text-sm md:text-base whitespace-pre-wrap">
+                    {getLang(editorPage, "content") || `เว็บไซต์ข่าวแห่งนี้เป็นหนึ่งในช่องทางการสื่อสารของมหาวิทยาลัยราชภัฏสวนสุนันทา...`}
+                  </div>
 
                   <div className="mt-3 text-right">
                     <span className="text-xs md:text-sm text-[#667085]">
                       <span className="font-medium text-[#344054]">
-                        ณัฐวลัญช์ วังนิล
+                        {getLang(editorPage, "name") || "ณัฐวลัญช์ วังนิล"}
                         <br />
-                        บรรณาธิการ
+                        {getLang(editorPage, "position") || "บรรณาธิการ"}
                       </span>
                     </span>
                   </div>
@@ -595,41 +656,12 @@ export default async function Home() {
               <div className="flex items-start gap-3 mb-4">
                 <div className="w-2 h-7 rounded-full bg-[#F06FAA]" />
                 <h4 className="text-xl md:text-2xl font-bold text-[#101828] leading-tight">
-                  เกณฑ์ในการส่งบทความ
+                  {getLang(criteriaPage, "title") || "เกณฑ์ในการส่งบทความ"}
                 </h4>
               </div>
 
-              <div className="text-[#475467] leading-relaxed text-sm md:text-base">
-                <ol className="list-decimal list-inside space-y-3 text-sm md:text-base">
-                  <li>
-                    บทความต้องเคารพต่อสถาบันพระมหากษัตริย์ ห้ามพาดพิง
-                    วิพากษ์วิจารณ์
-                    หรือสื่อสารในลักษณะที่อาจก่อให้เกิดการลดทอนพระเกียรติหรือความน่าเชื่อถือของสถาบัน
-                    อันอาจเข้าข่ายการกระทำที่ขัดต่อกฎหมาย
-                    โดยเฉพาะประมวลกฎหมายอาญา มาตรา 112
-                  </li>
-                  <li>
-                    บทความต้องไม่เปิดเผยข้อมูลส่วนบุคคลที่สามารถระบุตัวตนของบุคคลหรือแหล่งข้อมูลได้
-                    โดยเฉพาะในประเด็นที่มีความละเอียดอ่อน ประเด็นข้อกล่าวหา
-                    การทุจริต หรือการกระทำที่เกี่ยวข้องกับอาชญากรรม
-                    ทั้งนี้เพื่อคุ้มครองสิทธิส่วนบุคคลและหลีกเลี่ยงความเสียหายที่อาจเกิดขึ้น
-                  </li>
-                  <li>
-                    การนำเสนอเนื้อหาที่เกี่ยวข้องกับการเมือง
-                    ทั้งในประเทศและต่างประเทศ
-                    โดยเฉพาะกรณีที่อาจส่งผลกระทบหรือถูกตีความเชื่อมโยงมายังประเทศไทย
-                    หรือสถาบันสำคัญของชาติ ต้องดำเนินการด้วยความรอบคอบ
-                    ใช้ถ้อยคำที่เป็นกลาง
-                    และตั้งอยู่บนพื้นฐานของข้อเท็จจริงที่เหมาะสม
-                  </li>
-                  <li>
-                    ผู้เขียนควรตระหนักถึงจริยธรรมด้านการสื่อสารและบทบาทของสื่อในสังคม
-                    โดยใช้ดุลยพินิจอย่างเหมาะสมในการนำเสนอเนื้อหา
-                    อาจมีการพิจารณาจำกัดขอบเขตการนำเสนอ (Self-Censorship)
-                    เพื่อหลีกเลี่ยงผลกระทบทางกฎหมาย และเพื่อคงไว้ซึ่งภาพลักษณ์
-                    ความน่าเชื่อถือ และความเหมาะสมของวารสารและองค์กร
-                  </li>
-                </ol>
+              <div className="text-[#475467] leading-relaxed text-sm md:text-base whitespace-pre-wrap">
+                {getLang(criteriaPage, "content") || `1. บทความต้องเคารพต่อสถาบันพระมหากษัตริย์...`}
               </div>
             </div>
           </div>
@@ -638,3 +670,4 @@ export default async function Home() {
     </div>
   );
 }
+

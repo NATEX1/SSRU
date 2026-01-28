@@ -46,6 +46,7 @@ export default function DashboardSidebar() {
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [pendingCount, setPendingCount] = useState(0);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -63,6 +64,22 @@ export default function DashboardSidebar() {
 
     fetchUser();
   }, [status]);
+
+  useEffect(() => {
+    const fetchPendingCount = async () => {
+      try {
+        const res = await fetch("/api/articles/pending-count");
+        const json = await res.json();
+        if (json.success) {
+          setPendingCount(json.count);
+        }
+      } catch (error) {
+        console.error("fetch pending count error:", error);
+      }
+    };
+
+    fetchPendingCount();
+  }, []);
 
   const menus = [
     {
@@ -97,6 +114,21 @@ export default function DashboardSidebar() {
           label: "SSRU Around",
           icon: BookOpen,
           href: "/backoffice/ssru-around",
+        },
+        {
+          label: "Vlog",
+          icon: Film,
+          href: "/backoffice/vlog",
+        },
+        {
+          label: "สารจากบรรณาธิการ",
+          icon: BookOpen,
+          href: "/backoffice/etidtor",
+        },
+        {
+          label: "เกณฑ์การส่งบทความ",
+          icon: BookOpen,
+          href: "/backoffice/criteria",
         },
         {
           label: "ตั้งค่า",
@@ -134,8 +166,15 @@ export default function DashboardSidebar() {
                   .map((item, i) => (
                     <SidebarMenuItem key={i}>
                       <SidebarMenuButton asChild>
-                        <Link href={item.href}>
-                          <item.icon /> {item.label}
+                        <Link href={item.href} className="justify-between">
+                          <div className="flex items-center gap-2">
+                            <item.icon /> {item.label}
+                          </div>
+                          {item.label === "จัดการบทความ" && pendingCount > 0 && (
+                            <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                              {pendingCount}
+                            </span>
+                          )}
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>

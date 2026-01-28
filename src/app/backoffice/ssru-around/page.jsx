@@ -113,6 +113,7 @@ export default function Page() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [total, setTotal] = useState(0);
+    const [totalRecords, setTotalRecords] = useState(0);
     const [search, setSearch] = useState("");
     const [limit, setLimit] = useState(10);
     const [editingItem, setEditingItem] = useState(null);
@@ -144,6 +145,7 @@ export default function Page() {
             setData(json.data);
             setTotal(json.pagination.total);
             setTotalPages(json.pagination.totalPages);
+            setTotalRecords(json.totalRecords || json.pagination.total);
         } catch (err) {
             console.error(err);
         } finally {
@@ -180,13 +182,19 @@ export default function Page() {
             const oldIndex = data.findIndex((item) => item.id === active.id);
             const newIndex = data.findIndex((item) => item.id === over.id);
 
+            // Reorder items in the array
             const reorderedData = arrayMove(data, oldIndex, newIndex);
+
+            // Use the existing order values from the current view to maintain relative ordering capability
+            // regardless of sort direction (ASC/DESC) or pagination/filtering
+            const originalOrders = data.map((item) => item.order);
 
             const newDataWithUpdatedOrder = reorderedData.map((item, index) => ({
                 ...item,
-                order: (page - 1) * limit + index + 1,
+                order: originalOrders[index],
             }));
 
+            // Optimistically update UI
             setData(newDataWithUpdatedOrder);
 
             const updatedItems = newDataWithUpdatedOrder.map((item) => ({
@@ -348,7 +356,7 @@ export default function Page() {
         <div>
             <div className="flex justify-between mb-8">
                 <h2 className="text-4xl font-bold">จัดการ SSRU Around</h2>
-                <AddSsruAroundDialog onSuccess={fetchData} />
+                <AddSsruAroundDialog onSuccess={fetchData} totalCount={totalRecords} />
 
                 <EditSsruAroundDialog
                     open={editOpen}

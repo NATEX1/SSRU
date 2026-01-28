@@ -35,30 +35,70 @@ model Category {
 }
 
 model Article {
-  id           Int           @id @default(autoincrement()) @map("id")
-  categoryId   Int           @map("category_id")
-  authorId     Int?          @map("author_id")
-  title        String        @map("title")
-  slug         String        @unique @map("slug")
-  excerpt      String?
-  content      String
-  thumbnail    String?
-  status       ArticleStatus @default(draft)
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
-  authorType   AuthorType    @default(user) @map("author_type")
-  penName      String?       @map("pen_name")
-  rejectReason String?       @map("reject_reason")
-  approvedAt   DateTime?     @map("approved_at")
-  approvedById Int?          @map("approved_by_id")
-  keywords     String?
-  viewCount    Int           @default(0) @map("view_count")
-  position     String?       @map("position")
-  shareCount   Int           @default(0) @map("share_count")
-  tags         ArticleTag[]
-  approvedBy   User?         @relation("ArticleApprover", fields: [approvedById], references: [id])
-  author       User?         @relation("ArticleAuthor", fields: [authorId], references: [id])
-  category     Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  id                 Int           @id @default(autoincrement()) @map("id")
+  categoryId         Int           @map("category_id")
+  authorId           Int?          @map("author_id")
+  slug               String        @unique @map("slug")
+  status             ArticleStatus @default(draft)
+  createdAt          DateTime      @default(now()) @map("created_at")
+  updatedAt          DateTime      @updatedAt @map("updated_at")
+  authorType         AuthorType    @default(user) @map("author_type")
+  rejectReason       String?       @map("reject_reason")
+  approvedAt         DateTime?     @map("approved_at")
+  approvedById       Int?          @map("approved_by_id")
+  viewCount          Int           @default(0) @map("view_count")
+  shareCount         Int           @default(0) @map("share_count")
+  compilerName       String?       @map("compiler_name")
+  compilerPosition   String?       @map("compiler_position")
+  isCompiled         Boolean       @default(false) @map("is_compiled")
+  ownerName          String?       @map("owner_name")
+  ownerPosition      String?       @map("owner_position")
+  titleTh            String?       @map("title_th")
+  titleEn            String?       @map("title_en")
+  titleCn            String?       @map("title_cn")
+  excerptTh          String?       @map("excerpt_th")
+  excerptEn          String?       @map("excerpt_en")
+  excerptCn          String?       @map("excerpt_cn")
+  contentTh          String?       @map("content_th")
+  contentEn          String?       @map("content_en")
+  contentCn          String?       @map("content_cn")
+  thumbnailTh        String?       @map("thumbnail_th")
+  thumbnailEn        String?       @map("thumbnail_en")
+  thumbnailCn        String?       @map("thumbnail_cn")
+  penNameTh          String?       @map("pen_name_th")
+  penNameEn          String?       @map("pen_name_en")
+  penNameCn          String?       @map("pen_name_cn")
+  keywordsTh         String?       @map("keywords_th")
+  keywordsEn         String?       @map("keywords_en")
+  keywordsCn         String?       @map("keywords_cn")
+  positionTh         String?       @map("position_th")
+  positionEn         String?       @map("position_en")
+  positionCn         String?       @map("position_cn")
+  ownerNameTh        String?       @map("owner_name_th")
+  ownerNameEn        String?       @map("owner_name_en")
+  ownerNameCn        String?       @map("owner_name_cn")
+  ownerPositionTh    String?       @map("owner_position_th")
+  ownerPositionEn    String?       @map("owner_position_en")
+  ownerPositionCn    String?       @map("owner_position_cn")
+  compilerNameTh     String?       @map("compiler_name_th")
+  compilerNameEn     String?       @map("compiler_name_en")
+  compilerNameCn     String?       @map("compiler_name_cn")
+  compilerPositionTh String?       @map("compiler_position_th")
+  compilerPositionEn String?       @map("compiler_position_en")
+  compilerPositionCn String?       @map("compiler_position_cn")
+  title              String?
+  excerpt            String?
+  content            String?
+  thumbnail          String?
+  keywords           String?
+  position           String?       @map("position")
+  penName            String?       @map("pen_name")
+  publishedAt        DateTime?     @map("published_at")
+  rejectedAt         DateTime?     @map("rejected_at")
+  tags               ArticleTag[]
+  approvedBy         User?         @relation("ArticleApprover", fields: [approvedById], references: [id])
+  author             User?         @relation("ArticleAuthor", fields: [authorId], references: [id])
+  category           Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@map("articles")
 }
@@ -92,26 +132,23 @@ model Comment {
 }
 
 model SiteSetting {
-  id              Int          @id @default(1)
-  nameTh          String?      @map("name_th")
-  nameEn          String?      @map("name_en")
-  nameCn          String?      @map("name_cn")
-  logo            String?
-  phone           String?
-  email           String?
-  googleMapLink   String?      @map("google_map_link")
-  
-  addressTh       String?      @map("address_th")
-  addressEn       String?      @map("address_en")
-  addressCn       String?      @map("address_cn")
-  
-  officeHoursTh   String?      @map("office_hours_th")
-  officeHoursEn   String?      @map("office_hours_en")
-  officeHoursCn   String?      @map("office_hours_cn")
-  
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-  socialLinks     SocialLink[]
+  id            Int          @id @default(1)
+  logo          String?
+  phone         String?
+  email         String?
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+  addressCn     String?      @map("address_cn")
+  addressEn     String?      @map("address_en")
+  addressTh     String?      @map("address_th")
+  googleMapLink String?      @map("google_map_link")
+  officeHoursCn String?      @map("office_hours_cn")
+  officeHoursEn String?      @map("office_hours_en")
+  officeHoursTh String?      @map("office_hours_th")
+  nameCn        String?      @map("name_cn")
+  nameEn        String?      @map("name_en")
+  nameTh        String?      @map("name_th")
+  socialLinks   SocialLink[]
 
   @@map("site_settings")
 }
@@ -151,13 +188,13 @@ model SsruAround {
   titleTh   String   @map("title_th")
   titleEn   String?  @map("title_en")
   titleCn   String?  @map("title_cn")
-  title     String?  @map("title") // Keep for compatibility
+  title     String?  @map("title")
   issue     String?  @map("issue")
   year      String?  @map("year")
   imageTh   String?  @map("image_th")
   imageEn   String?  @map("image_en")
   imageCn   String?  @map("image_cn")
-  image     String?  @map("image") // Keep for compatibility
+  image     String?  @map("image")
   link      String?  @map("link")
   type      String?  @map("type")
   order     Int      @default(1) @map("order")
@@ -167,11 +204,47 @@ model SsruAround {
   @@map("ssru_around")
 }
 
+model Vlog {
+  id         Int      @id @default(autoincrement())
+  titleTh    String   @map("title_th")
+  titleEn    String?  @map("title_en")
+  titleCn    String?  @map("title_cn")
+  youtubeUrl String?  @map("youtube_url")
+  youtubeId  String?  @map("youtube_id")
+  viewCount  Int      @default(0) @map("view_count")
+  order      Int      @default(1) @map("order")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("vlogs")
+}
+
+model Page {
+  id         Int      @id @default(autoincrement())
+  slug       String   @unique
+  titleTh    String?  @map("title_th")
+  titleEn    String?  @map("title_en")
+  titleCn    String?  @map("title_cn")
+  contentTh  String?  @map("content_th")
+  contentEn  String?  @map("content_en")
+  contentCn  String?  @map("content_cn")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  image      String?
+  nameCn     String?  @map("name_cn")
+  nameEn     String?  @map("name_en")
+  nameTh     String?  @map("name_th")
+  positionCn String?  @map("position_cn")
+  positionEn String?  @map("position_en")
+  positionTh String?  @map("position_th")
+
+  @@map("pages")
+}
+
 enum UserStatus {
   active
   inactive
   suspended
-  
+
   @@map("user_status")
 }
 

@@ -7,22 +7,14 @@ import { Pagination } from "swiper/modules";
 import "swiper/css";
 
 import "swiper/css/pagination";
+import { getMultilingualContent } from "@/lib/multilingual";
 
 export default function MagazineCarousel({ data, locale = "th" }) {
-  const getDisplayData = (item) => {
-    const title =
-      locale === "en"
-        ? item.titleEn || item.titleTh || item.title
-        : locale === "cn"
-          ? item.titleCn || item.titleTh || item.title
-          : item.titleTh || item.title;
+  const langSuffix = locale.charAt(0).toUpperCase() + locale.slice(1).toLowerCase();
 
-    const image =
-      locale === "en"
-        ? item.imageEn || item.imageTh || item.image
-        : locale === "cn"
-          ? item.imageCn || item.imageTh || item.image
-          : item.imageTh || item.image;
+  const getDisplayData = (item) => {
+    const title = getMultilingualContent(item, "title", langSuffix);
+    const image = getMultilingualContent(item, "image", langSuffix);
 
     return { title, image };
   };

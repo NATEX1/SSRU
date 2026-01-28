@@ -43,69 +43,121 @@ export async function POST(req) {
     }
 
     const formData = await req.formData();
-
-    const title = formData.get("title");
-    const content = formData.get("content");
     const categoryId = parseInt(formData.get("categoryId") || "0");
     const status = formData.get("status") || "draft";
-    const excerpt = formData.get("excerpt") || "";
-    const keywords = formData.get("keywords") || "";
-
     const authorType = formData.get("authorType") || "user";
-    const penName = formData.get("penName") || "";
-    const position = formData.get("position") || "";
+    const isCompiled = formData.get("isCompiled") === "true";
 
-    if (!title || !content || !categoryId) {
+    // Multilingual Fields
+    const titleTh = formData.get("titleTh") || "";
+    const titleEn = formData.get("titleEn") || "";
+    const titleCn = formData.get("titleCn") || "";
+
+    const contentTh = formData.get("contentTh") || "";
+    const contentEn = formData.get("contentEn") || "";
+    const contentCn = formData.get("contentCn") || "";
+
+    const excerptTh = formData.get("excerptTh") || "";
+    const excerptEn = formData.get("excerptEn") || "";
+    const excerptCn = formData.get("excerptCn") || "";
+
+    const keywordsTh = formData.get("keywordsTh") || "";
+    const keywordsEn = formData.get("keywordsEn") || "";
+    const keywordsCn = formData.get("keywordsCn") || "";
+
+    const penNameTh = formData.get("penNameTh") || "";
+    const penNameEn = formData.get("penNameEn") || "";
+    const penNameCn = formData.get("penNameCn") || "";
+
+    const positionTh = formData.get("positionTh") || "";
+    const positionEn = formData.get("positionEn") || "";
+    const positionCn = formData.get("positionCn") || "";
+
+    const compilerNameTh = formData.get("compilerNameTh") || "";
+    const compilerNameEn = formData.get("compilerNameEn") || "";
+    const compilerNameCn = formData.get("compilerNameCn") || "";
+
+    const compilerPositionTh = formData.get("compilerPositionTh") || "";
+    const compilerPositionEn = formData.get("compilerPositionEn") || "";
+    const compilerPositionCn = formData.get("compilerPositionCn") || "";
+
+    // Validation: At least one language must have title and content
+    const hasTh = titleTh && contentTh;
+    const hasEn = titleEn && contentEn;
+    const hasCn = titleCn && contentCn;
+
+    if (!hasTh && !hasEn && !hasCn) {
       return NextResponse.json(
-        { success: false, message: "Missing required fields" },
+        { success: false, message: "กรุณากรอกข้อมูลครบอย่างน้อย 1 ภาษา (หัวข้อและเนื้อหา)" },
         { status: 400 }
       );
     }
 
-    // validate pen name
-    if (authorType === "penname" && !penName) {
+    if (!categoryId) {
       return NextResponse.json(
-        { success: false, message: "Pen name is required" },
+        { success: false, message: "กรุณาเลือกหมวดหมู่" },
         { status: 400 }
       );
     }
 
-    // handle thumbnail
-    let thumbnailPath = null;
-    const thumbnailFile = formData.get("thumbnail");
-
-    if (thumbnailFile && thumbnailFile.arrayBuffer) {
-      const buffer = Buffer.from(await thumbnailFile.arrayBuffer());
-      const fileName = Date.now() + "-" + thumbnailFile.name;
-      const filePath = path.join(process.cwd(), "public", "uploads", fileName);
-
-      fs.writeFileSync(filePath, buffer);
-      thumbnailPath = "/uploads/" + fileName;
-    }
-
-    const slug = await generateUniqueSlug(title);
-
-    const articleData = {
-      title,
-      slug,
-      content,
-      categoryId,
-      thumbnail: thumbnailPath,
-      status,
-      excerpt,
-      authorType,
-      keywords,
-      authorId: session.user.id ,
-      penName: authorType === "penname" ? penName : null,
-      position: authorType === "penname" ? position : null,
+    // Handle thumbnails for each language
+    const handleUpload = async (fileKey) => {
+      const file = formData.get(fileKey);
+      if (file && file.size > 0 && file.arrayBuffer) {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const fileName = `${Date.now()}-${fileKey}-${file.name}`;
+        const filePath = path.join(process.cwd(), "public", "uploads", fileName);
+        fs.writeFileSync(filePath, buffer);
+        return "/uploads/" + fileName;
+      }
+      return null;
     };
 
-    // create article
+    const thumbnailTh = await handleUpload("thumbnailTh");
+    const thumbnailEn = await handleUpload("thumbnailEn");
+    const thumbnailCn = await handleUpload("thumbnailCn");
+
+    // Slug based on priority: TH -> EN -> CN
+    const slugSource = titleTh || titleEn || titleCn;
+    const slug = await generateUniqueSlug(slugSource);
+
+    const articleData = {
+      slug,
+      categoryId,
+      status,
+      authorId: session.user.id,
+      authorType,
+      isCompiled,
+
+      titleTh, titleEn, titleCn,
+      contentTh, contentEn, contentCn,
+      excerptTh, excerptEn, excerptCn,
+      keywordsTh, keywordsEn, keywordsCn,
+      thumbnailTh, thumbnailEn, thumbnailCn,
+
+      // Pen name / Compiler info
+      penNameTh: authorType === "penname" ? penNameTh : null,
+      penNameEn: authorType === "penname" ? penNameEn : null,
+      penNameCn: authorType === "penname" ? penNameCn : null,
+
+      positionTh: authorType === "penname" ? positionTh : null,
+      positionEn: authorType === "penname" ? positionEn : null,
+      positionCn: authorType === "penname" ? positionCn : null,
+
+      compilerNameTh: (authorType === "penname" && isCompiled) ? compilerNameTh : null,
+      compilerNameEn: (authorType === "penname" && isCompiled) ? compilerNameEn : null,
+      compilerNameCn: (authorType === "penname" && isCompiled) ? compilerNameCn : null,
+
+      compilerPositionEn: (authorType === "penname" && isCompiled) ? compilerPositionEn : null,
+      compilerPositionCn: (authorType === "penname" && isCompiled) ? compilerPositionCn : null,
+    };
+
     const article = await prisma.article.create({
       data: articleData,
     });
 
     return NextResponse.json({ success: true, article }, { status: 201 });
+
   } catch (err) {
     console.error(err);
     return NextResponse.json(
@@ -134,18 +186,12 @@ export async function GET(req) {
 
     if (q) {
       where.OR = [
-        {
-          title: {
-            contains: q,
-            mode: "insensitive",
-          },
-        },
-        {
-          content: {
-            contains: q,
-            mode: "insensitive",
-          },
-        },
+        { titleTh: { contains: q, mode: "insensitive" } },
+        { titleEn: { contains: q, mode: "insensitive" } },
+        { titleCn: { contains: q, mode: "insensitive" } },
+        { contentTh: { contains: q, mode: "insensitive" } },
+        { contentEn: { contains: q, mode: "insensitive" } },
+        { contentCn: { contains: q, mode: "insensitive" } },
       ];
     }
 
@@ -158,7 +204,7 @@ export async function GET(req) {
       where,
       skip: offset,
       take: limit,
-      orderBy: { createdAt: "desc" },
+      orderBy: { updatedAt: "desc" },
       include: {
         category: true,
         tags: {

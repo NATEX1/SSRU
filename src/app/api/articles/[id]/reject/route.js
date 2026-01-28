@@ -18,15 +18,15 @@ export async function POST(req, { params }) {
     }
 
     // console.log(session.user);
-    
+
 
     await prisma.article.update({
       where: { id: Number(id) },
       data: {
         status: "rejected",
         rejectReason: comment,
-        approvedById: session.user.id,
-        approvedAt: new Date(),
+        approvedById: Number(session.user.id),
+        rejectedAt: new Date(),
       },
     });
 
@@ -34,8 +34,8 @@ export async function POST(req, { params }) {
   } catch (error) {
     console.log(error);
     return NextResponse.json({
-        success: false,
-        message: 'Server error'
+      success: false,
+      message: 'Server error'
     })
   }
 }

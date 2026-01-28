@@ -95,7 +95,6 @@ export async function PUT(req, { params }) {
 
     const { id } = await params;
 
-    // ตรวจสอบว่าบทความมีอยู่หรือไม่
     const existingArticle = await prisma.article.findUnique({
       where: { id: Number(id) },
     });
@@ -107,109 +106,126 @@ export async function PUT(req, { params }) {
       );
     }
 
-    // ตรวจสอบสิทธิ์ในการแก้ไข
-    const isAuthor = existingArticle.authorId === session.user.id;
+    const isAuthor = Number(existingArticle.authorId) === Number(session.user.id);
     const isAdmin = session.user.role === "admin";
+    const isApprover = session.user.role === "approver";
 
-    if (!isAuthor && !isAdmin) {
+    if (!isAuthor && !isAdmin && !isApprover) {
       return NextResponse.json(
-        {
-          success: false,
-          message: "Forbidden: You don't have permission to edit this article",
-        },
+        { success: false, message: "Forbidden: You don't have permission to edit this article" },
         { status: 403 }
       );
     }
 
     const formData = await req.formData();
-    const title = formData.get("title");
-    const content = formData.get("content");
-    const categoryId = formData.get("categoryId");
-    const status = formData.get("status");
-    const keywords = formData.get("keywords");
-    const excerpt = formData.get("excerpt");
-    const authorType = formData.get("authorType");
-    const penName = formData.get("penName");
-    const position = formData.get("position");
-    const thumbnail = formData.get("thumbnail");
+    const categoryId = parseInt(formData.get("categoryId") || "0");
+    const status = formData.get("status") || "draft";
+    const authorType = formData.get("authorType") || "user";
+    const isCompiled = formData.get("isCompiled") === "true";
 
-    // Validate required fields
-    if (!title || !content || !categoryId) {
+    // Multilingual Fields
+    const titleTh = formData.get("titleTh") || "";
+    const titleEn = formData.get("titleEn") || "";
+    const titleCn = formData.get("titleCn") || "";
+
+    const contentTh = formData.get("contentTh") || "";
+    const contentEn = formData.get("contentEn") || "";
+    const contentCn = formData.get("contentCn") || "";
+
+    const excerptTh = formData.get("excerptTh") || "";
+    const excerptEn = formData.get("excerptEn") || "";
+    const excerptCn = formData.get("excerptCn") || "";
+
+    const keywordsTh = formData.get("keywordsTh") || "";
+    const keywordsEn = formData.get("keywordsEn") || "";
+    const keywordsCn = formData.get("keywordsCn") || "";
+
+    const penNameTh = formData.get("penNameTh") || "";
+    const penNameEn = formData.get("penNameEn") || "";
+    const penNameCn = formData.get("penNameCn") || "";
+
+    const positionTh = formData.get("positionTh") || "";
+    const positionEn = formData.get("positionEn") || "";
+    const positionCn = formData.get("positionCn") || "";
+
+    const compilerNameTh = formData.get("compilerNameTh") || "";
+    const compilerNameEn = formData.get("compilerNameEn") || "";
+    const compilerNameCn = formData.get("compilerNameCn") || "";
+
+    const compilerPositionTh = formData.get("compilerPositionTh") || "";
+    const compilerPositionEn = formData.get("compilerPositionEn") || "";
+    const compilerPositionCn = formData.get("compilerPositionCn") || "";
+
+    // Validation
+    if (!(titleTh && contentTh) && !(titleEn && contentEn) && !(titleCn && contentCn)) {
       return NextResponse.json(
-        { success: false, message: "Missing required fields" },
+        { success: false, message: "กรุณากรอกข้อมูลครบอย่างน้อย 1 ภาษา (หัวข้อและเนื้อหา)" },
         { status: 400 }
       );
     }
 
-    // จัดการ thumbnail
-    let thumbnailPath = existingArticle.thumbnail;
-    if (thumbnail && thumbnail.size > 0) {
-      const bytes = await thumbnail.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const filename = `${Date.now()}-${thumbnail.name}`;
-      const filepath = path.join(process.cwd(), "public/uploads", filename);
-
-      await writeFile(filepath, buffer);
-      thumbnailPath = `/uploads/${filename}`;
-
-      // ลบ thumbnail เก่า (ถ้ามี)
-      if (existingArticle.thumbnail) {
-        try {
-          const oldPath = path.join(
-            process.cwd(),
-            "public",
-            existingArticle.thumbnail
-          );
-          await unlink(oldPath);
-        } catch (error) {
-          console.log("Old thumbnail not found or cannot delete");
-        }
-      }
+    if (!categoryId) {
+      return NextResponse.json({ success: false, message: "กรุณาเลือกหมวดหมู่" }, { status: 400 });
     }
 
-    // สร้าง update data
-    const updateData = {
-      title,
-      // slug: newSlug,
-      content,
-      excerpt: excerpt || null,
-      keywords: keywords || null,
-      categoryId: parseInt(categoryId),
-      status: status || "draft",
-      thumbnail: thumbnailPath,
+    // Handle thumbnails
+    const handleUpload = async (fileKey, existingPath) => {
+      const file = formData.get(fileKey);
+      if (file && file.size > 0 && file.arrayBuffer) {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const fileName = `${Date.now()}-${fileKey}-${file.name}`;
+        const filePath = path.join(process.cwd(), "public", "uploads", fileName);
+        await writeFile(filepath, buffer);
+        return "/uploads/" + fileName;
+      }
+      return existingPath;
     };
 
-    // จัดการ author type
-    if (authorType === "penname") {
-      updateData.authorType = "penname";
-      updateData.penName = penName?.trim() || null;
-      updateData.position = position?.trim() || null;
-    } else {
-      updateData.authorType = "user";
-      updateData.authorId = session.user.id;
-      updateData.penName = null;
-      updateData.position = null;
-    }
+    const thumbnailTh = await handleUpload("thumbnailTh", existingArticle.thumbnailTh);
+    const thumbnailEn = await handleUpload("thumbnailEn", existingArticle.thumbnailEn);
+    const thumbnailCn = await handleUpload("thumbnailCn", existingArticle.thumbnailCn);
 
-    // Reset approval fields ถ้าเปลี่ยนเป็น pending
+    const updateData = {
+      categoryId,
+      status,
+      authorType,
+      isCompiled,
+
+      titleTh, titleEn, titleCn,
+      contentTh, contentEn, contentCn,
+      excerptTh, excerptEn, excerptCn,
+      keywordsTh, keywordsEn, keywordsCn,
+      thumbnailTh, thumbnailEn, thumbnailCn,
+
+      // Pen name / Compiler info
+      penNameTh: authorType === "penname" ? penNameTh : null,
+      penNameEn: authorType === "penname" ? penNameEn : null,
+      penNameCn: authorType === "penname" ? penNameCn : null,
+
+      positionTh: authorType === "penname" ? positionTh : null,
+      positionEn: authorType === "penname" ? positionEn : null,
+      positionCn: authorType === "penname" ? positionCn : null,
+
+      compilerNameTh: (authorType === "penname" && isCompiled) ? compilerNameTh : null,
+      compilerNameEn: (authorType === "penname" && isCompiled) ? compilerNameEn : null,
+      compilerNameCn: (authorType === "penname" && isCompiled) ? compilerNameCn : null,
+
+      compilerPositionEn: (authorType === "penname" && isCompiled) ? compilerPositionEn : null,
+      compilerPositionCn: (authorType === "penname" && isCompiled) ? compilerPositionCn : null,
+    };
+
+    // Reset approval fields if switching to pending
     if (status === "pending" && existingArticle.status !== "pending") {
       updateData.approvedById = null;
       updateData.approvedAt = null;
       updateData.rejectReason = null;
     }
 
-    // อัพเดทบทความ
     const updatedArticle = await prisma.article.update({
       where: { id: existingArticle.id },
       data: updateData,
       include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
+        author: { select: { id: true, name: true, email: true } },
         category: true,
       },
     });
@@ -219,6 +235,7 @@ export async function PUT(req, { params }) {
       message: "Article updated successfully",
       article: updatedArticle,
     });
+
   } catch (error) {
     console.error("Error updating article:", error);
     return NextResponse.json(

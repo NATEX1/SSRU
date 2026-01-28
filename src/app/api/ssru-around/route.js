@@ -41,7 +41,18 @@ export async function POST(req) {
         const year = formData.get("year");
         const link = formData.get("link");
         const type = formData.get("type");
-        const order = formData.get("order") ? Number(formData.get("order")) : 1;
+
+        // ================= ORDER LOGIC =================
+        // If order is provided in formData, use it. Otherwise, defaults to count + 1
+        const orderFromForm = formData.get("order");
+        let order;
+
+        if (orderFromForm) {
+            order = Number(orderFromForm);
+        } else {
+            const count = await prisma.ssruAround.count();
+            order = count + 1;
+        }
 
         const imageFileTh = formData.get("imageTh");
         const imageFileEn = formData.get("imageEn");
@@ -118,19 +129,21 @@ export async function GET(req) {
             }
             : {};
 
-        const [items, total] = await Promise.all([
+        const [items, total, totalRecords] = await Promise.all([
             prisma.ssruAround.findMany({
                 where,
-                orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+                orderBy: [{ order: "desc" }, { createdAt: "desc" }],
                 skip,
                 take: limit,
             }),
             prisma.ssruAround.count({ where }),
+            prisma.ssruAround.count(), // Total count of all records for default order
         ]);
 
         return NextResponse.json({
             success: true,
             data: items,
+            totalRecords,
             pagination: {
                 total,
                 page,

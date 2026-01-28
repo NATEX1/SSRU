@@ -9,18 +9,22 @@ export const size = {
 
 export const contentType = 'image/png'
 
-export default async function Image({params}) {
-    const {id} = await params;
+export default async function Image({ params }) {
+  const { id } = await params;
 
-    const article = await prisma.article.findUnique({
-        where: {
-            id: Number(id)
-        }
-    })
+  const article = await prisma.article.findUnique({
+    where: {
+      id: Number(id)
+    }
+  })
 
   return new ImageResponse(
     <div className='flex w-full h-full bg-white'>
-      <img src={article?.imageUrl} alt={article?.title} className='object-cover w-full h-full' />
+      <img
+        src={article?.thumbnailTh || article?.thumbnailEn || article?.thumbnailCn}
+        alt={article?.titleTh || article?.titleEn || article?.titleCn}
+        className='object-cover w-full h-full'
+      />
     </div>
   )
 }

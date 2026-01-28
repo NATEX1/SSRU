@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Dialog,
     DialogContent,
@@ -21,7 +21,7 @@ import { Label } from "@/components/ui/label";
 import { Plus, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 
-export default function AddSsruAroundDialog({ onSuccess }) {
+export default function AddSsruAroundDialog({ onSuccess, totalCount = 0 }) {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [imageFiles, setImageFiles] = useState({
@@ -44,6 +44,20 @@ export default function AddSsruAroundDialog({ onSuccess }) {
         type: "Digital Version Available",
         order: 1,
     });
+
+    // Fetch latest count when dialog opens
+    useEffect(() => {
+        if (open) {
+            fetch("/api/ssru-around?limit=1")
+                .then(res => res.json())
+                .then(json => {
+                    if (json.success) {
+                        setFormData(prev => ({ ...prev, order: (json.totalRecords || 0) + 1 }));
+                    }
+                })
+                .catch(err => console.error("Fetch count error:", err));
+        }
+    }, [open]);
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -71,7 +85,7 @@ export default function AddSsruAroundDialog({ onSuccess }) {
             year: "",
             link: "",
             type: "Digital Version Available",
-            order: 1,
+            order: totalCount + 1,
         });
         setImageFiles({ th: null, en: null, cn: null });
         setImagePreviews({ th: null, en: null, cn: null });

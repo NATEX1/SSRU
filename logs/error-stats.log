@@ -1,0 +1,187 @@
+Error: 
+Invalid `prisma.article.findMany()` invocation:
+
+{
+  where: {
+    NOT: {
+      status: "draft"
+    }
+  },
+  select: {
+    status: true,
+    submittedAt: true,
+    ~~~~~~~~~~~
+    approvedAt: true,
+    rejectedAt: true,
+    updatedAt: true,
+    createdAt: true,
+?   id?: true,
+?   categoryId?: true,
+?   authorId?: true,
+?   titleTh?: true,
+?   titleEn?: true,
+?   titleCn?: true,
+?   title?: true,
+?   slug?: true,
+?   excerptTh?: true,
+?   excerptEn?: true,
+?   excerptCn?: true,
+?   excerpt?: true,
+?   contentTh?: true,
+?   contentEn?: true,
+?   contentCn?: true,
+?   content?: true,
+?   thumbnailTh?: true,
+?   thumbnailEn?: true,
+?   thumbnailCn?: true,
+?   thumbnail?: true,
+?   authorType?: true,
+?   penNameTh?: true,
+?   penNameEn?: true,
+?   penNameCn?: true,
+?   penName?: true,
+?   rejectReason?: true,
+?   approvedById?: true,
+?   keywordsTh?: true,
+?   keywordsEn?: true,
+?   keywordsCn?: true,
+?   keywords?: true,
+?   viewCount?: true,
+?   positionTh?: true,
+?   positionEn?: true,
+?   positionCn?: true,
+?   position?: true,
+?   ownerNameTh?: true,
+?   ownerNameEn?: true,
+?   ownerNameCn?: true,
+?   ownerName?: true,
+?   ownerPositionTh?: true,
+?   ownerPositionEn?: true,
+?   ownerPositionCn?: true,
+?   ownerPosition?: true,
+?   isCompiled?: true,
+?   compilerNameTh?: true,
+?   compilerNameEn?: true,
+?   compilerNameCn?: true,
+?   compilerName?: true,
+?   compilerPositionTh?: true,
+?   compilerPositionEn?: true,
+?   compilerPositionCn?: true,
+?   compilerPosition?: true,
+?   publishedAt?: true,
+?   shareCount?: true,
+?   tags?: true,
+?   approvedBy?: true,
+?   author?: true,
+?   category?: true,
+?   _count?: true
+  }
+}
+
+Unknown field `submittedAt` for select statement on model `Article`. Available options are marked with ?.
+Stack: PrismaClientValidationError: 
+Invalid `prisma.article.findMany()` invocation:
+
+{
+  where: {
+    NOT: {
+      status: "draft"
+    }
+  },
+  select: {
+    status: true,
+    submittedAt: true,
+    ~~~~~~~~~~~
+    approvedAt: true,
+    rejectedAt: true,
+    updatedAt: true,
+    createdAt: true,
+?   id?: true,
+?   categoryId?: true,
+?   authorId?: true,
+?   titleTh?: true,
+?   titleEn?: true,
+?   titleCn?: true,
+?   title?: true,
+?   slug?: true,
+?   excerptTh?: true,
+?   excerptEn?: true,
+?   excerptCn?: true,
+?   excerpt?: true,
+?   contentTh?: true,
+?   contentEn?: true,
+?   contentCn?: true,
+?   content?: true,
+?   thumbnailTh?: true,
+?   thumbnailEn?: true,
+?   thumbnailCn?: true,
+?   thumbnail?: true,
+?   authorType?: true,
+?   penNameTh?: true,
+?   penNameEn?: true,
+?   penNameCn?: true,
+?   penName?: true,
+?   rejectReason?: true,
+?   approvedById?: true,
+?   keywordsTh?: true,
+?   keywordsEn?: true,
+?   keywordsCn?: true,
+?   keywords?: true,
+?   viewCount?: true,
+?   positionTh?: true,
+?   positionEn?: true,
+?   positionCn?: true,
+?   position?: true,
+?   ownerNameTh?: true,
+?   ownerNameEn?: true,
+?   ownerNameCn?: true,
+?   ownerName?: true,
+?   ownerPositionTh?: true,
+?   ownerPositionEn?: true,
+?   ownerPositionCn?: true,
+?   ownerPosition?: true,
+?   isCompiled?: true,
+?   compilerNameTh?: true,
+?   compilerNameEn?: true,
+?   compilerNameCn?: true,
+?   compilerName?: true,
+?   compilerPositionTh?: true,
+?   compilerPositionEn?: true,
+?   compilerPositionCn?: true,
+?   compilerPosition?: true,
+?   publishedAt?: true,
+?   shareCount?: true,
+?   tags?: true,
+?   approvedBy?: true,
+?   author?: true,
+?   category?: true,
+?   _count?: true
+  }
+}
+
+Unknown field `submittedAt` for select statement on model `Article`. Available options are marked with ?.
+    at tr (C:\xampp\htdocs\SSRU\.next\dev\server\chunks\ssr\src_generated_prisma_client_runtime_client_5266cab4.js:2128:11)
+    at qr.handleRequestError (C:\xampp\htdocs\SSRU\.next\dev\server\chunks\ssr\src_generated_prisma_client_runtime_client_5266cab4.js:6572:13)
+    at qr.handleAndLogRequestError (C:\xampp\htdocs\SSRU\.next\dev\server\chunks\ssr\src_generated_prisma_client_runtime_client_5266cab4.js:6559:18)
+    at qr.request (C:\xampp\htdocs\SSRU\.next\dev\server\chunks\ssr\src_generated_prisma_client_runtime_client_5266cab4.js:6540:18)
+    at async a (C:\xampp\htdocs\SSRU\.next\dev\server\chunks\ssr\src_generated_prisma_client_runtime_client_5266cab4.js:7170:25)
+    at async GET (C:\xampp\htdocs\SSRU\.next\dev\server\chunks\src_fc96b8d6._.js:228:26)
+    at async AppRouteRouteModule.do (C:\xampp\htdocs\SSRU\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:37866)
+    at async AppRouteRouteModule.handle (C:\xampp\htdocs\SSRU\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45156)
+    at async responseGenerator (C:\xampp\htdocs\SSRU\.next\dev\server\chunks\node_modules_next_d41bd93f._.js:16034:38)
+    at async AppRouteRouteModule.handleResponse (C:\xampp\htdocs\SSRU\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187713)
+    at async handleResponse (C:\xampp\htdocs\SSRU\.next\dev\server\chunks\node_modules_next_d41bd93f._.js:16097:32)
+    at async Module.handler (C:\xampp\htdocs\SSRU\.next\dev\server\chunks\node_modules_next_d41bd93f._.js:16150:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\xampp\htdocs\SSRU\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\xampp\htdocs\SSRU\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\xampp\htdocs\SSRU\node_modules\next\dist\server\base-server.js:1524:32)
+    at async DevServer.pipeImpl (C:\xampp\htdocs\SSRU\node_modules\next\dist\server\base-server.js:1018:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\xampp\htdocs\SSRU\node_modules\next\dist\server\next-server.js:395:17)
+    at async DevServer.handleRequestImpl (C:\xampp\htdocs\SSRU\node_modules\next\dist\server\base-server.js:909:17)
+    at async C:\xampp\htdocs\SSRU\node_modules\next\dist\server\dev\next-dev-server.js:387:20
+    at async Span.traceAsyncFn (C:\xampp\htdocs\SSRU\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\xampp\htdocs\SSRU\node_modules\next\dist\server\dev\next-dev-server.js:383:24)
+    at async invokeRender (C:\xampp\htdocs\SSRU\node_modules\next\dist\server\lib\router-server.js:248:21)
+    at async handleRequest (C:\xampp\htdocs\SSRU\node_modules\next\dist\server\lib\router-server.js:447:24)
+    at async requestHandlerImpl (C:\xampp\htdocs\SSRU\node_modules\next\dist\server\lib\router-server.js:496:13)
+    at async Server.requestListener (C:\xampp\htdocs\SSRU\node_modules\next\dist\server\lib\start-server.js:226:13)

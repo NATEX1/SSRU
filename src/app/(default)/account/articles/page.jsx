@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Pencil } from "lucide-react";
 import DeleteButton from "./delete-button";
+import { getMultilingualContent } from "@/lib/multilingual";
 import {
   Pagination,
   PaginationContent,
@@ -92,7 +93,7 @@ export default async function Page({ searchParams }) {
               <div>
                 <a href={`/articles/${article.id}`} target="_blank">
                   <h3 className="font-medium line-clamp-1 hover:underline">
-                    {article.title}
+                    {getMultilingualContent(article, "title") || "ไม่มีชื่อเรื่อง"}
                   </h3>
                 </a>
 
@@ -133,9 +134,8 @@ export default async function Page({ searchParams }) {
           {/* Previous */}
           <a
             href={`?page=${page - 1}`}
-            className={`btn border btn-square btn-sm ${
-              page <= 1 ? "btn-disabled" : ""
-            }`}
+            className={`btn border btn-square btn-sm ${page <= 1 ? "btn-disabled" : ""
+              }`}
           >
             <ChevronLeft className="w-4 h-4" />
           </a>
@@ -170,9 +170,8 @@ export default async function Page({ searchParams }) {
                 <a
                   key={p}
                   href={`?page=${p}`}
-                  className={`btn btn-sm ${
-                    p === page ? "btn-primary" : "border"
-                  }`}
+                  className={`btn btn-sm ${p === page ? "btn-primary" : "border"
+                    }`}
                 >
                   {p}
                 </a>
@@ -183,9 +182,8 @@ export default async function Page({ searchParams }) {
           {/* Next */}
           <a
             href={`?page=${page + 1}`}
-            className={`btn border btn-square btn-sm ${
-              page >= totalPages ? "btn-disabled" : ""
-            }`}
+            className={`btn border btn-square btn-sm ${page >= totalPages ? "btn-disabled" : ""
+              }`}
           >
             <ChevronRight className="w-4 h-4" />
           </a>

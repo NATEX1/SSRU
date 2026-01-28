@@ -122,6 +122,7 @@ export default function Page() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [search, setSearch] = useState("");
   const [selectedRole, setSelectedRole] = useState("all");
   const [limit, setLimit] = useState(5);
@@ -156,6 +157,7 @@ export default function Page() {
       setData(data.data);
       setTotal(data.pagination.total);
       setTotalPages(data.pagination.totalPages);
+      setTotalRecords(data.totalRecords || data.pagination.total);
     } catch (err) {
       console.error(err);
     } finally {
@@ -195,10 +197,13 @@ export default function Page() {
       // Reorder items in the array
       const reorderedData = arrayMove(data, oldIndex, newIndex);
 
-      // Map the new order numbers (starting from 1 based on current page/limit)
+      // Use the existing order values from the current view to maintain relative ordering capability
+      // regardless of sort direction (ASC/DESC) or pagination/filtering
+      const originalOrders = data.map((item) => item.order);
+
       const newDataWithUpdatedOrder = reorderedData.map((item, index) => ({
         ...item,
-        order: (page - 1) * limit + index + 1,
+        order: originalOrders[index],
       }));
 
       // Optimistically update UI
@@ -287,8 +292,8 @@ export default function Page() {
                 </span>
                 <span
                   className={`truncate ${i === 0
-                      ? "font-semibold text-foreground"
-                      : "text-muted-foreground text-sm"
+                    ? "font-semibold text-foreground"
+                    : "text-muted-foreground text-sm"
                     }`}
                 >
                   {t.text}
@@ -346,7 +351,7 @@ export default function Page() {
     <div>
       <div className="flex justify-between mb-8">
         <h2 className="text-4xl font-bold">จัดการคลิปสั้น</h2>
-        <AddShortClipDialog onSuccess={fetchData} />
+        <AddShortClipDialog onSuccess={fetchData} totalCount={totalRecords} />
 
         <EditShortClipDialog
           open={editOpen}

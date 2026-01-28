@@ -2,6 +2,7 @@
 
 import { ArrowRight, Film, X } from "lucide-react";
 import React, { useState } from "react";
+import { getMultilingualContent } from "@/lib/multilingual";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Grid, Navigation, Pagination } from "swiper/modules";
 
@@ -13,12 +14,12 @@ import "swiper/css/pagination";
 export default function ClipCarousel({ data = [] }) {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [clips, setClips] = useState(
-    [...data].sort((a, b) => (a.order || 0) - (b.order || 0)).slice(0, 4)
+    [...data].slice(0, 4)
   );
 
   // Sync props to state
   React.useEffect(() => {
-    setClips([...data].sort((a, b) => (a.order || 0) - (b.order || 0)).slice(0, 4));
+    setClips([...data].slice(0, 4));
   }, [data]);
 
   const handleClipClick = async (e, item) => {
@@ -69,9 +70,7 @@ export default function ClipCarousel({ data = [] }) {
         <h2 className="text-[#101828] text-2xl font-bold">Short Clips</h2>
 
         <a
-          href="https://www.youtube.com/playlist?list=PL9rBdn9yFjyvkR2D4qZIc5A1_or_CT_XL"
-          target="_blank"
-          rel="noreferrer"
+          href="/short-clips"
           className="hover:underline"
         >
           <div className="text-[#6A7282] flex text-xs items-center gap-1">
@@ -123,14 +122,14 @@ export default function ClipCarousel({ data = [] }) {
                         ? `https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg`
                         : "")
                     }
-                    alt={item.titleTh}
+                    alt={getMultilingualContent(item, "title")}
                     className="w-full object-contain h-[360px] md:h-[360px]"
                     loading="lazy"
                   />
 
                   <div className="p-4 flex flex-col gap-2">
                     <h3 className="font-semibold line-clamp-2">
-                      {item.titleTh}
+                      {getMultilingualContent(item, "title")}
                     </h3>
 
                     <div className="flex gap-1 items-center text-[#99A1AF] text-sm">
@@ -172,14 +171,14 @@ export default function ClipCarousel({ data = [] }) {
                         ? `https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg`
                         : "")
                     }
-                    alt={item.titleTh}
+                    alt={getMultilingualContent(item, "title")}
                     className="h-[150px] w-full object-cover"
                     loading="lazy"
                   />
 
                   <div className="p-4 flex flex-col gap-2">
                     <h3 className="font-semibold line-clamp-2">
-                      {item.titleTh}
+                      {getMultilingualContent(item, "title")}
                     </h3>
 
                     <div className="flex gap-1 items-center text-[#99A1AF] text-sm">
@@ -215,7 +214,7 @@ export default function ClipCarousel({ data = [] }) {
             </div>
 
             <div className="p-4 bg-[#101828] text-white">
-              <h3 className="text-xl font-bold">{selectedVideo.titleTh}</h3>
+              <h3 className="text-xl font-bold">{getMultilingualContent(selectedVideo, "title")}</h3>
               <div className="mt-2 flex gap-4 text-sm text-gray-400">
                 <div className="flex items-center gap-1">
                   <Film className="w-4 h-4" />

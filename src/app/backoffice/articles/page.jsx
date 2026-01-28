@@ -86,10 +86,12 @@ export default function Page() {
 
   const router = useRouter();
 
-  const handleApprove = async (articleId) => {
+  const handleApprove = async (articleId, publishedAt) => {
     try {
       const res = await fetch(`/api/articles/${articleId}/approve`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ publishedAt }),
       });
 
       const json = await res.json();
@@ -165,33 +167,42 @@ export default function Page() {
 
   const columns = [
     {
-      accessorKey: "title",
+      id: "title",
       header: "หัวข้อ",
-      cell: ({ getValue }) => {
-        const value = getValue();
-        // จำกัดความยาว 30 ตัวอักษร และเติม "..." ถ้ายาวเกิน
-        return value.length > 30 ? value.slice(0, 30) + "..." : value;
+      cell: ({ row }) => {
+        const { titleTh, titleEn, titleCn, title } = row.original;
+        return (
+          <div className="flex flex-col gap-1 max-w-[300px]">
+            <p className="font-semibold text-gray-900 line-clamp-1 truncate" title={titleTh || title}>
+              🇹🇭 {titleTh || title || "—"}
+            </p>
+            <p className="text-xs text-muted-foreground line-clamp-1 truncate" title={titleEn}>
+              🇺🇸 {titleEn || "—"}
+            </p>
+            <p className="text-xs text-muted-foreground line-clamp-1 truncate" title={titleCn}>
+              🇨🇳 {titleCn || "—"}
+            </p>
+          </div>
+        );
       },
     },
     {
       id: "author",
       header: "ผู้เขียน",
       cell: ({ row }) => {
-        const { author, authorType, penName } = row.original;
+        const { author, authorType, penNameTh, penName } = row.original;
 
         const displayName =
-          authorType == "penname" ? penName : author?.name || "Unknown";
+          authorType == "penname" ? (penNameTh || penName) : author?.name || "Unknown";
 
         return (
           <div className="flex gap-2 items-center">
             <Avatar>
               <AvatarFallback>{displayName?.[0] || "U"}</AvatarFallback>
             </Avatar>
-
             <div className="flex flex-col">
               <p className="font-medium">{displayName}</p>
-
-              {authorType !== "prename" && (
+              {authorType !== "penname" && (
                 <p className="text-xs text-muted-foreground">{author?.email}</p>
               )}
             </div>
@@ -244,16 +255,35 @@ export default function Page() {
       },
     },
     {
-      id: "createdAt",
-      header: "สร้างเมื่อ",
+      id: "updatedAt",
+      header: "อัปเดตล่าสุด",
       cell: ({ row }) => {
-        const date = new Date(row.original.createdAt);
+        const date = new Date(row.original.updatedAt || row.original.createdAt);
 
         return date.toLocaleDateString("th-TH", {
           year: "numeric",
           month: "long",
           day: "numeric",
         });
+      },
+    },
+    {
+      id: "publishedAt",
+      header: "วันที่เผยแพร่",
+      cell: ({ row }) => {
+        const { publishedAt, status } = row.original;
+        if (!publishedAt || status !== "approved") return <span className="text-muted-foreground text-xs">—</span>;
+
+        const date = new Date(publishedAt);
+        return (
+          <div className="text-xs font-medium text-blue-700">
+            {date.toLocaleDateString("th-TH", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </div>
+        );
       },
     },
     {
@@ -326,7 +356,7 @@ export default function Page() {
             </Link>
 
             {/* Approve */}
-            <ApproveDialog onApprove={() => handleApprove(article.id)}>
+            <ApproveDialog onApprove={(date) => handleApprove(article.id, date)}>
               <Button
                 variant="ghost"
                 size="sm"

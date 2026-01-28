@@ -11,13 +11,12 @@ const adapter = new PrismaPg({
 if (process.env.NODE_ENV === "production") {
     prisma = new PrismaClient({ adapter });
 } else {
-    // @ts-ignore
+    // ใน Dev Mode ให้ใช้ global เพื่อป้องกันการสร้าง instance ซ้ำซ้อน
     if (!global.prisma) {
-        // ใส่ {} เป็น PrismaClientOptions ว่าง
         global.prisma = new PrismaClient({ adapter });
     }
-    // @ts-ignore
     prisma = global.prisma;
 }
 
+// Refresh tag: 1
 export default prisma;

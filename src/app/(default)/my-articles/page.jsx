@@ -1,9 +1,9 @@
-import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { getMultilingualContent } from "@/lib/multilingual";
 // import { Badge } from "@/components/ui/badge"
 import { Pencil, Trash } from "lucide-react";
 
@@ -41,7 +41,9 @@ export default async function Page() {
             className="flex items-center justify-between border rounded-lg p-4"
           >
             <div>
-              <h3 className="font-medium">{article.title}</h3>
+              <h3 className="font-medium">
+                {getMultilingualContent(article, "title") || "ไม่มีหัวข้อ"}
+              </h3>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span>{article.createdAt.toLocaleDateString()}</span>
               </div>

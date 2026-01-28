@@ -5,9 +5,9 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function layout({ children }) {
   return (
-    <div className="bg-white">
+    <div className="bg-white flex flex-col min-h-screen">
       <AppHeader />
-      <main>
+      <main className="flex-1">
         <AppSidebar />
         <div className="container mx-auto mt-20">{children}</div>
       </main>

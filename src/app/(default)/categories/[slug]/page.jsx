@@ -7,7 +7,10 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+import { getMultilingualContent } from "@/lib/multilingual";
+
 async function getCategoryBySlug(rawSlug, page = 1, limit = 9) {
+  // ... existing code ...
   const slug = decodeURIComponent(rawSlug);
   const skip = (page - 1) * limit;
 
@@ -17,6 +20,7 @@ async function getCategoryBySlug(rawSlug, page = 1, limit = 9) {
       articles: {
         where: {
           status: "approved",
+          publishedAt: { lte: new Date() },
         },
         skip,
         take: limit,
@@ -66,7 +70,7 @@ export default async function CategoryPage({ params, searchParams }) {
   }
 
   return (
-    <div>
+    <div className="space-y-8 py-12">
       {/* <div className="relative w-full h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden mb-8">
         <div className="absolute inset-0">
           <Image
@@ -93,67 +97,64 @@ export default async function CategoryPage({ params, searchParams }) {
       {category.articles.length > 0 ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto px-4 mt-8">
-            {category.articles.map((article, i) => (
-              <div
-                className="card shadow-sm group relative overflow-hidden"
-                key={i}
-              >
-                {/* {session && session.user?.id === article.authorId && (
-                  <Link
-                    href={`/articles/${article.id}/edit`}
-                    className="absolute top-2 right-2 bg-black/80 rounded-full size-6 text-white z-20
-               flex items-center justify-center hover:bg-black transition"
-                  >
-                    <Pencil className="size-3" />
-                  </Link>
-                )} */}
+            {category.articles.map((article, i) => {
+              const title = getMultilingualContent(article, "title") || "ไม่มีชื่อเรื่อง";
+              const thumbnail = getMultilingualContent(article, "thumbnail");
+              const excerpt = getMultilingualContent(article, "excerpt");
+              const penName = getMultilingualContent(article, "penName");
 
-                <figure className="h-40">
-                  <a href={`/articles/${article.id}`}>
-                    <img
-                      src={article.thumbnail}
-                      alt={article.title}
-                      className="group-hover:scale-105 transition duration-150 h-full w-full object-cover"
-                    />
-                  </a>
-                </figure>
-                <div className="card-body">
-                  <p className="text-xs text-[#99A1AF] flex gap-1">
-                    <span className="text-[#F06FAA]">
-                      {article.penName || article.author.name}
-                    </span>
-                    <span>|</span>
-                    <span>
-                      {new Date(article.createdAt).toLocaleDateString("th-TH", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </span>
-                  </p>
-                  <a href={`/articles/${article.id}`}>
-                    <h2 className="card-title line-clamp-2 hover:underline">
-                      {article.title}
-                    </h2>
-                  </a>
-                  <p className="text-[#4A5565] line-clamp-2">
-                    {article.excerpt}
-                  </p>
-                  <div className="card-actions">
-                    <div className="flex gap-2">
-                      <p className="text-[#99A1AF] flex items-center gap-1">
-                        <Eye className="size-[1em]" />
-                        <span>{article.viewCount} อ่าน</span>
-                      </p>
-                      <p className="text-[#99A1AF] flex items-center gap-1">
-                        <Share2 className="size-[1em]" />
-                        <span>{article.shareCount} แชร์</span>
-                      </p>
+              return (
+                <div
+                  className="card shadow-sm group relative overflow-hidden"
+                  key={i}
+                >
+                  <figure className="h-40">
+                    <a href={`/articles/${article.id}`}>
+                      <img
+                        src={thumbnail}
+                        alt={title}
+                        className="group-hover:scale-105 transition duration-150 h-full w-full object-cover"
+                      />
+                    </a>
+                  </figure>
+                  <div className="card-body">
+                    <p className="text-xs text-[#99A1AF] flex gap-1">
+                      <span className="text-[#F06FAA]">
+                        {article.authorType === "penname" ? (penName || article.penName || "SSRU") : (article.author?.name || "SSRU")}
+                      </span>
+                      <span>|</span>
+                      <span>
+                        {new Date(article.publishedAt).toLocaleDateString("th-TH", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </span>
+                    </p>
+                    <a href={`/articles/${article.id}`}>
+                      <h2 className="card-title line-clamp-2 hover:underline">
+                        {title}
+                      </h2>
+                    </a>
+                    <p className="text-[#4A5565] line-clamp-2">
+                      {excerpt}
+                    </p>
+                    <div className="card-actions">
+                      <div className="flex gap-2">
+                        <p className="text-[#99A1AF] flex items-center gap-1">
+                          <Eye className="size-[1em]" />
+                          <span>{article.viewCount} อ่าน</span>
+                        </p>
+                        <p className="text-[#99A1AF] flex items-center gap-1">
+                          <Share2 className="size-[1em]" />
+                          <span>{article.shareCount} แชร์</span>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="max-w-6xl mx-auto px-4">

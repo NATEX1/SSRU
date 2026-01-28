@@ -4,15 +4,20 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ArticleSlider({ data }) {
+  const getLang = (obj, field) => {
+    if (!obj) return "";
+    return obj[`${field}Th`] || obj[`${field}En`] || obj[`${field}Cn`] || "";
+  };
+
   const articles = data
     .filter((c) => c.article) // ✅ ตัด null ออก
     .map((c) => ({
       id: c.article.id,
-      title: c.article.title,
+      title: getLang(c.article, "title"),
       slug: c.article.slug,
-      excerpt: c.article.excerpt,
-      image: c.article.thumbnail,
-      author: c.article.penName ?? c.article.author?.name ,
+      excerpt: getLang(c.article, "excerpt"),
+      image: getLang(c.article, "thumbnail"),
+      author: getLang(c.article, "penName") || c.article.author?.name || "SSRU",
       dateText: new Date(c.article.createdAt).toLocaleDateString("th-TH", {
         day: "numeric",
         month: "long",
@@ -45,8 +50,8 @@ export default function ArticleSlider({ data }) {
       <div className="grid md:grid-cols-2 gap-6">
         {/* image */}
         <div className="relative aspect-video overflow-hidden rounded-lg">
-            <AnimatePresence mode="wait">
-              <a href={`/articles/${current.id}`}>
+          <AnimatePresence mode="wait">
+            <a href={`/articles/${current.id}`}>
               <motion.img
                 key={current.id}
                 src={current.image}
@@ -57,8 +62,8 @@ export default function ArticleSlider({ data }) {
                 transition={{ duration: 0.3 }}
                 className="absolute inset-0 w-full h-full object-cover"
               />
-              </a>
-            </AnimatePresence>
+            </a>
+          </AnimatePresence>
         </div>
 
         {/* content */}
@@ -86,9 +91,8 @@ export default function ArticleSlider({ data }) {
                   setDirection(i > slideIndex ? 1 : -1);
                   setSlideIndex(i);
                 }}
-                className={`h-3 rounded-full transition-all ${
-                  i === slideIndex ? "bg-purple-600 w-8" : "bg-gray-300 w-3"
-                }`}
+                className={`h-3 rounded-full transition-all ${i === slideIndex ? "bg-purple-600 w-8" : "bg-gray-300 w-3"
+                  }`}
               />
             ))}
           </div>

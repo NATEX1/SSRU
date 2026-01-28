@@ -26,9 +26,9 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 py-12">
       <div className="text-center flex flex-col items-center mt-8">
-        <h1 className="text-[#3F458D] text-5xl font-bold uppercase">SSRU Around</h1>
+        <h2 className="text-[#3F458D] text-4xl font-bold uppercase">SSRU Around</h2>
         <div className=" rounded bg-[#F06FAA] w-24 h-1 mt-8"></div>
       </div>
 

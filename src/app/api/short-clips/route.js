@@ -117,6 +117,18 @@ export async function POST(req) {
       }
     }
 
+    // ================= ORDER LOGIC =================
+    // If order is provided in formData, use it. Otherwise, defaults to count + 1
+    const orderFromForm = parseInt(formData.get("order"));
+    let newOrder;
+
+    if (!isNaN(orderFromForm)) {
+      newOrder = orderFromForm;
+    } else {
+      const count = await prisma.shortClip.count();
+      newOrder = count + 1;
+    }
+
     // ================= PRISMA =================
     const clip = await prisma.shortClip.create({
       data: {
@@ -127,6 +139,7 @@ export async function POST(req) {
         thumbnailUrl,
         youtubeUrl,
         youtubeId,
+        order: newOrder,
       },
     });
 
@@ -160,22 +173,24 @@ export async function GET(req) {
       }
       : {}
 
-    const [shortClips, total] = await Promise.all([
+    const [shortClips, total, totalRecords] = await Promise.all([
       prisma.shortClip.findMany({
         where,
         orderBy: [
-          { order: "asc" },
+          { order: "desc" },
           { updatedAt: "desc" },
         ],
         skip,
         take: limit,
       }),
       prisma.shortClip.count({ where }),
+      prisma.shortClip.count(), // Total count of all records for default order
     ])
 
     return NextResponse.json({
       success: true,
       data: shortClips,
+      totalRecords,
       pagination: {
         total,
         page,

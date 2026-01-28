@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 
-export default function AddShortClipDialog({ onSuccess }) {
+export default function AddShortClipDialog({ onSuccess, totalCount = 0 }) {
   const [open, setOpen] = useState(false);
   const [type, setType] = useState("upload");
   const [loading, setLoading] = useState(false);
@@ -27,6 +27,20 @@ export default function AddShortClipDialog({ onSuccess }) {
     youtubeUrl: "",
     order: 1,
   });
+
+  // Fetch latest count when dialog opens
+  useEffect(() => {
+    if (open) {
+      fetch("/api/short-clips?limit=1")
+        .then(res => res.json())
+        .then(json => {
+          if (json.success) {
+            setForm(prev => ({ ...prev, order: (json.totalRecords || 0) + 1 }));
+          }
+        })
+        .catch(err => console.error("Fetch count error:", err));
+    }
+  }, [open]);
 
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -56,7 +70,7 @@ export default function AddShortClipDialog({ onSuccess }) {
       titleEn: "",
       titleCn: "",
       youtubeUrl: "",
-      order: 1,
+      order: totalCount + 1,
     });
     setVideoFile(null);
     setThumbnailFile(null);

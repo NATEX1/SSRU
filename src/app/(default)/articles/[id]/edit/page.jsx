@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import ArticleForm from "@/components/article-form";
 
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+
 export default function page() {
   const params = useParams();
   const { id } = params;
@@ -11,6 +14,7 @@ export default function page() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -38,14 +42,12 @@ export default function page() {
     }
   }, [id]);
 
-  // จัดการหลังบันทึกสำเร็จ - ใช้ slug ใหม่จาก response
-  const handleSubmitSuccess = (data) => {
-    if (data?.article?.slug) {
-      // ใช้ slug ใหม่จาก response (กรณี title เปลี่ยน slug จะเปลี่ยนตาม)
-      router.push(`/articles/${data.article.id}`);
+  // จัดการหลังบันทึกสำเร็จ
+  const handleSuccess = () => {
+    if (session?.user?.role === "admin" || session?.user?.role === "approver") {
+      router.push("/backoffice/articles");
     } else {
-      // fallback ใช้ slug เดิม
-      router.push(`/articles/${id}`);
+      router.push("/account/articles");
     }
   };
 
@@ -85,7 +87,7 @@ export default function page() {
     <ArticleForm
       mode="edit"
       initialData={article}
-      onSubmitSuccess={() => router.push("/account/articles")}
+      onSubmitSuccess={handleSuccess}
     />
   );
 }

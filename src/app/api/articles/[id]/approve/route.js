@@ -19,12 +19,21 @@ export async function POST(req, { params }) {
       return NextResponse.json({ message: "ไม่พบบทความ" }, { status: 404 });
     }
 
+    let publishedAt = null;
+    try {
+      const body = await req.json();
+      publishedAt = body.publishedAt;
+    } catch (e) {
+      // Body might be empty, ignore
+    }
+
     await prisma.article.update({
       where: { id: Number(id) },
       data: {
         status: "approved",
         approvedAt: new Date(),
-        approvedById: session.user.id,
+        approvedById: Number(session.user.id),
+        publishedAt: publishedAt ? new Date(publishedAt) : new Date(),
       },
     });
 
@@ -33,10 +42,11 @@ export async function POST(req, { params }) {
       message: "อนุมัติบทความเรียบร้อย",
     });
   } catch (error) {
-    console.log(error);
+    console.error("Approval Error:", error);
     return NextResponse.json({
       success: false,
-      message: "Server error",
+      message: error.message || "Server error",
+      stack: process.env.NODE_ENV === "development" ? error.stack : undefined
     });
   }
 }
