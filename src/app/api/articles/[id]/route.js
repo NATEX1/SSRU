@@ -210,6 +210,7 @@ export async function PUT(req, { params }) {
       compilerNameEn: (authorType === "penname" && isCompiled) ? compilerNameEn : null,
       compilerNameCn: (authorType === "penname" && isCompiled) ? compilerNameCn : null,
 
+      compilerPositionTh: (authorType === "penname" && isCompiled) ? compilerPositionTh : null,
       compilerPositionEn: (authorType === "penname" && isCompiled) ? compilerPositionEn : null,
       compilerPositionCn: (authorType === "penname" && isCompiled) ? compilerPositionCn : null,
     };
