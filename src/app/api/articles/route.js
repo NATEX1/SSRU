@@ -179,6 +179,8 @@ export async function GET(req) {
     const category = searchParams.get("category");
     const status = searchParams.get("status");
     const q = searchParams.get("q");
+    const sort = searchParams.get("sort") || "updatedAt";
+    const order = searchParams.get("order") || "desc";
 
     const where = {};
 
@@ -211,12 +213,32 @@ export async function GET(req) {
       where.categoryId = Number(category);
     }
 
+    // Map frontend column IDs to Prisma fields
+    const sortMapping = {
+      title: "titleTh",
+      author: "author.name", // This might need nested sorting handling
+      categoryId: "categoryId",
+      "category.name": "category.name",
+      status: "status",
+      updatedAt: "updatedAt",
+      publishedAt: "publishedAt",
+    };
+
+    let orderBy = {};
+    if (sort === "author") {
+      orderBy = { author: { name: order } };
+    } else if (sort === "category.name") {
+      orderBy = { category: { name: order } };
+    } else {
+      orderBy = { [sortMapping[sort] || "updatedAt"]: order };
+    }
+
     // Query articles พร้อม relation
     const articles = await prisma.article.findMany({
       where,
       skip: offset,
       take: limit,
-      orderBy: { updatedAt: "desc" },
+      orderBy,
       include: {
         category: true,
         tags: {

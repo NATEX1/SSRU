@@ -45,6 +45,9 @@ import {
   Trash,
   X,
   XCircle,
+  ArrowUpDown,
+  ChevronUp,
+  ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -83,6 +86,7 @@ export default function Page() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
+  const [sorting, setSorting] = useState([{ id: "updatedAt", desc: true }]);
   const [categories, setCategories] = useState([]);
 
   const router = useRouter();
@@ -171,6 +175,7 @@ export default function Page() {
 
   const columns = [
     {
+      accessorKey: "titleTh",
       id: "title",
       header: "หัวข้อ",
       cell: ({ row }) => {
@@ -259,7 +264,7 @@ export default function Page() {
       },
     },
     {
-      id: "updatedAt",
+      accessorKey: "updatedAt",
       header: "อัปเดตล่าสุด",
       cell: ({ row }) => {
         const date = new Date(row.original.updatedAt || row.original.createdAt);
@@ -272,7 +277,7 @@ export default function Page() {
       },
     },
     {
-      id: "publishedAt",
+      accessorKey: "publishedAt",
       header: "วันที่เผยแพร่",
       cell: ({ row }) => {
         const { publishedAt, status } = row.original;
@@ -412,6 +417,11 @@ export default function Page() {
         limit: String(limit),
       });
 
+      if (sorting && sorting.length > 0) {
+        params.append("sort", sorting[0].id);
+        params.append("order", sorting[0].desc ? "desc" : "asc");
+      }
+
       if (search) params.append("q", search);
       if (selectedCategory !== "all")
         params.append("category", selectedCategory);
@@ -436,7 +446,7 @@ export default function Page() {
   useEffect(() => {
     const handler = setTimeout(fetchArticles, 500);
     return () => clearTimeout(handler);
-  }, [page, search, selectedCategory, selectedStatus, limit]);
+  }, [page, search, selectedCategory, selectedStatus, limit, sorting]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -459,7 +469,12 @@ export default function Page() {
   const table = useReactTable({
     data,
     columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    manualSorting: true,
   });
 
   return (
@@ -557,11 +572,27 @@ export default function Page() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                    <TableHead
+                      key={header.id}
+                      className={header.column.getCanSort() ? "cursor-pointer select-none" : ""}
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      <div className="flex items-center gap-1">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        {header.column.getCanSort() && (
+                          <div className="w-4">
+                            {{
+                              asc: <ChevronUp className="h-4 w-4" />,
+                              desc: <ChevronDown className="h-4 w-4" />,
+                            }[header.column.getIsSorted()] ?? (
+                                <ArrowUpDown className="h-4 w-4 text-muted-foreground/50" />
+                              )}
+                          </div>
+                        )}
+                      </div>
                     </TableHead>
                   ))}
                 </TableRow>
