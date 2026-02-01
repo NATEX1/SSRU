@@ -27,15 +27,19 @@ export async function POST(req, { params }) {
       // Body might be empty, ignore
     }
 
-    await prisma.article.update({
-      where: { id: Number(id) },
-      data: {
-        status: "approved",
-        approvedAt: new Date(),
-        approvedById: Number(session.user.id),
-        publishedAt: publishedAt ? new Date(publishedAt) : new Date(),
-      },
-    });
+    // Use raw SQL to bypass Prisma's automatic updatedAt update
+    const finalPublishedAt = publishedAt ? new Date(publishedAt) : new Date();
+    const now = new Date();
+
+    await prisma.$executeRaw`
+      UPDATE articles 
+      SET 
+        status = 'approved',
+        approved_at = ${now},
+        approved_by_id = ${Number(session.user.id)},
+        published_at = ${finalPublishedAt}
+      WHERE id = ${Number(id)}
+    `;
 
     return NextResponse.json({
       success: true,
