@@ -62,7 +62,7 @@ export default function VlogCarousel({ data = [] }) {
           <div className="flex items-start gap-3">
             <div className="w-2 h-7 rounded-full bg-[#F06FAA]" />
             <h4 className="text-xl md:text-2xl font-bold text-[#101828] leading-tight">
-              Vlog
+              SSRU Vlog
             </h4>
           </div>
           <a
@@ -116,15 +116,6 @@ export default function VlogCarousel({ data = [] }) {
                           <Film className="h-3" />
                           <span>• {(item.viewCount || 0).toLocaleString()} views</span>
                         </div>
-                        {item.publishedAt && (
-                          <span>
-                            {new Date(item.publishedAt).toLocaleDateString("th-TH", {
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                            })}
-                          </span>
-                        )}
                       </div>
                     </div>
                   </div>
@@ -169,15 +160,7 @@ export default function VlogCarousel({ data = [] }) {
                           {item.titleEn && <span className="mr-2">EN: {item.titleEn}</span>}
                           {item.titleCn && <span>CN: {item.titleCn}</span>}
                         </p>
-                        {item.publishedAt && (
-                          <p className="text-[10px] text-[#99A1AF]">
-                            เผยแพร่เมื่อ: {new Date(item.publishedAt).toLocaleDateString("th-TH", {
-                              day: "numeric",
-                              month: "long",
-                              year: "numeric",
-                            })}
-                          </p>
-                        )}
+
                       </div>
                     </div>
 

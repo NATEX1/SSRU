@@ -82,6 +82,7 @@ export default function Page() {
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("all");
   const [categories, setCategories] = useState([]);
 
   const router = useRouter();
@@ -104,6 +105,7 @@ export default function Page() {
         description: "อนุมัติบทความเรียบร้อยแล้ว",
       });
 
+      window.dispatchEvent(new CustomEvent("refresh-pending-count"));
       await fetchArticles();
     } catch (error) {
       toast.error("เกิดข้อผิดพลาด", {
@@ -130,6 +132,7 @@ export default function Page() {
 
       toast.success("สำเร็จ", { description: "ไม่อนุมัติบทความเรียบร้อยแล้ว" });
 
+      window.dispatchEvent(new CustomEvent("refresh-pending-count"));
       await fetchArticles();
     } catch (error) {
       toast.error("เกิดข้อผิดพลาด", {
@@ -155,6 +158,7 @@ export default function Page() {
       toast.success("สำเร็จ", { description: "ลบรายการเรียบร้อยแล้ว" });
 
       // router.refresh()
+      window.dispatchEvent(new CustomEvent("refresh-pending-count"));
       await fetchArticles();
     } catch (error) {
       console.log(error);
@@ -411,6 +415,8 @@ export default function Page() {
       if (search) params.append("q", search);
       if (selectedCategory !== "all")
         params.append("category", selectedCategory);
+      if (selectedStatus !== "all")
+        params.append("status", selectedStatus);
 
       const res = await fetch(`/api/articles?${params.toString()}`);
       const json = await res.json();
@@ -430,16 +436,17 @@ export default function Page() {
   useEffect(() => {
     const handler = setTimeout(fetchArticles, 500);
     return () => clearTimeout(handler);
-  }, [page, search, selectedCategory, limit]);
+  }, [page, search, selectedCategory, selectedStatus, limit]);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("/api/categories");
+        const res = await fetch("/api/categories?limit=100");
         const json = await res.json();
 
         if (json.success) {
-          setCategories(json.data || []);
+          const fetchedCategories = json.categories || json.data || [];
+          setCategories(Array.isArray(fetchedCategories) ? fetchedCategories : []);
         }
       } catch (error) {
         console.error("Failed to fetch categories", error);
@@ -464,16 +471,16 @@ export default function Page() {
       {/* Table */}
       <div className="rounded-2xl shadow border bg-white">
         <div className="p-4 flex gap-1 justify-between">
-          <Select value={limit} onValueChange={setLimit}>
-            <SelectTrigger>
+          <Select value={String(limit)} onValueChange={(val) => setLimit(Number(val))}>
+            <SelectTrigger className="w-20">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={5}>5</SelectItem>
-              <SelectItem value={10}>10</SelectItem>
-              <SelectItem value={25}>25</SelectItem>
-              <SelectItem value={50}>50</SelectItem>
-              <SelectItem value={100}>100</SelectItem>
+              <SelectItem value="5">5</SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="25">25</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>
             </SelectContent>
           </Select>
 
@@ -492,11 +499,11 @@ export default function Page() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant={"ghost"}>
-                  <Filter />
+                  <Filter className="mr-2 h-4 w-4" /> กรอง
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>เลือกหมวดหมู่</DropdownMenuLabel>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>หมวดหมู่</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuRadioGroup
                   value={selectedCategory}
@@ -506,10 +513,31 @@ export default function Page() {
                     ทั้งหมด
                   </DropdownMenuRadioItem>
                   {categories.map((cat) => (
-                    <DropdownMenuRadioItem value={cat.id} key={cat.id}>
+                    <DropdownMenuRadioItem value={String(cat.id)} key={cat.id}>
                       {cat.name}
                     </DropdownMenuRadioItem>
                   ))}
+                </DropdownMenuRadioGroup>
+
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>สถานะ</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuRadioGroup
+                  value={selectedStatus}
+                  onValueChange={setSelectedStatus}
+                >
+                  <DropdownMenuRadioItem value="all">
+                    ทั้งหมด
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="pending">
+                    รออนุมัติ
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="approved">
+                    อนุมัติแล้ว
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="rejected">
+                    ไม่อนุมัติ
+                  </DropdownMenuRadioItem>
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenu>

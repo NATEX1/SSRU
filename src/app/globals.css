@@ -18,8 +18,10 @@ body {
   --card-foreground: #000000;
   --popover: #fcfcfc;
   --popover-foreground: #000000;
-  --primary: #372aac;
+  --primary: #f06faa;
   --primary-foreground: #ffffff;
+  --swiper-pagination-color: #f06faa;
+  --swiper-theme-color: #f06faa;
   --secondary: #ebebeb;
   --secondary-foreground: #000000;
   --muted: #f5f5f5;
@@ -128,6 +130,7 @@ body {
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
+  --color-ssru-pink: #f06faa;
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -187,8 +190,14 @@ body {
   }
 }
 
-article img{
+article img {
   @apply max-h-[800px] max-w-[800px] h-full w-full object-contain mx-auto;
+}
+
+.swiper-pagination-bullet-active {
+  background: #f06faa !important;
+  background-color: #f06faa !important;
+  opacity: 1 !important;
 }
 
 /* 

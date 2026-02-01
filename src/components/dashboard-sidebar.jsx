@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -65,21 +65,27 @@ export default function DashboardSidebar() {
     fetchUser();
   }, [status]);
 
-  useEffect(() => {
-    const fetchPendingCount = async () => {
-      try {
-        const res = await fetch("/api/articles/pending-count");
-        const json = await res.json();
-        if (json.success) {
-          setPendingCount(json.count);
-        }
-      } catch (error) {
-        console.error("fetch pending count error:", error);
+  const fetchPendingCount = useCallback(async () => {
+    try {
+      const res = await fetch("/api/articles/pending-count");
+      const json = await res.json();
+      if (json.success) {
+        setPendingCount(json.count);
       }
-    };
-
-    fetchPendingCount();
+    } catch (error) {
+      console.error("fetch pending count error:", error);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchPendingCount();
+
+    // Listen for custom event to refresh count
+    window.addEventListener("refresh-pending-count", fetchPendingCount);
+    return () => {
+      window.removeEventListener("refresh-pending-count", fetchPendingCount);
+    };
+  }, [fetchPendingCount]);
 
   const menus = [
     {

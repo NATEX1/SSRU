@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import Pagination from "@/components/pagination";
 import { getMultilingualContent } from "@/lib/multilingual";
+import { Film } from "lucide-react";
 
 // Reusing helper functions from home page
 const extractYoutubeId = (url) => {
@@ -101,7 +102,7 @@ export default async function VlogPage({ searchParams }) {
     return (
         <div className="space-y-8 py-12">
             <div className="text-center flex flex-col items-center mt-8">
-                <h2 className="text-[#3F458D] text-4xl font-bold uppercase">Vlog</h2>
+                <h2 className="text-[#3F458D] text-4xl font-bold uppercase">SSRU Vlog</h2>
                 <div className=" rounded bg-[#F06FAA] w-24 h-1 mt-8"></div>
             </div>
 

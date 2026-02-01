@@ -235,28 +235,24 @@ export default function VlogPage() {
         {
             id: "actions",
             cell: ({ row }) => (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <MoreHorizontal className="h-4 w-4" />
+                <div className="flex items-center gap-1">
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="underline cursor-pointer"
+                        onClick={() => {
+                            setEditingVlog(row.original);
+                            setIsEditOpen(true);
+                        }}
+                    >
+                        <Pencil className="mr-2 h-4 w-4" /> แก้ไข
+                    </Button>
+                    <DeleteDialog onConfirm={() => handleDelete(row.original.id)}>
+                        <Button variant="ghost" size="sm" className="text-destructive underline cursor-pointer hover:bg-destructive/10">
+                            <Trash2 className="mr-2 h-4 w-4" /> ลบ
                         </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                            onClick={() => {
-                                setEditingVlog(row.original);
-                                setIsEditOpen(true);
-                            }}
-                        >
-                            <Pencil className="mr-2 h-4 w-4" /> แก้ไข
-                        </DropdownMenuItem>
-                        <DeleteDialog onConfirm={() => handleDelete(row.original.id)}>
-                            <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-destructive">
-                                <Trash2 className="mr-2 h-4 w-4" /> ลบ
-                            </DropdownMenuItem>
-                        </DeleteDialog>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                    </DeleteDialog>
+                </div>
             ),
         },
     ];

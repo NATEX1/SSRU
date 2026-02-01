@@ -176,23 +176,34 @@ export async function GET(req) {
     const offset = (page - 1) * limit;
 
     const category = searchParams.get("category");
+    const status = searchParams.get("status");
     const q = searchParams.get("q");
 
-    const where = {
-      NOT: {
-        status: 'draft'
-      }
-    };
+    const where = {};
+
+    if (status && status !== "all") {
+      where.status = status;
+    } else {
+      // Exclude drafts by default for backoffice list (unless they want to see "draft" specifically, but user asked to exclude it from filter)
+      where.NOT = { status: "draft" };
+    }
 
     if (q) {
-      where.OR = [
-        { titleTh: { contains: q, mode: "insensitive" } },
-        { titleEn: { contains: q, mode: "insensitive" } },
-        { titleCn: { contains: q, mode: "insensitive" } },
-        { contentTh: { contains: q, mode: "insensitive" } },
-        { contentEn: { contains: q, mode: "insensitive" } },
-        { contentCn: { contains: q, mode: "insensitive" } },
+      where.AND = [
+        ...(where.NOT ? [{ NOT: where.NOT }] : []),
+        {
+          OR: [
+            { titleTh: { contains: q, mode: "insensitive" } },
+            { titleEn: { contains: q, mode: "insensitive" } },
+            { titleCn: { contains: q, mode: "insensitive" } },
+            { contentTh: { contains: q, mode: "insensitive" } },
+            { contentEn: { contains: q, mode: "insensitive" } },
+            { contentCn: { contains: q, mode: "insensitive" } },
+          ]
+        }
       ];
+      // Cleanup top-level NOT if it was moved to AND
+      delete where.NOT;
     }
 
     if (category && category !== "all") {
@@ -229,8 +240,8 @@ export async function GET(req) {
       },
     });
 
-    // นับจำนวนทั้งหมด
-    const total = await prisma.article.count();
+    // นับจำนวนทั้งหมด ตามเงื่อนไขการกรอง
+    const total = await prisma.article.count({ where });
 
     return NextResponse.json({
       success: true,
