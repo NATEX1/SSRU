@@ -70,7 +70,10 @@ export default function ClipCarousel({ data = [] }) {
         <h2 className="text-[#101828] text-2xl font-bold">Short Clips</h2>
 
         <a
-          href="/short-clips"
+          // href="/short-clips"
+          href="https://www.youtube.com/playlist?list=PL9rBdn9yFjyvkR2D4qZIc5A1_or_CT_XL"
+          target="_blank"
+          rel="noreferrer"
           className="hover:underline"
         >
           <div className="text-[#6A7282] flex text-xs items-center gap-1">

@@ -66,8 +66,11 @@ export default function VlogCarousel({ data = [] }) {
             </h4>
           </div>
           <a
-            href="/vlog"
+            // href="/vlog"
+            href="https://www.youtube.com/playlist?list=PL9rBdn9yFjyvkR2D4qZIc5A1_or_CT_XL"
             className="hover:underline"
+            target="_blank"
+            rel="noreferrer"
           >
             <div className="text-[#6A7282] flex text-xs items-center gap-1">
               <span>ดูทั้งหมด</span>
