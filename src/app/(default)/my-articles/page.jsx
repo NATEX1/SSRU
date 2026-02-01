@@ -45,7 +45,7 @@ export default async function Page() {
                 {getMultilingualContent(article, "title") || "ไม่มีหัวข้อ"}
               </h3>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span>{article.createdAt.toLocaleDateString()}</span>
+                <span>{(article.publishedAt || article.createdAt).toLocaleDateString()}</span>
               </div>
             </div>
 

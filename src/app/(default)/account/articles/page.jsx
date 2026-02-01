@@ -98,7 +98,7 @@ export default async function Page({ searchParams }) {
                 </a>
 
                 <div className="text-sm text-muted-foreground mt-1">
-                  {article.createdAt.toLocaleDateString("th-TH", {
+                  {(article.publishedAt || article.createdAt).toLocaleDateString("th-TH", {
                     day: "numeric",
                     month: "long",
                     year: "numeric",

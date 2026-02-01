@@ -24,7 +24,7 @@ async function getCategoryBySlug(rawSlug, page = 1, limit = 9) {
         },
         skip,
         take: limit,
-        orderBy: { createdAt: "desc" },
+        orderBy: { publishedAt: "desc" },
         include: {
           author: {
             select: { name: true },

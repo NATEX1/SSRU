@@ -18,7 +18,7 @@ export default function ArticleSlider({ data }) {
       excerpt: getLang(c.article, "excerpt"),
       image: getLang(c.article, "thumbnail"),
       author: getLang(c.article, "penName") || c.article.author?.name || "SSRU",
-      date: c.article.createdAt,
+      date: c.article.publishedAt,
     }));
 
   // console.log(articles);

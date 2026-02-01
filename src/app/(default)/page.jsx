@@ -16,7 +16,7 @@ async function getCategoriesWithOneArticle() {
           status: "approved",
           publishedAt: { lte: new Date() },
         },
-        orderBy: { createdAt: "desc" },
+        orderBy: { publishedAt: "desc" },
         take: 1,
         include: {
           author: { select: { name: true } },

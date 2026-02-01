@@ -72,7 +72,7 @@ export default async function page({ searchParams }) {
                   </span>
                   <span className="mx-1">|</span>
                   <span>
-                    {new Date(item.createdAt).toLocaleDateString("th-TH", {
+                    {new Date(item.publishedAt).toLocaleDateString("th-TH", {
                       year: "numeric",
                       month: "short",
                       day: "numeric",
