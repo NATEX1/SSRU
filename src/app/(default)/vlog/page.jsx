@@ -143,15 +143,6 @@ export default async function VlogPage({ searchParams }) {
                                         <Film className="h-4 w-4" />
                                         <span>{(item.viewCount || 0).toLocaleString()} views</span>
                                     </div>
-                                    {item.publishedAt && (
-                                        <span className="text-xs">
-                                            {new Date(item.publishedAt).toLocaleDateString("th-TH", {
-                                                day: "numeric",
-                                                month: "short",
-                                                year: "numeric"
-                                            })}
-                                        </span>
-                                    )}
                                 </div>
                             </div>
                         </div>
