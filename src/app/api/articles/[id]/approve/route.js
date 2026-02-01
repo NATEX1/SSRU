@@ -28,7 +28,7 @@ export async function POST(req, { params }) {
     }
 
     // Use raw SQL to bypass Prisma's automatic updatedAt update
-    const finalPublishedAt = publishedAt ? new Date(publishedAt) : new Date();
+    const finalPublishedAt = publishedAt ? new Date(`${publishedAt}T00:00:00+07:00`) : new Date();
     const now = new Date();
 
     await prisma.$executeRaw`
