@@ -6,7 +6,7 @@ import { Link as LinkIcon } from "lucide-react";
 export default function ShareButtons({ title, articleId }) {
   const [copied, setCopied] = useState(false);
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (typeof window !== "undefined" ? window.location.origin : "");
+  const baseUrl = "https://kcc.ssru.ac.th";
   const url = `${baseUrl}/articles/${articleId}`;
 
   const encodedUrl = encodeURIComponent(url);
