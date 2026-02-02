@@ -67,7 +67,7 @@ export default function VlogCarousel({ data = [] }) {
           </div>
           <a
             // href="/vlog"
-            href="https://www.youtube.com/playlist?list=PL9rBdn9yFjyvkR2D4qZIc5A1_or_CT_XL"
+            href="https://www.youtube.com/playlist?list=PL9rBdn9yFjytt1C5TZNSisXilKYiGO5EU"
             className="hover:underline"
             target="_blank"
             rel="noreferrer"

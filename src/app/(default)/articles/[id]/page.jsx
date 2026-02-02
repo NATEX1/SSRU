@@ -34,22 +34,38 @@ export async function generateMetadata({ params }) {
   const excerpt = getMultilingualContent(article, "excerpt");
   const thumbnail = getMultilingualContent(article, "thumbnail");
 
+  const baseUrl = "https://kcc.ssru.ac.th";
+  const imageUrl = thumbnail && thumbnail.startsWith('http')
+    ? thumbnail
+    : (thumbnail ? `${baseUrl}${thumbnail}` : `${baseUrl}/assets/images/og-fallback.png`); // Fallback if no thumbnail
+
   return {
     title,
     description: excerpt,
+    alternates: {
+      canonical: `${baseUrl}/articles/${id}`,
+    },
     openGraph: {
       title,
       description: excerpt,
-      url: `https://kcc.ssru.ac.th/${article.slug}`,
-      siteName: "SSRU",
-      images: [{ url: thumbnail, width: 1200, height: 630 }],
+      url: `${baseUrl}/articles/${id}`,
+      siteName: "SSRU KCC",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      locale: "th_TH",
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
       title,
       description: excerpt,
-      images: [thumbnail],
+      images: [imageUrl],
     },
   };
 }
