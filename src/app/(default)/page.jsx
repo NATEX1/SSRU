@@ -5,7 +5,8 @@ import CommentForm from "@/components/home/comment-form";
 import MagazineCarousel from "@/components/home/magazine-carousel";
 import { getOnePostEachOtherCategory, getCategoryName } from "@/lib/markdown";
 import prisma from "@/lib/prisma";
-import { ArrowRight, Calendar, Eye, Share2 } from "lucide-react";
+import { ArrowRight, Calendar, Eye, Share2, Folder } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 
 async function getCategoriesWithOneArticle() {
   const categories = await prisma.category.findMany({
@@ -159,25 +160,33 @@ export default async function Home() {
     }))
   ]);
 
+  // Filter cats that have at least one article
+  const catsWithArticles = cats.filter(cat => cat.article);
+  const catCount = catsWithArticles.length;
+
+  // Logic: 
+  // If count <= 7, use 4 columns, first item spans 2.
+  // If count >= 8, use 5 columns, first item spans 3.
+  const gridColsClass = catCount >= 8 ? "lg:grid-cols-5" : "lg:grid-cols-4";
+  const featuredSpanClass = catCount >= 8 ? "lg:col-span-3" : "md:col-span-2";
+
   return (
     <div className="p-6 mb-8">
       <div className="bg-[#F9FAFB] border p-6 rounded-2xl shadow mb-8 overflow-hidden">
-        <ArticleSlider data={cats} />
+        <ArticleSlider data={catsWithArticles} />
       </div>
       <div className="flex items-start gap-4">
         <div className="relative overflow-hidden w-full">
           <div>
             {/* Desktop */}
             <div className="hidden lg:block">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {cats.map((cat, i) => {
-                  if (!cat.article) return;
-
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${gridColsClass} gap-4`}>
+                {catsWithArticles.map((cat, i) => {
                   if (i == 0) {
                     return (
                       <div
                         key={i}
-                        className="col-span-1 md:col-span-2 max-w-full overflow-hidden"
+                        className={`col-span-1 ${featuredSpanClass} max-w-full overflow-hidden`}
                       >
                         <div className="flex items-center gap-2 mb-4 max-w-full">
                           <div className="w-1.5 h-6 rounded-2xl bg-[#F06FAA]"></div>
@@ -275,7 +284,7 @@ export default async function Home() {
                           href={`/categories/${cat.slug}`}
                           className="hover:text-[#F06FAA] transition"
                         >
-                          <h4 className="text-lg sm:text-xl xl:text-2xl font-bold wrap-break-word">
+                          <h4 className="text-lg sm:text-xl xl:text-xl font-bold wrap-break-word">
                             {cat.name}
                           </h4>
                         </a>
@@ -354,9 +363,7 @@ export default async function Home() {
             {/* Mobile + iPad */}
             <div className="lg:hidden">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {cats.map((category, i) => {
-                  if (!category.article) return;
-
+                {catsWithArticles.map((category, i) => {
                   return (
                     <div
                       key={i}
@@ -567,22 +574,24 @@ export default async function Home() {
             <hr className="mb-4" />
 
             <ul className="space-y-4">
-              {cats.map((item) => (
-                <li key={item.id}>
-                  <div>
-                    <h6>
-                      <a
-                        href={`/categories/${item.slug}`}
-                        className="hover:text-[#F06FAA] transition"
-                      >
-                        {item.name}
-                      </a>
-                    </h6>
-
-                    <div className="flex gap-2 items-center text-[#99A1AF]"></div>
-                  </div>
-                </li>
-              ))}
+              {cats.map((item) => {
+                const Icon = LucideIcons[item.icon] || LucideIcons.Folder;
+                return (
+                  <li key={item.id}>
+                    <div className="flex items-center gap-3">
+                      <Icon className="size-5 text-[#F06FAA] shrink-0" />
+                      <h6>
+                        <a
+                          href={`/categories/${item.slug}`}
+                          className="hover:text-[#F06FAA] transition"
+                        >
+                          {item.name}
+                        </a>
+                      </h6>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
 
             {/* <div className="text-right">

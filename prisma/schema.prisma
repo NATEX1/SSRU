@@ -28,8 +28,9 @@ model Category {
   name     String    @map("name")
   slug     String    @unique @map("slug")
   nameCn   String?   @map("name_cn")
-  nameEn   String?   @map("name_en")
-  articles Article[]
+  nameEn     String?   @map("name_en")
+  icon       String?   @map("icon")
+  articles   Article[]
 
   @@map("categories")
 }

@@ -1,18 +1,9 @@
 "use client";
 
+import * as LucideIcons from "lucide-react";
 import {
-  Home,
-  Briefcase,
-  Users,
-  BookOpen,
-  Clock,
-  Lightbulb,
-  FileText,
-  Star,
-  Phone,
   ChevronLeft,
   Menu,
-  SquarePen,
   Search,
   X,
 } from "lucide-react";
@@ -20,7 +11,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
-export default function AppSidebar() {
+export default function AppSidebar({ categories = [] }) {
   const pathname = usePathname();
 
   // desktop collapse
@@ -32,18 +23,10 @@ export default function AppSidebar() {
   // mobile search input
   const mobileSearchRef = useRef(null);
 
-  const menus = [
-    { icon: Home, label: "หน้าแรก", href: "/" },
-    { icon: Briefcase, label: "มองไกลกับผู้บริหาร", href: "/categories/executive-thoughts" },
-    { icon: Users, label: "สนทนาบนเส้นทางงาน", href: "/categories/career-path-conversations" },
-    { icon: BookOpen, label: "แนะนำงานวิจัย", href: "/categories/featured-research" },
-    { icon: Clock, label: "สวนสุนันทาเมื่อวันวาน", href: "/categories/ssru-muea-wan" },
-    { icon: Lightbulb, label: "มุมคิดวันนี้", href: "/categories/thoughts-today" },
-    { icon: FileText, label: "สารคดีความรู้", href: "/categories/documentary-knowledge" },
-    { icon: Star, label: "Hall of fame", href: "/categories/hall-of-fame" },
-    { icon: Phone, label: "ติดต่อเรา", href: "/contact-us" },
-    { icon: SquarePen, label: "เขียนบทความ", href: "/account/articles" },
-  ];
+  // Default icons for static menus
+  const StaticHomeIcon = LucideIcons.Home;
+  const ContactIcon = LucideIcons.Phone;
+  const WriteIcon = LucideIcons.SquarePen;
 
   const socials = [
     ["YouTube.webp", "https://www.youtube.com/playlist?list=PL9rBdn9yFjyvkR2D4qZIc5A1_or_CT_XL"],
@@ -73,14 +56,37 @@ export default function AppSidebar() {
   const SidebarList = ({ isDesktop }) => (
     <nav className="flex-1 overflow-y-auto py-4">
       <ul className="space-y-1 px-3">
-        {menus.map((menu, index) => {
-          const Icon = menu.icon;
-          const active = pathname === menu.href || pathname?.startsWith(menu.href + "/");
+        {/* Home */}
+        <li>
+          <Link
+            href="/"
+            className={`group relative flex items-center rounded-md p-3 text-sm transition hover:bg-gray-100
+              ${pathname === "/" ? "bg-gray-100 text-gray-900" : "text-gray-700"}
+              ${isDesktop && collapsed ? "justify-center" : ""}`}
+            onClick={() => {
+              if (!isDesktop) setMobileOpen(false);
+            }}
+          >
+            <StaticHomeIcon className="h-5 w-5 shrink-0 text-gray-600" />
+            <span
+              className={`ml-3 whitespace-nowrap transition-all duration-200
+                ${isDesktop && collapsed ? "w-0 overflow-hidden opacity-0 ml-0" : "opacity-100"}`}
+            >
+              หน้าแรก
+            </span>
+          </Link>
+        </li>
+
+        {/* Dynamic Categories */}
+        {categories.map((cat) => {
+          const Icon = LucideIcons[cat.icon] || LucideIcons.Folder;
+          const href = `/categories/${cat.slug}`;
+          const active = pathname === href || pathname?.startsWith(href + "/");
 
           return (
-            <li key={index}>
+            <li key={cat.id}>
               <Link
-                href={menu.href}
+                href={href}
                 className={`group relative flex items-center rounded-md p-3 text-sm transition hover:bg-gray-100
                   ${active ? "bg-gray-100 text-gray-900" : "text-gray-700"}
                   ${isDesktop && collapsed ? "justify-center" : ""}`}
@@ -93,12 +99,54 @@ export default function AppSidebar() {
                   className={`ml-3 whitespace-nowrap transition-all duration-200
                     ${isDesktop && collapsed ? "w-0 overflow-hidden opacity-0 ml-0" : "opacity-100"}`}
                 >
-                  {menu.label}
+                  {cat.name}
                 </span>
               </Link>
             </li>
           );
         })}
+
+        {/* Contact Us */}
+        <li>
+          <Link
+            href="/contact-us"
+            className={`group relative flex items-center rounded-md p-3 text-sm transition hover:bg-gray-100
+              ${pathname === "/contact-us" ? "bg-gray-100 text-gray-900" : "text-gray-700"}
+              ${isDesktop && collapsed ? "justify-center" : ""}`}
+            onClick={() => {
+              if (!isDesktop) setMobileOpen(false);
+            }}
+          >
+            <ContactIcon className="h-5 w-5 shrink-0 text-gray-600" />
+            <span
+              className={`ml-3 whitespace-nowrap transition-all duration-200
+                ${isDesktop && collapsed ? "w-0 overflow-hidden opacity-0 ml-0" : "opacity-100"}`}
+            >
+              ติดต่อเรา
+            </span>
+          </Link>
+        </li>
+
+        {/* Write Article */}
+        <li>
+          <Link
+            href="/account/articles"
+            className={`group relative flex items-center rounded-md p-3 text-sm transition hover:bg-gray-100
+              ${pathname === "/account/articles" ? "bg-gray-100 text-gray-900" : "text-gray-700"}
+              ${isDesktop && collapsed ? "justify-center" : ""}`}
+            onClick={() => {
+              if (!isDesktop) setMobileOpen(false);
+            }}
+          >
+            <WriteIcon className="h-5 w-5 shrink-0 text-gray-600" />
+            <span
+              className={`ml-3 whitespace-nowrap transition-all duration-200
+                ${isDesktop && collapsed ? "w-0 overflow-hidden opacity-0 ml-0" : "opacity-100"}`}
+            >
+              เขียนบทความ
+            </span>
+          </Link>
+        </li>
       </ul>
     </nav>
   );
@@ -186,7 +234,7 @@ export default function AppSidebar() {
             <div className="px-4 py-4 border-t border-[#F3F4F6] space-y-4">
               {/* Search */}
               <div className="w-full h-10 px-3 py-2 flex items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full focus-within:border-[#F06FAA]">
-                <Search className="h-[1em] text-[#99A1AF]" />
+                <LucideIcons.Search className="h-[1em] text-[#99A1AF]" />
                 <input
                   ref={mobileSearchRef}
                   type="text"
@@ -222,19 +270,6 @@ export default function AppSidebar() {
                   </li>
                 ))}
               </ul>
-
-              {/* Language switch */}
-              {/* <div className="inline-flex items-center gap-1 border border-[#E5E7EB] rounded-full p-0.5 bg-white">
-                <button className="px-3 py-1 bg-[#F06FAA] text-white rounded-full text-sm">
-                  TH
-                </button>
-                <button className="px-3 py-1 rounded-full text-sm text-[#111827] hover:bg-gray-50">
-                  EN
-                </button>
-                <button className="px-3 py-1 rounded-full text-sm text-[#111827] hover:bg-gray-50">
-                  CN
-                </button>
-              </div> */}
             </div>
           </aside>
         </div>
@@ -246,3 +281,4 @@ export default function AppSidebar() {
     </>
   );
 }
+

@@ -12,6 +12,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import * as LucideIcons from "lucide-react";
+
+const ICON_LIST = [
+  "Home", "Briefcase", "Users", "BookOpen", "Clock", "Lightbulb", "FileText", "Star",
+  "Phone", "Info", "HelpCircle", "Settings", "Bell", "Calendar", "Camera", "Heart",
+  "Mail", "Map", "MessageCircle", "Music", "Play", "Search", "ShoppingCart", "Video",
+  "Award", "Bookmark", "Coffee", "Globe", "Image", "Layout", "Link", "List", "Lock",
+  "MapPin", "Mic", "Moon", "Paperclip", "PenTool", "Printer", "Rocket", "Shield",
+  "Smile", "Sun", "Tag", "ThumbsUp", "Trash", "Truck", "Tv", "Umbrella", "Zap"
+];
 
 export default function CategoryDialog({
   children,
@@ -25,7 +35,7 @@ export default function CategoryDialog({
     name: "",
     nameEn: "",
     nameCn: "",
-    // Slug is auto-generated
+    icon: "",
   });
 
   const isEdit = mode === "edit";
@@ -37,12 +47,14 @@ export default function CategoryDialog({
           name: category.name || "",
           nameEn: category.nameEn || "",
           nameCn: category.nameCn || "",
+          icon: category.icon || "",
         });
       } else {
         setFormData({
           name: "",
           nameEn: "",
           nameCn: "",
+          icon: "FileText", // Default icon
         });
       }
     }
@@ -51,6 +63,10 @@ export default function CategoryDialog({
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleIconSelect = (iconName) => {
+    setFormData((prev) => ({ ...prev, icon: iconName }));
   };
 
   const handleSubmit = async (e) => {
@@ -95,12 +111,12 @@ export default function CategoryDialog({
           </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? "แก้ไขชื่อหมวดหมู่ในภาษาต่างๆ"
+              ? "แก้ไขชื่อหมวดหมู่ในภาษาต่างๆ และไอคอน"
               : "เพิ่มหมวดหมู่ใหม่เข้าสู่ระบบ"}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
+          <div className="grid gap-4 py-4 max-h-[70vh] overflow-y-auto px-1">
             {/* Thai Name */}
             <div className="grid items-center gap-2">
               <Label htmlFor="name">ชื่อหมวดหมู่ (ภาษาไทย) *</Label>
@@ -140,8 +156,35 @@ export default function CategoryDialog({
                 placeholder="例如 公共关系新闻"
               />
             </div>
+
+            {/* Icon Picker */}
+            <div className="grid items-center gap-2">
+              <Label>เลือกไอคอน</Label>
+              <div className="grid grid-cols-8 gap-2 border p-2 rounded-md max-h-[200px] overflow-y-auto">
+                {ICON_LIST.map((iconName) => {
+                  const Icon = LucideIcons[iconName];
+                  if (!Icon) return null;
+                  return (
+                    <button
+                      key={iconName}
+                      type="button"
+                      onClick={() => handleIconSelect(iconName)}
+                      className={`p-2 rounded-md transition-all flex items-center justify-center border
+                        ${formData.icon === iconName
+                          ? "bg-blue-50 border-blue-500 text-blue-500 shadow-sm"
+                          : "hover:bg-gray-100 border-transparent text-gray-600"
+                        }`}
+                      title={iconName}
+                    >
+                      <Icon size={20} />
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="text-xs text-muted-foreground">ไอคอนที่เลือก: {formData.icon}</p>
+            </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end pt-4 border-t">
             <Button type="submit" disabled={loading}>
               {loading ? "กำลังบันทึก..." : "บันทึก"}
             </Button>
@@ -151,3 +194,4 @@ export default function CategoryDialog({
     </Dialog>
   );
 }
+

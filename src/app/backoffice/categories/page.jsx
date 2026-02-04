@@ -29,7 +29,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Filter, Pencil, Plus, Search, Trash } from "lucide-react";
+import { Filter, Pencil, Plus, Search, Trash, Folder } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -108,6 +109,14 @@ export default function CategoriesPage() {
 
   const columns = [
     {
+      accessorKey: "icon",
+      header: "ไอคอน",
+      cell: ({ row }) => {
+        const Icon = LucideIcons[row.original.icon] || Folder;
+        return <Icon className="size-5 text-gray-500" />;
+      },
+    },
+    {
       accessorKey: "name",
       header: "ชื่อหมวดหมู่",
     },
@@ -116,7 +125,7 @@ export default function CategoriesPage() {
       header: "ชื่อหมวดหมู่ (EN)",
     },
     {
-      accessorKey: "nameCh",
+      accessorKey: "nameCn",
       header: "ชื่อหมวดหมู่ (CH)",
     },
     {
@@ -287,9 +296,9 @@ export default function CategoriesPage() {
           <div className="text-sm text-muted-foreground">
             {data.length > 0
               ? `แสดง ${(page - 1) * limit + 1} - ${Math.min(
-                  page * limit,
-                  total
-                )} จากทั้งหมด ${total}`
+                page * limit,
+                total
+              )} จากทั้งหมด ${total}`
               : ""}
           </div>
 

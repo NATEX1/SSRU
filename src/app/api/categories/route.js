@@ -4,14 +4,11 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+import slugify from "slugify";
+
 // Helper to generate slug from name
 function generateSlug(name) {
-  return name
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, "") // Remove non-word chars
-    .replace(/[\s_-]+/g, "-") // Replace spaces with -
-    .replace(/^-+|-+$/g, ""); // Remove leading/trailing -
+  return slugify(name, { lower: true, strict: true, locale: "th" });
 }
 
 export async function GET(request) {
@@ -64,6 +61,7 @@ export async function GET(request) {
       },
     });
   } catch (error) {
+    console.error("GET /api/categories error:", error);
     return NextResponse.json(
       { success: false, message: error.message },
       { status: 500 }
@@ -74,14 +72,14 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const session = await getServerSession(authOptions);
-    // if (!session) {
-    //   return NextResponse.json(
-    //     { success: false, message: "Unauthorized" },
-    //     { status: 401 }
-    //   );
-    // }
+    if (!session) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
 
-    const { name, nameEn, nameCn } = await request.json();
+    const { name, nameEn, nameCn, icon } = await request.json();
 
     if (!name) {
       return NextResponse.json(
@@ -90,15 +88,24 @@ export async function POST(request) {
       );
     }
 
-    // Generate slug from English name if available, otherwise Thai Name
-    // If Thai, we might just use random ID or timestamp if we want to avoid Thai chars in URL
-    // For now, let's try to use English name or fallback to a safe random string if EN is missing
-    let slug = "";
+    // Generate slug strategy:
+    // 1. Try English Name
+    // 2. Try Thai Name
+    // 3. Fallback to Timestamp
+    let slugBase = "";
     if (nameEn) {
-      slug = generateSlug(nameEn);
+      slugBase = nameEn;
+    } else if (name) {
+      slugBase = name;
     } else {
-      // Fallback: Use 'cat-' + timestamp
-      slug = `cat-${Date.now()}`;
+      slugBase = `category-${Date.now()}`;
+    }
+
+    let slug = generateSlug(slugBase);
+
+    // If slug is empty after processing (e.g. only special chars), fallback
+    if (!slug) {
+      slug = `category-${Date.now()}`;
     }
 
     // Ensure slug is unique
@@ -115,6 +122,7 @@ export async function POST(request) {
         nameEn,
         nameCn,
         slug: uniqueSlug,
+        icon,
       },
     });
 
@@ -124,6 +132,7 @@ export async function POST(request) {
       data: category,
     });
   } catch (error) {
+    console.error("POST /api/categories error:", error);
     return NextResponse.json(
       { success: false, message: error.message },
       { status: 500 }
