@@ -175,7 +175,7 @@ export async function PUT(req, { params }) {
         const buffer = Buffer.from(await file.arrayBuffer());
         const fileName = `${Date.now()}-${fileKey}-${file.name}`;
         const filePath = path.join(process.cwd(), "public", "uploads", fileName);
-        await writeFile(filepath, buffer);
+        await writeFile(filePath, buffer);
         return "/uploads/" + fileName;
       }
       return existingPath;
