@@ -7,10 +7,11 @@ export default async function middleware(req) {
 
   // 1. WWW to Non-WWW Redirect
   if (hostname && hostname.startsWith("www.")) {
-    const newHostname = hostname.replace(/^www\./, "");
-    url.hostname = newHostname;
-    url.protocol = "https"; // Force HTTPS for SEO
-    return NextResponse.redirect(url, 301);
+    const newHost = hostname.replace(/^www\./, "");
+    const newUrl = req.nextUrl.clone();
+    // Use the URL constructor behavior or just replace the host header in the cloned URL
+    newUrl.protocol = "https";
+    return NextResponse.redirect(newUrl.toString().replace("www.", ""), 301);
   }
 
   const token = await getToken({
