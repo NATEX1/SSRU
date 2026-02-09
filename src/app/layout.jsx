@@ -28,6 +28,9 @@ export const metadata = {
     shortcut: "/assets/images/logo_new.png",
     apple: "/assets/images/logo_new.png",
   },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
