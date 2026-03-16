@@ -162,7 +162,7 @@ export default function DashboardSidebar() {
                     if (!user) return false;
                     if (user.role === "admin") return true;
                     if (user.role === "approver") {
-                      return ["หน้าแรก", "จัดการบทความ", "Short Clips", "SSRU Around"].includes(item.label);
+                      return ["หน้าแรก", "จัดการบทความ", "Short Clips", "SSRU Around", "Vlog"].includes(item.label);
                     }
                     if (user.role === "author") {
                       return ["หน้าแรก", "จัดการบทความ", "ตั้งค่า"].includes(item.label);
